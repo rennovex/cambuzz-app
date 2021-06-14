@@ -5,6 +5,8 @@ const kMediumTextSize = 17.0;
 const kSmallTextSize = 16.0;
 const kBodyTextSize = 16.0;
 
+const Color kPrimaryColor = Color.fromRGBO(98, 65, 234, 1);
+const Color kSecondaryColor = Color.fromRGBO(69, 83, 243, 1);
 const String kFontNamePrimary = '';
 
 const kTitleTextStyle = TextStyle(

@@ -10,7 +10,7 @@ class CustomAppBar extends StatelessWidget {
       decoration: AppBarBoxDecoration,
         alignment: Alignment.center,
         child: Padding(
-          padding: EdgeInsets.only(top: 30, right:10, left:10),
+          padding: EdgeInsets.only(top: 30, right:20, left:20, bottom: 10),
           child: Column(
             children: [
               Row(
@@ -20,22 +20,24 @@ class CustomAppBar extends StatelessWidget {
                         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80',),
                     radius: 20,
                   ),
+                  SizedBox(width: 20,),
                   Expanded(
                     child: TextField(
-                      
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color.fromRGBO(82, 82, 82, 1),
-                        icon:Icon(
+                        prefixIcon:Icon(
                           Icons.search,
                           color: Colors.white,
-                        ),
+                        ) ,
                         hintText: 'Search',
                         hintStyle: TextStyle(color:Colors.white, backgroundColor:Color.fromRGBO(82, 82, 82, 1) )
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(width: 20,),
+                  Icon(Icons.send, color: Colors.white,)
                 ],
               )
             ],

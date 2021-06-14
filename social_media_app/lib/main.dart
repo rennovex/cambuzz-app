@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
+import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
@@ -37,7 +38,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  final List<Widget> _childern = [Container(), FeedScreen(), Container()];
+  final List<Widget> _childern = [ProfileScreen(), FeedScreen(), Container()];
 
   @override
   Widget build(BuildContext context) {
@@ -47,13 +48,14 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () {},
         tooltip: 'Increment',
         child: Container(
-          child: Icon(Icons.add,size:30,),
-          width:60,
-          height: 60,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: kLinearGradient
+          child: Icon(
+            Icons.add,
+            size: 30,
           ),
+          width: 60,
+          height: 60,
+          decoration:
+              BoxDecoration(shape: BoxShape.circle, gradient: kLinearGradient),
         ),
         elevation: 2.0,
       ),

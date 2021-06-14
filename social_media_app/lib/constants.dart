@@ -7,6 +7,16 @@ const kBodyTextSize = 16.0;
 
 const Color kPrimaryColor = Color.fromRGBO(98, 65, 234, 1);
 const Color kSecondaryColor = Color.fromRGBO(69, 83, 243, 1);
+const Color kGradientStartColor = Color.fromRGBO(98, 65, 234, 1);
+const Color kGradientEndColor = Color.fromRGBO(219, 0, 255, 1);
+
+const LinearGradient kLinearGradient = LinearGradient(
+  colors: [
+    kGradientStartColor,
+    kGradientEndColor,
+  ],
+);
+
 const String kFontNamePrimary = '';
 
 const kTitleTextStyle = TextStyle(

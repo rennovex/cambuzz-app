@@ -52,12 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 60,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [
-                Color.fromRGBO(98, 65, 234, 1),
-                Color.fromRGBO(219, 0, 255, 1),
-              ],
-            ),
+            gradient: kLinearGradient
           ),
         ),
         elevation: 2.0,

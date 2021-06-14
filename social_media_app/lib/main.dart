@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/style.dart';
+import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
@@ -37,6 +37,7 @@ class MyHomePage extends StatelessWidget {
         child: Column(children: [
           CustomAppBar(),
           Column(
+            
             children: feed
                 .map((e) => PostItem(
                       postImg: e.postImg,

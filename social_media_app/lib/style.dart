@@ -31,3 +31,10 @@ const BodySecondaryTextStyle = TextStyle(
   fontSize: LargeTextSize,
   color: Colors.white,
 );
+
+const AppBarBoxDecoration = BoxDecoration(
+    borderRadius: BorderRadius.only(
+        bottomLeft: Radius.circular(30),
+        bottomRight: Radius.circular(30)),
+    color: Color.fromRGBO(28, 28, 28, 1),
+  );

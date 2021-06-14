@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/style.dart';
+import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
 import 'dummy_data.dart';
@@ -32,20 +33,24 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      body: ListView.builder(
-        itemCount: feed.length,
-        itemBuilder: (ctx, index) => PostItem(
-          post_img: feed[index].post_img,
-          profile_img: feed[index].profile_img,
-          profile_name: feed[index].profile_name,
-          user_name: feed[index].user_name,
-          title: feed[index].title,
-          time: feed[index].time,
-          post_type: feed[index].post_type,
-          post_text: feed[index].post_text,
+      body: Column(children: [
+        CustomAppBar(),
+        Expanded(
+          child: ListView.builder(
+            itemCount: feed.length,
+            itemBuilder: (ctx, index) => PostItem(
+              post_img: feed[index].post_img,
+              profile_img: feed[index].profile_img,
+              profile_name: feed[index].profile_name,
+              user_name: feed[index].user_name,
+              title: feed[index].title,
+              time: feed[index].time,
+              post_type: feed[index].post_type,
+              post_text: feed[index].post_text,
+            ),
+          ),
         ),
-      ),
+      ]),
     );
   }
 }

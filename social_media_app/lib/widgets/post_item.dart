@@ -3,14 +3,14 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:social_media_app/models/post.dart';
 
 class PostItem extends StatelessWidget {
-  final String profile_img;
-  final String profile_name;
-  final String user_name;
+  final String profileImg;
+  final String profileName;
+  final String userName;
   final String time;
   final String title;
-  final String post_img;
-  final String post_text;
-  final PostType post_type;
+  final String postImg;
+  final String postText;
+  final PostType postType;
 
   // PostItem(
   //     {this.imgsrc =
@@ -19,14 +19,14 @@ class PostItem extends StatelessWidget {
   //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
 
   PostItem({
-    this.profile_img,
-    this.post_img,
-    this.profile_name,
+    this.profileImg,
+    this.postImg,
+    this.profileName,
     this.time,
     this.title,
-    this.user_name,
-    this.post_type,
-    this.post_text,
+    this.userName,
+    this.postType,
+    this.postText,
   });
 
   @override
@@ -46,7 +46,7 @@ class PostItem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(profile_img),
+                  backgroundImage: NetworkImage(profileImg),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -58,7 +58,7 @@ class PostItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$$profile_name',
+                            '\$$profileName',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 17),
                             // textAlign: TextAlign.start,
@@ -67,7 +67,7 @@ class PostItem extends StatelessWidget {
                             height: 5,
                           ),
                           Text(
-                            'by $user_name',
+                            'by $userName',
                             softWrap: true,
                           ),
                         ],
@@ -119,19 +119,19 @@ class PostItem extends StatelessWidget {
               ),
             ),
             SizedBox(height: 7),
-            if (post_type == PostType.ImagePost)
+            if (postType == PostType.ImagePost)
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 child: Image.network(
-                  post_img,
+                  postImg,
                   width: double.infinity,
                   height: 350,
                   fit: BoxFit.cover,
                 ),
               ),
-            if (post_type == PostType.TextPost)
+            if (postType == PostType.TextPost)
               Container(
-                child: Text(post_text),
+                child: Text(postText),
               ),
             SizedBox(
               height: 10,

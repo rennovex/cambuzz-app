@@ -39,14 +39,14 @@ class MyHomePage extends StatelessWidget {
           Column(
             children: feed
                 .map((e) => PostItem(
-                      post_img: e.post_img,
-                      profile_img: e.profile_img,
-                      profile_name: e.profile_name,
-                      user_name: e.user_name,
+                      postImg: e.postImg,
+                      profileImg: e.profileImg,
+                      profileName: e.profileName,
+                      userName: e.userName,
                       title: e.title,
                       time: e.time,
-                      post_text: e.post_text,
-                      post_type: e.post_type,
+                      postText: e.postText,
+                      postType: e.postType,
                     ))
                 .toList(),
           ),

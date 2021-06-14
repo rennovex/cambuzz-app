@@ -6,23 +6,23 @@ enum PostType {
 }
 
 class Post {
-  final String profile_img;
-  final String profile_name;
-  final String user_name;
+  final String profileImg;
+  final String profileName;
+  final String userName;
   final String time;
   final String title;
-  final String post_img;
-  final String post_text;
-  final PostType post_type;
+  final String postImg;
+  final String postText;
+  final PostType postType;
 
   Post({
-    @required this.profile_img,
-    @required this.profile_name,
+    @required this.profileImg,
+    @required this.profileName,
     @required this.time,
     @required this.title,
-    @required this.user_name,
-    @required this.post_type,
-    this.post_img,
-    this.post_text,
+    @required this.userName,
+    @required this.postType,
+    this.postImg,
+    this.postText,
   });
 }

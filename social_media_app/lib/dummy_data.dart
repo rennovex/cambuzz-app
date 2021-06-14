@@ -2,8 +2,7 @@ import 'models/post.dart';
 
 final List<Post> feed = [
   Post(
-    post_img:
-        'https://i.pinimg.com/564x/de/4c/c5/de4cc594125fb9fb2729b5d70721a15f.jpg',
+    post_img: 'https://picsum.photos/id/237/200/300',
     profile_img:
         'https://i.pinimg.com/236x/b7/1c/5f/b71c5f377615229c2d23c79686400eff.jpg',
     title:

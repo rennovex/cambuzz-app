@@ -32,9 +32,7 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Social Media App'),
-      ),
+
       body: ListView.builder(
         itemCount: feed.length,
         itemBuilder: (ctx, index) => PostItem(

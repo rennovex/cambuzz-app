@@ -33,24 +33,25 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: [
-        CustomAppBar(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: feed.length,
-            itemBuilder: (ctx, index) => PostItem(
-              post_img: feed[index].post_img,
-              profile_img: feed[index].profile_img,
-              profile_name: feed[index].profile_name,
-              user_name: feed[index].user_name,
-              title: feed[index].title,
-              time: feed[index].time,
-              post_type: feed[index].post_type,
-              post_text: feed[index].post_text,
-            ),
+      body: SingleChildScrollView(
+        child: Column(children: [
+          CustomAppBar(),
+          Column(
+            children: feed
+                .map((e) => PostItem(
+                      post_img: e.post_img,
+                      profile_img: e.profile_img,
+                      profile_name: e.profile_name,
+                      user_name: e.user_name,
+                      title: e.title,
+                      time: e.time,
+                      post_text: e.post_text,
+                      post_type: e.post_type,
+                    ))
+                .toList(),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }

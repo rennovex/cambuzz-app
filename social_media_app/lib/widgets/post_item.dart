@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/post.dart';
 
 class PostItem extends StatelessWidget {
@@ -59,17 +60,15 @@ class PostItem extends StatelessWidget {
                         children: [
                           Text(
                             '\$$profileName',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 17),
+                            style: kPostHeaderTextStyle,
                             // textAlign: TextAlign.start,
                           ),
                           SizedBox(
                             height: 5,
                           ),
-                          Text(
-                            'by $userName',
-                            softWrap: true,
-                          ),
+                          Text('by $userName',
+                              softWrap: true,
+                              style: kPostSubHeaderTextStyle),
                         ],
                       ),
                       Column(
@@ -82,10 +81,9 @@ class PostItem extends StatelessWidget {
                                 Icons.access_time_sharp,
                                 size: 18,
                               ),
-                              Text(
-                                '7 min ago',
-                                softWrap: true,
-                              ),
+                              Text('7 min ago',
+                                  softWrap: true,
+                                  style: kPostTimeTextStyle),
                             ],
                           ),
                         ],
@@ -110,10 +108,7 @@ class PostItem extends StatelessWidget {
               // width: 300,
               child: Text(
                 '$title',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: kPostTitleTextStyle,
                 softWrap: true,
                 maxLines: 2,
               ),
@@ -146,7 +141,7 @@ class PostItem extends StatelessWidget {
                         constraints: BoxConstraints(),
                         icon: Icon(Icons.favorite_border),
                         onPressed: () {}),
-                    Text('102'),
+                    Text('102', style:kPostBottomMetricTextStyle),
                   ],
                 ),
                 Row(
@@ -156,7 +151,10 @@ class PostItem extends StatelessWidget {
                         constraints: BoxConstraints(),
                         icon: Icon(MdiIcons.commentTextMultipleOutline),
                         onPressed: () {}),
-                    Text('46'),
+                    Text(
+                      '46',
+                      style: kPostBottomMetricTextStyle,
+                    ),
                   ],
                 ),
                 Row(
@@ -166,7 +164,10 @@ class PostItem extends StatelessWidget {
                         constraints: BoxConstraints(),
                         icon: Icon(MdiIcons.trophyOutline),
                         onPressed: () {}),
-                    Text('3'),
+                    Text(
+                      '3',
+                      style: kPostBottomMetricTextStyle,
+                    ),
                   ],
                 ),
                 Row(
@@ -176,7 +177,10 @@ class PostItem extends StatelessWidget {
                         constraints: BoxConstraints(),
                         icon: Icon(MdiIcons.shareAllOutline),
                         onPressed: () {}),
-                    Text('3'),
+                    Text(
+                      '3',
+                      style: kPostBottomMetricTextStyle,
+                    ),
                   ],
                 ),
               ],

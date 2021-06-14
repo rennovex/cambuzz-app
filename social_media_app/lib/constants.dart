@@ -30,12 +30,24 @@ const kBodySecondaryTextStyle = TextStyle(
   fontWeight: FontWeight.normal,
   fontSize: kLargeTextSize,
   color: Colors.white,
-  
 );
 
 const kAppBarBoxDecoration = BoxDecoration(
-    borderRadius: BorderRadius.only(
-        bottomLeft: Radius.circular(30),
-        bottomRight: Radius.circular(30)),
-    color: Color.fromRGBO(28, 28, 28, 1),
+  borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+  color: Color.fromRGBO(28, 28, 28, 1),
+);
+
+const kPostBottomMetricTextStyle = TextStyle(fontFamily: 'Poppins');
+
+const kPostHeaderTextStyle =
+    TextStyle(fontFamily: 'Poppins', fontWeight: FontWeight.bold, fontSize: 17);
+
+const kPostSubHeaderTextStyle = TextStyle(fontFamily: 'Poppins');
+
+const kPostTimeTextStyle = TextStyle(fontFamily: 'Poppins');
+
+const kPostTitleTextStyle = TextStyle(
+  fontSize: 18,
+  fontWeight: FontWeight.w600,
 );

@@ -14,169 +14,171 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Column(
-      // crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        ProfileHeader(
-          coverImg: profile.profileCoverImg,
-          profileImg: profile.profileImg,
-        ),
-        SizedBox(
-          height: 50,
-        ),
-        Column(
-          // crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Text(
-              '${profile.profileName}',
-              style: kProfileName,
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              width: 200,
-              child: Text(
-                '${profile.profileBio}',
-                maxLines: 2,
-                textAlign: TextAlign.center,
+        body: SingleChildScrollView(
+      child: Column(
+        // crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          ProfileHeader(
+            coverImg: profile.profileCoverImg,
+            profileImg: profile.profileImg,
+          ),
+          SizedBox(
+            height: 50,
+          ),
+          Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                '${profile.profileName}',
+                style: kProfileName,
               ),
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  color: Colors.blue,
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 200,
+                child: Text(
+                  '${profile.profileBio}',
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
                 ),
-                Text(
-                  '${profile.followers} Followers',
-                  style: kProfileLabel,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Row(
+                children: [
+                  Icon(
+                    Icons.person,
+                    color: Colors.blue,
+                  ),
+                  Text(
+                    '${profile.followers} Followers',
+                    style: kProfileLabel,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(
+                    Icons.wallet_membership_outlined,
+                    color: Colors.red,
+                  ),
+                  Text(
+                    '${profile.members} Members',
+                    style: kProfileLabel,
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Icon(
+                    MdiIcons.medal,
+                    color: Colors.purpleAccent,
+                  ),
+                  Text(
+                    '${profile.events} Events',
+                    style: kProfileLabel,
+                  ),
+                ],
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 22,
+          ),
+          Row(
+            children: [
+              SizedBox(width: 15),
+              Expanded(
+                child: Ink(
+                  height: 38,
+                  decoration: BoxDecoration(
+                    gradient: kLinearGradient,
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      '+Join',
+                      textAlign: TextAlign.center,
+                      style: kProfileButtonText,
+                    ),
+                    style: TextButton.styleFrom(
+                      primary: Colors.white,
+                    ),
+                  ),
                 ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.wallet_membership_outlined,
-                  color: Colors.red,
-                ),
-                Text(
-                  '${profile.members} Members',
-                  style: kProfileLabel,
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Icon(
-                  MdiIcons.medal,
-                  color: Colors.purpleAccent,
-                ),
-                Text(
-                  '${profile.events} Events',
-                  style: kProfileLabel,
-                ),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 22,
-        ),
-        Row(
-          children: [
-            SizedBox(width: 15),
-            Expanded(
-              child: Ink(
-                height: 38,
-                decoration: BoxDecoration(
-                  gradient: kLinearGradient,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: TextButton(
+              ),
+              SizedBox(width: 5),
+              Expanded(
+                child: OutlinedButton(
                   onPressed: () {},
                   child: Text(
-                    '+Join',
+                    'Contact Head',
                     textAlign: TextAlign.center,
                     style: kProfileButtonText,
                   ),
-                  style: TextButton.styleFrom(
-                    primary: Colors.white,
+                  // color: Colors.purpleAccent,
+                  style: OutlinedButton.styleFrom(
+                    primary: Color.fromRGBO(225, 37, 255, 1),
+                    backgroundColor: Colors.transparent,
+                    side: BorderSide(
+                      width: 1.3,
+                      color: Color.fromRGBO(225, 37, 255, 1),
+                    ),
                   ),
                 ),
               ),
-            ),
-            SizedBox(width: 5),
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () {},
-                child: Text(
-                  'Contact Head',
-                  textAlign: TextAlign.center,
-                  style: kProfileButtonText,
-                ),
-                // color: Colors.purpleAccent,
-                style: OutlinedButton.styleFrom(
-                  primary: Color.fromRGBO(225, 37, 255, 1),
-                  backgroundColor: Colors.transparent,
-                  side: BorderSide(
-                    width: 1.3,
-                    color: Color.fromRGBO(225, 37, 255, 1),
+              SizedBox(width: 5),
+              Expanded(
+                child: OutlinedButton(
+                  onPressed: () {},
+                  child: Text(
+                    'Edit Community',
+                    textAlign: TextAlign.center,
+                    style: kProfileButtonText,
                   ),
-                ),
-              ),
-            ),
-            SizedBox(width: 5),
-            Expanded(
-              child: OutlinedButton(
-                onPressed: () {},
-                child: Text(
-                  'Edit Community',
-                  textAlign: TextAlign.center,
-                  style: kProfileButtonText,
-                ),
-                style: OutlinedButton.styleFrom(
-                  primary: Color.fromRGBO(40, 102, 253, 1),
-                  backgroundColor: Colors.transparent,
-                  side: BorderSide(
-                    width: 1.3,
-                    color: Color.fromRGBO(40, 102, 253, 1),
+                  style: OutlinedButton.styleFrom(
+                    primary: Color.fromRGBO(40, 102, 253, 1),
+                    backgroundColor: Colors.transparent,
+                    side: BorderSide(
+                      width: 1.3,
+                      color: Color.fromRGBO(40, 102, 253, 1),
+                    ),
                   ),
-                ),
 
-                // color: Colors.purpleAccent,
+                  // color: Colors.purpleAccent,
+                ),
               ),
-            ),
-            SizedBox(width: 15),
-          ],
-        ),
-        SizedBox(
-          height: 20,
-        ),
-        Row(
-          children: [
-            SizedBox(
-              width: 20,
-            ),
-            Text(
-              'Events',
-              style: kProfileTitle,
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 7,
-        ),
-        ProfileEvents(),
-      ],
+              SizedBox(width: 15),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Events',
+                style: kProfileTitle,
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          ProfileEvents(),
+        ],
+      ),
     ));
   }
 }

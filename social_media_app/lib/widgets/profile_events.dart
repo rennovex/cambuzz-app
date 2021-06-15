@@ -5,7 +5,8 @@ class ProfileEvents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
+    return SizedBox(
+      height: 203,
       child: ListView.builder(
         padding: EdgeInsets.only(
           left: 18,

@@ -38,7 +38,13 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _currentIndex = 0;
-  final List<Widget> _childern = [ProfileScreen(), FeedScreen(), Container()];
+  final List<Widget> _childern = [
+    ProfileScreen(
+      profile: profiles[0],
+    ),
+    FeedScreen(),
+    Container()
+  ];
 
   @override
   Widget build(BuildContext context) {

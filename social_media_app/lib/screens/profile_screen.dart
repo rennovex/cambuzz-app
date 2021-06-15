@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
+  final Profile profile;
+
+  ProfileScreen({this.profile});
   // const ProfileScreen({ Key? key }) : super(key: key);
 
   @override
@@ -13,21 +17,27 @@ class ProfileScreen extends StatelessWidget {
         body: Column(
       // crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        ProfileHeader(),
+        ProfileHeader(
+          coverImg: profile.profileCoverImg,
+          profileImg: profile.profileImg,
+        ),
         SizedBox(
           height: 50,
         ),
         Column(
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Profile Name'),
+            Text(
+              '${profile.profileName}',
+              style: kProfileName,
+            ),
             SizedBox(
-              height: 15,
+              height: 5,
             ),
             Container(
               width: 200,
               child: Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry ',
+                '${profile.profileBio}',
                 maxLines: 2,
                 textAlign: TextAlign.center,
               ),
@@ -46,7 +56,10 @@ class ProfileScreen extends StatelessWidget {
                   Icons.person,
                   color: Colors.blue,
                 ),
-                Text('80 Followers'),
+                Text(
+                  '${profile.followers} Followers',
+                  style: kProfileLabel,
+                ),
               ],
             ),
             Row(
@@ -55,7 +68,10 @@ class ProfileScreen extends StatelessWidget {
                   Icons.wallet_membership_outlined,
                   color: Colors.red,
                 ),
-                Text('50 Member'),
+                Text(
+                  '${profile.members} Members',
+                  style: kProfileLabel,
+                ),
               ],
             ),
             Row(
@@ -64,7 +80,10 @@ class ProfileScreen extends StatelessWidget {
                   MdiIcons.medal,
                   color: Colors.purpleAccent,
                 ),
-                Text('3 Events'),
+                Text(
+                  '${profile.events} Events',
+                  style: kProfileLabel,
+                ),
               ],
             ),
           ],
@@ -86,6 +105,7 @@ class ProfileScreen extends StatelessWidget {
                   onPressed: () {},
                   child: Text(
                     '+Join',
+                    textAlign: TextAlign.center,
                     style: kProfileButtonText,
                   ),
                   style: TextButton.styleFrom(
@@ -100,6 +120,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   'Contact Head',
+                  textAlign: TextAlign.center,
                   style: kProfileButtonText,
                 ),
                 // color: Colors.purpleAccent,
@@ -119,6 +140,7 @@ class ProfileScreen extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   'Edit Community',
+                  textAlign: TextAlign.center,
                   style: kProfileButtonText,
                 ),
                 style: OutlinedButton.styleFrom(

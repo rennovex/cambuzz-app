@@ -3,6 +3,13 @@ import 'package:social_media_app/constants.dart';
 
 class ProfileHeader extends StatelessWidget {
   // const ProfileScreen({ Key? key }) : super(key: key);
+  final String coverImg;
+  final String profileImg;
+
+  ProfileHeader({
+    @required this.profileImg,
+    @required this.coverImg,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,7 @@ class ProfileHeader extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(33),
             child: Image.network(
-              'https://i.pinimg.com/736x/e9/5c/60/e95c60d5a695d14a76bea6470c2540d5.jpg',
+              '$coverImg',
               fit: BoxFit.cover,
               width: double.infinity,
               height: 167,
@@ -27,16 +34,21 @@ class ProfileHeader extends StatelessWidget {
         Positioned(
           // left: 150,
           top: 145,
-          child: CircleAvatar(
-            // backgroundColor:,
-            radius: 50,
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: kLinearGradient,
+              shape: BoxShape.circle,
+            ),
             child: CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 44,
+              backgroundColor: Colors.transparent,
+              radius: kProfilePicRadius + 8,
               child: CircleAvatar(
-                radius: 40,
-                backgroundImage: NetworkImage(
-                    'https://i.pinimg.com/236x/b7/1c/5f/b71c5f377615229c2d23c79686400eff.jpg'),
+                backgroundColor: Colors.white,
+                radius: kProfilePicRadius + 4,
+                child: CircleAvatar(
+                  radius: kProfilePicRadius,
+                  backgroundImage: NetworkImage('$profileImg'),
+                ),
               ),
             ),
           ),

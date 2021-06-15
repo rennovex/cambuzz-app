@@ -76,10 +76,24 @@ const kPostTitleTextStyle = TextStyle(
 );
 
 // Profile
+const kProfilePicRadius = 40.0;
+
 const kProfileButtonText = TextStyle(
   fontFamily: 'Poppins',
-  fontSize: 10.2,
+  fontSize: 10,
   fontWeight: FontWeight.w600,
+);
+
+const kProfileName = TextStyle(
+  fontFamily: 'Poppins',
+  fontSize: 16,
+  fontWeight: FontWeight.w800,
+);
+
+const kProfileLabel = TextStyle(
+  fontFamily: 'Poppins',
+  fontSize: 12,
+  fontWeight: FontWeight.w700,
 );
 
 const kProfileTitle = TextStyle(

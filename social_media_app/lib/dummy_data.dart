@@ -1,4 +1,21 @@
 import 'models/post.dart';
+import 'models/profile.dart';
+
+final List<Profile> profiles = [
+  Profile(
+    profileType: ProfileType.CommunityProfile,
+    profileName: '\$Memes',
+    profileImg:
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGbK61tJDp2gLVTuG_Tvsk3waIoGgpmv4z7Q&usqp=CAU',
+    profileCoverImg:
+        'https://aesthetic-god-74.webself.net/file/si1601206/jamie-matocinos-WAYY2WoGb8w-unsplash-fi24475771x400.jpg',
+    profileBio:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+    events: 3,
+    followers: 100,
+    members: 69,
+  ),
+];
 
 final List<Post> feed = [
   Post(

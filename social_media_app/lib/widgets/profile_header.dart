@@ -28,7 +28,7 @@ class ProfileHeader extends StatelessWidget {
           // left: 150,
           top: 145,
           child: CircleAvatar(
-            backgroundColor:,
+            backgroundColor:Colors.white,
             radius: 50,
             child: CircleAvatar(
               backgroundColor: Colors.white,

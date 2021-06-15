@@ -15,7 +15,7 @@ class ProfileHeader extends StatelessWidget {
           padding:
               const EdgeInsets.only(top: 30, right: 11, left: 11, bottom: 10),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(33),
             child: Image.network(
               'https://i.pinimg.com/736x/e9/5c/60/e95c60d5a695d14a76bea6470c2540d5.jpg',
               fit: BoxFit.cover,
@@ -28,7 +28,7 @@ class ProfileHeader extends StatelessWidget {
           // left: 150,
           top: 145,
           child: CircleAvatar(
-            backgroundColor:,
+            // backgroundColor:,
             radius: 50,
             child: CircleAvatar(
               backgroundColor: Colors.white,

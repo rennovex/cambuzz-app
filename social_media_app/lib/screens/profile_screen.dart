@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -67,40 +69,91 @@ class ProfileScreen extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(),
+        SizedBox(
+          height: 22,
+        ),
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            SizedBox(width: 10),
+            SizedBox(width: 15),
             Expanded(
-              child: RaisedButton(
-                // padding: EdgeInsets.symmetric(horizontal: 15),
-                onPressed: () {},
-                child: Text('+Join'),
-                color: Colors.purpleAccent,
+              child: Ink(
+                height: 38,
+                decoration: BoxDecoration(
+                  gradient: kLinearGradient,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    '+Join',
+                    style: kProfileButtonText,
+                  ),
+                  style: TextButton.styleFrom(
+                    primary: Colors.white,
+                  ),
+                ),
               ),
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
             Expanded(
-              child: RaisedButton(
+              child: OutlinedButton(
                 onPressed: () {},
-                child: Text('Contact Head'),
-                color: Colors.purpleAccent,
+                child: Text(
+                  'Contact Head',
+                  style: kProfileButtonText,
+                ),
+                // color: Colors.purpleAccent,
+                style: OutlinedButton.styleFrom(
+                  primary: Color.fromRGBO(225, 37, 255, 1),
+                  backgroundColor: Colors.transparent,
+                  side: BorderSide(
+                    width: 1.3,
+                    color: Color.fromRGBO(225, 37, 255, 1),
+                  ),
+                ),
               ),
             ),
-            SizedBox(width: 10),
+            SizedBox(width: 5),
             Expanded(
-              child: RaisedButton(
+              child: OutlinedButton(
                 onPressed: () {},
-                child: Text('Edit Community'),
-                color: Colors.purpleAccent,
+                child: Text(
+                  'Edit Community',
+                  style: kProfileButtonText,
+                ),
+                style: OutlinedButton.styleFrom(
+                  primary: Color.fromRGBO(40, 102, 253, 1),
+                  backgroundColor: Colors.transparent,
+                  side: BorderSide(
+                    width: 1.3,
+                    color: Color.fromRGBO(40, 102, 253, 1),
+                  ),
+                ),
+
+                // color: Colors.purpleAccent,
               ),
             ),
-            SizedBox(
-              width: 10,
-            )
+            SizedBox(width: 15),
           ],
-        )
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: 20,
+            ),
+            Text(
+              'Events',
+              style: kProfileTitle,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 7,
+        ),
+        ProfileEvents(),
       ],
     ));
   }

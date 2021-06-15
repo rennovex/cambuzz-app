@@ -9,7 +9,7 @@ final List<Post> feed = [
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry',
     profileName: 'The Hangout',
     userName: 'shaquille.oatmeal',
-    time: ' ',
+    time: '',
     postType: PostType.ImagePost,
   ),
   Post(

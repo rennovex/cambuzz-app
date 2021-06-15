@@ -74,3 +74,16 @@ const kPostTitleTextStyle = TextStyle(
   fontSize: 18,
   fontWeight: FontWeight.w600,
 );
+
+// Profile
+const kProfileButtonText = TextStyle(
+  fontFamily: 'Poppins',
+  fontSize: 10.2,
+  fontWeight: FontWeight.w600,
+);
+
+const kProfileTitle = TextStyle(
+  fontFamily: 'Poppins',
+  fontSize: 13,
+  fontWeight: FontWeight.w600,
+);

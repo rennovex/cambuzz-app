@@ -65,26 +65,50 @@ class ProfileScreen extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
-                    Icons.wallet_membership_outlined,
-                    color: Colors.red,
-                  ),
-                  Text(
-                    '${profile.members} Members',
-                    style: kProfileLabel,
-                  ),
+                  if (profile.profileType == ProfileType.CommunityProfile)
+                    Icon(
+                      Icons.wallet_membership_outlined,
+                      color: Colors.red,
+                    ),
+                  if (profile.profileType == ProfileType.UserProfile)
+                    Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+                    ),
+                  if (profile.profileType == ProfileType.CommunityProfile)
+                    Text(
+                      '${profile.members} Members',
+                      style: kProfileLabel,
+                    ),
+                  if (profile.profileType == ProfileType.UserProfile)
+                    Text(
+                      '${profile.likes} Likes',
+                      style: kProfileLabel,
+                    ),
                 ],
               ),
               Row(
                 children: [
-                  Icon(
-                    MdiIcons.medal,
-                    color: Colors.purpleAccent,
-                  ),
-                  Text(
-                    '${profile.events} Events',
-                    style: kProfileLabel,
-                  ),
+                  if (profile.profileType == ProfileType.CommunityProfile)
+                    Icon(
+                      MdiIcons.medal,
+                      color: Colors.purpleAccent,
+                    ),
+                  if (profile.profileType == ProfileType.UserProfile)
+                    Icon(
+                      MdiIcons.medal,
+                      color: Colors.purpleAccent,
+                    ),
+                  if (profile.profileType == ProfileType.CommunityProfile)
+                    Text(
+                      '${profile.events} Events',
+                      style: kProfileLabel,
+                    ),
+                  if (profile.profileType == ProfileType.UserProfile)
+                    Text(
+                      '${profile.achievements} Achievements',
+                      style: kProfileLabel,
+                    ),
                 ],
               ),
             ],
@@ -99,13 +123,15 @@ class ProfileScreen extends StatelessWidget {
                 child: Ink(
                   height: 38,
                   decoration: BoxDecoration(
-                    gradient: kLinearGradient,
+                    gradient: kButtonLinearGradient,
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: TextButton(
                     onPressed: () {},
                     child: Text(
-                      '+Join',
+                      profile.profileType == ProfileType.CommunityProfile
+                          ? '+Join'
+                          : 'Follow',
                       textAlign: TextAlign.center,
                       style: kProfileButtonText,
                     ),
@@ -120,7 +146,9 @@ class ProfileScreen extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () {},
                   child: Text(
-                    'Contact Head',
+                    profile.profileType == ProfileType.CommunityProfile
+                        ? 'Contact Head'
+                        : 'Send a message',
                     textAlign: TextAlign.center,
                     style: kProfileButtonText,
                   ),
@@ -140,7 +168,9 @@ class ProfileScreen extends StatelessWidget {
                 child: OutlinedButton(
                   onPressed: () {},
                   child: Text(
-                    'Edit Community',
+                    profile.profileType == ProfileType.CommunityProfile
+                        ? 'Edit Community'
+                        : 'Edit Profile',
                     textAlign: TextAlign.center,
                     style: kProfileButtonText,
                   ),

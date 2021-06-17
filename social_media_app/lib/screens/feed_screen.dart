@@ -9,23 +9,29 @@ class FeedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child:SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(children: [
           CustomAppBar(),
           Column(
-            
-            children: feed
-                .map((e) => PostItem(
-                      postImg: e.postImg,
-                      profileImg: e.profileImg,
-                      profileName: e.profileName,
-                      userName: e.userName,
-                      title: e.title,
-                      time: e.time,
-                      postText: e.postText,
-                      postType: e.postType,
-                    ))
-                .toList(),
+            children: [
+              SingleChildScrollView(
+                child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: feed.length,
+                  shrinkWrap: true,
+                  itemBuilder: (ctx, ind) => PostItem(
+                    postImg: feed[ind].postImg,
+                    profileImg: feed[ind].profileImg,
+                    profileName: feed[ind].profileName,
+                    userName: feed[ind].userName,
+                    title: feed[ind].title,
+                    time: feed[ind].time,
+                    postText: feed[ind].postText,
+                    postType: feed[ind].postType,
+                  ),
+                ),
+              ),
+            ],
           ),
         ]),
       ),

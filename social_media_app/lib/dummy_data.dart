@@ -1,3 +1,5 @@
+import 'package:social_media_app/models/trending_post.dart';
+
 import 'models/post.dart';
 import 'models/profile.dart';
 
@@ -14,6 +16,19 @@ final List<Profile> profiles = [
     events: 3,
     followers: 100,
     members: 69,
+  ),
+  Profile(
+    profileType: ProfileType.UserProfile,
+    profileName: 'BadKarma',
+    profileImg:
+        'https://i.pinimg.com/236x/0c/17/ca/0c17ca0e82e873d6b0bd5a44790c7813.jpg',
+    profileCoverImg:
+        'https://aesthetic-god-74.webself.net/file/si1601206/jamie-matocinos-WAYY2WoGb8w-unsplash-fi24475771x400.jpg',
+    profileBio:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ',
+    achievements: 4,
+    followers: 100,
+    likes: 69,
   ),
 ];
 
@@ -67,12 +82,53 @@ final List<Post> feed = [
         'https://i.pinimg.com/236x/0c/17/ca/0c17ca0e82e873d6b0bd5a44790c7813.jpg',
     profileImg:
         'https://i.pinimg.com/236x/c8/c3/0f/c8c30f07d1084ca16a74f3a1757d7b26.jpg',
-    title: 'There are many variations of passages of Lorem Ipsum available,',
+    title: 'There are many variations of passages of Lorem Ipsum available',
     profileName: 'The Art Base',
     userName: 'BadKarma',
     time: '',
     postType: PostType.TextPost,
     postText:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+  ),
+];
+
+final List<TrendingPost> trending = [
+  TrendingPost(
+    image:
+        'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    likeCount: 75,
+    title: 'There are many variations of passages of Lorem Ipsum available',
+    postType: PostType.ImagePost,
+    userName: 'shaquille.oatmeal',
+    communityName: 'The Art Base',
+  ),
+  TrendingPost(
+    image:
+        'https://images.unsplash.com/photo-1623885765804-b7bc6c4082ee?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    likeCount: 75,
+    title: 'There are many variations of passages of Lorem Ipsum available',
+    postType: PostType.ImagePost,
+    userName: 'shaquille.oatmeal',
+    communityName: 'The Art Base',
+  ),
+  TrendingPost(
+    image:
+        'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    likeCount: 75,
+    title: 'There are many variations of passages of Lorem Ipsum available',
+    postType: PostType.TextPost,
+    userName: 'shaquille.oatmeal',
+    communityName: 'The Art Base',
+    text:
+        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s',
+  ),
+  TrendingPost(
+    image:
+        'https://images.unsplash.com/photo-1623872233463-921e585ee68e?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMnx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+    likeCount: 75,
+    title: 'There are many variations of passages of Lorem Ipsum available',
+    postType: PostType.ImagePost,
+    userName: 'shaquille.oatmeal',
+    communityName: 'The Art Base',
   ),
 ];

@@ -17,6 +17,13 @@ const LinearGradient kLinearGradient = LinearGradient(
   ],
 );
 
+const LinearGradient kButtonLinearGradient = LinearGradient(
+  colors: [
+    Color.fromRGBO(147, 33, 218, 1),
+    Color.fromRGBO(30, 107, 255, 1),
+  ],
+);
+
 const String kFontNamePrimary = '';
 
 const kTitleTextStyle = TextStyle(
@@ -76,6 +83,7 @@ const kPostTitleTextStyle = TextStyle(
 );
 
 // Profile
+
 const kProfilePicRadius = 40.0;
 
 const kProfileButtonText = TextStyle(
@@ -100,4 +108,65 @@ const kProfileTitle = TextStyle(
   fontFamily: 'Poppins',
   fontSize: 13,
   fontWeight: FontWeight.w600,
+);
+
+// Trending
+//  User
+const kTrendingJoinButton = TextStyle(
+  fontFamily: 'Poppins',
+  fontSize: 10,
+  fontWeight: FontWeight.w600,
+);
+
+const kTrendingUserName = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+  fontSize: 7,
+);
+
+const kTrendingUserText = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  color: Colors.white,
+  fontSize: 7,
+);
+
+//  Community
+
+const kTrendingCommunityName = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w700,
+  color: Colors.white,
+  fontSize: 15,
+);
+
+const kTrendingCommunityTitle = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  color: Color.fromRGBO(203, 203, 203, 1),
+  fontSize: 11,
+);
+
+const kTrendingCommunityBody = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  color: Color.fromRGBO(203, 203, 203, 1),
+  fontSize: 12,
+  height: 1.2,
+);
+
+const kTrendingCommunityContent = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  color: Colors.white,
+  fontSize: 12,
+  height: 1.2,
+);
+
+const kTrendingCommunityLikes = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w400,
+  color: Colors.red,
+  fontSize: 14,
 );

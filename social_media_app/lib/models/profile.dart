@@ -11,9 +11,11 @@ class Profile {
   final String profileImg;
   final String profileCoverImg;
   final String profileBio;
-  final int followers;
-  final int members;
-  final int events;
+  final num followers;
+  final num likes;
+  final num members;
+  final num events;
+  final num achievements;
 
   Profile({
     @required this.profileType,
@@ -22,6 +24,8 @@ class Profile {
     @required this.profileCoverImg,
     @required this.profileBio,
     this.followers,
+    this.likes,
+    this.achievements,
     this.members,
     this.events,
   });

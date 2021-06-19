@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
-import 'package:social_media_app/widgets/app_bar.dart';
-import 'package:social_media_app/widgets/post_item.dart';
 
 import 'dummy_data.dart';
 
@@ -45,6 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     FeedScreen(),
     TrendingScreen(),
+    EventScreen(),
   ];
 
   @override
@@ -101,6 +101,8 @@ class _MyHomePageState extends State<MyHomePage> {
               BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.trending_up), label: 'Trending'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
             ],
           ),
         ),

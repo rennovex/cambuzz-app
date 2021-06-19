@@ -20,7 +20,7 @@ class ProfileHeader extends StatelessWidget {
       children: [
         Padding(
           padding:
-              const EdgeInsets.only(top: 30, right: 11, left: 11, bottom: 10),
+              const EdgeInsets.only(top: 5, right: 11, left: 11, bottom: 10),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(33),
             child: Image.network(

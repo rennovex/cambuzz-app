@@ -51,7 +51,7 @@ final List<Post> feed = [
         'https://i.pinimg.com/236x/d1/0a/fc/d10afcd6295a85852ea189d611e152ac.jpg',
     title: 'It is a long established fact that a reader will be',
     profileName: 'The Java Room',
-    userName: 'hanging_gnomies',
+    userName: 'hanging_gnomies_by_the_',
     time: '',
     postType: PostType.ImagePost,
   ),

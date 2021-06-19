@@ -66,9 +66,16 @@ class PostItem extends StatelessWidget {
                           SizedBox(
                             height: 5,
                           ),
-                          Text('by $userName',
+                          SizedBox(
+                            width: 150,
+                            child: Text(
+                              'by $userName',
+                              maxLines: 1,
                               softWrap: true,
-                              style: kPostSubHeaderTextStyle),
+                              overflow: TextOverflow.ellipsis,
+                              style: kPostSubHeaderTextStyle,
+                            ),
+                          ),
                         ],
                       ),
                       Column(
@@ -82,8 +89,7 @@ class PostItem extends StatelessWidget {
                                 size: 18,
                               ),
                               Text('7 min ago',
-                                  softWrap: true,
-                                  style: kPostTimeTextStyle),
+                                  softWrap: true, style: kPostTimeTextStyle),
                             ],
                           ),
                         ],
@@ -141,7 +147,7 @@ class PostItem extends StatelessWidget {
                         constraints: BoxConstraints(),
                         icon: Icon(Icons.favorite_border),
                         onPressed: () {}),
-                    Text('102', style:kPostBottomMetricTextStyle),
+                    Text('102', style: kPostBottomMetricTextStyle),
                   ],
                 ),
                 Row(

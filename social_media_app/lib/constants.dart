@@ -170,3 +170,55 @@ const kTrendingCommunityLikes = TextStyle(
   color: Colors.red,
   fontSize: 14,
 );
+
+//  Events
+
+const kEventCommunityName = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w800,
+  color: Colors.black,
+  fontSize: 18,
+);
+
+const kEventHeader = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  color: Colors.black,
+  fontSize: 15,
+);
+
+const kEventBody = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  // height: 1.5,
+  color: Colors.black,
+  fontSize: 12,
+);
+
+const kEventBadge = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  color: Colors.white,
+  fontSize: 12,
+);
+
+const kEventMonth = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w800,
+  color: Colors.black,
+  fontSize: 14,
+);
+
+const kEventDate = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w900,
+  color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 24,
+);
+
+const kEventTime = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  color: Colors.black,
+  fontSize: 12,
+);

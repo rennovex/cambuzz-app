@@ -19,6 +19,8 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        backgroundColor: Color.fromRGBO(229, 229, 229, 1),
+
         // textTheme: TextTheme(
         //   title: TitleTextStyle,
         //   subtitle: SubtitleTextStyle,
@@ -44,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     FeedScreen(),
     TrendingScreen(),
-    EventScreen(),
+    EventScreen(events),
   ];
 
   @override

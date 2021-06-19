@@ -222,3 +222,45 @@ const kEventTime = TextStyle(
   color: Colors.black,
   fontSize: 12,
 );
+
+//  EventExpanded
+
+const kEventExpandedDay = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w900,
+  color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 30,
+);
+
+const kEventExpandedMonth = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w800,
+  // color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 18,
+);
+
+const kEventExpandedTime = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w700,
+  // color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 16,
+);
+const kEventExpandedName = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w900,
+  // color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 24,
+);
+const kEventExpandedCommunityName = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w800,
+  // color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 18,
+);
+
+const kEventExpandedDescription = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w500,
+  // color: Color.fromRGBO(35, 105, 254, 1),
+  fontSize: 14,
+);

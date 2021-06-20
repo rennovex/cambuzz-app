@@ -146,7 +146,7 @@ class _EventScreenState extends State<EventScreen> {
                                     '$description',
                                     style: kEventExpandedDescription,
                                     overflow: TextOverflow.ellipsis,
-                                    maxLines: 8,
+                                    maxLines: 6,
                                   ),
                                 ),
                               ],

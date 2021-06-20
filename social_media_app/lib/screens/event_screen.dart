@@ -1,3 +1,4 @@
+import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/event.dart';
@@ -16,7 +17,7 @@ class _EventScreenState extends State<EventScreen> {
   expandEvent({context, eventName, communityName, description}) {
     return showDialog(
       context: context,
-      builder: (_) => Center(
+      builder: (context) => Center(
         child: Material(
           type: MaterialType.transparency,
           child: Container(
@@ -34,19 +35,34 @@ class _EventScreenState extends State<EventScreen> {
             child: Column(
               children: [
                 Stack(
-                  clipBehavior: Clip.none,
+                  // alignment: Alignment.topLeft,
+                  // clipBehavior: Clip.none,
                   // alignment: Alignment(0.0, 0.0),
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(18),
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        height: 300,
+                    Container(
+                      alignment: Alignment.topLeft,
+                      height: MediaQuery.of(context).size.height * 0.82,
+
+                      // decoration: BoxDecoration(
+                      //     borderRadius: BorderRadius.circular(18)),
+                      // margin: EdgeInsets.only(
+                      //   top: 20,
+                      //   left: 10,
+                      //   right: 10,
+                      //   bottom: 90,
+                      // ),
+
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Image.network(
+                          'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                          height: MediaQuery.of(context).size.height * 0.4,
+                        ),
                       ),
                     ),
-                    Positioned(
+                    Positioned.fill(
                       left: 0,
                       top: 270,
                       child: Container(
@@ -58,60 +74,91 @@ class _EventScreenState extends State<EventScreen> {
                             borderRadius: BorderRadius.circular(18)),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          // mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Container(
-                              // width: double.infinity,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  // width: double.infinity,
 
-                              child: Row(
-                                children: [
-                                  Text(
-                                    '23',
-                                    style: kEventExpandedDay,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Text(
+                                            '23',
+                                            style: kEventExpandedDay,
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            'MAY',
+                                            style: kEventExpandedMonth,
+                                          ),
+                                          SizedBox(
+                                            width: 10,
+                                          ),
+                                          Text(
+                                            '7:00 PM',
+                                            style: kEventExpandedTime,
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(right: 25),
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 2,
+                                          horizontal: 5,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(2),
+                                          color: Color.fromRGBO(98, 65, 234, 1),
+                                        ),
+                                        child: Text(
+                                          'hackathon',
+                                          style: kEventBadge,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(
-                                    width: 5,
+                                ),
+                                Text(
+                                  '$eventName',
+                                  style: kEventExpandedName,
+                                ),
+                                Text(
+                                  '$communityName',
+                                  style: kEventExpandedCommunityName,
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                SizedBox(
+                                  width: 300,
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.22,
+                                  child: Text(
+                                    '$description',
+                                    style: kEventExpandedDescription,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 8,
                                   ),
-                                  Text(
-                                    'MAY',
-                                    style: kEventExpandedMonth,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    '7:00 PM',
-                                    style: kEventExpandedTime,
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            Text(
-                              '$eventName',
-                              style: kEventExpandedName,
-                            ),
-                            Text(
-                              '$communityName',
-                              style: kEventExpandedCommunityName,
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            SizedBox(
-                              width: 300,
-                              height: MediaQuery.of(context).size.height * 0.23,
-                              child: Text(
-                                '$description',
-                                style: kEventExpandedDescription,
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 8,
-                              ),
-                            ),
+
                             Row(
                               children: [
                                 Expanded(
-                                  child: OutlinedButton(
+                                  child: TextButton(
                                     onPressed: () {
+                                      launch('https://www.rennovex.com/');
+
                                       Navigator.of(context).pop();
                                     },
                                     child: Text('Contact'),
@@ -137,6 +184,7 @@ class _EventScreenState extends State<EventScreen> {
                                         color: Colors.purple),
                                     child: TextButton(
                                       onPressed: () {
+                                        launch('https://www.rennovex.com/');
                                         print('pressed');
                                       },
                                       child: Text(
@@ -155,9 +203,9 @@ class _EventScreenState extends State<EventScreen> {
                                 ),
                               ],
                             ),
-                            SizedBox(
-                              height: 15,
-                            ),
+                            // SizedBox(
+                            //   height: 15,
+                            // ),
                           ],
                         ),
                       ),
@@ -289,7 +337,7 @@ class EventItem extends StatelessWidget {
                       style: kEventHeader,
                     ),
                     SizedBox(
-                      width: 250,
+                      width: MediaQuery.of(context).size.width * 0.6,
                       child: Text(
                         '$description',
                         style: kEventBody,

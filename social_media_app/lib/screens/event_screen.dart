@@ -65,7 +65,7 @@ class _EventScreenState extends State<EventScreen> {
                     ),
                     Positioned.fill(
                       left: 0,
-                      top: 270,
+                      top: MediaQuery.of(context).size.height * 0.35,
                       child: Container(
                         padding: EdgeInsets.only(top: 20, left: 20),
                         width: MediaQuery.of(context).size.width * 0.95,

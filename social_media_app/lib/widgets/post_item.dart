@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/screens/post_view_screen.dart';
 
 class PostItem extends StatelessWidget {
   final String profileImg;
@@ -69,11 +70,11 @@ class PostItem extends StatelessWidget {
                           SizedBox(
                             width: 150,
                             child: Text(
-                              'by $userName',
-                              maxLines: 1,
-                              softWrap: true,
+                              '$userName',
                               overflow: TextOverflow.ellipsis,
                               style: kPostSubHeaderTextStyle,
+                              // maxLines: 1,
+                              // softWrap: true,
                             ),
                           ),
                         ],
@@ -114,8 +115,9 @@ class PostItem extends StatelessWidget {
               // width: 300,
               child: Text(
                 '$title',
+                overflow: TextOverflow.ellipsis,
                 style: kPostTitleTextStyle,
-                softWrap: true,
+                // softWrap: true,
                 maxLines: 2,
               ),
             ),
@@ -153,10 +155,15 @@ class PostItem extends StatelessWidget {
                 Row(
                   children: [
                     IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(MdiIcons.commentTextMultipleOutline),
-                        onPressed: () {}),
+                      padding: EdgeInsets.all(0),
+                      constraints: BoxConstraints(),
+                      icon: Icon(MdiIcons.commentTextMultipleOutline),
+                      onPressed: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => PostViewScreen()),
+                      ),
+                    ),
                     Text(
                       '46',
                       style: kPostBottomMetricTextStyle,

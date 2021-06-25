@@ -21,17 +21,18 @@ class _EventScreenState extends State<EventScreen> {
         child: Material(
           type: MaterialType.transparency,
           child: Container(
-            // height: MediaQuery.of(context).size.height,
+            height: MediaQuery.of(context).size.height * 0.9,
+            width: MediaQuery.of(context).size.width * 0.95,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(18),
               color: Color.fromRGBO(255, 255, 255, 0.75),
             ),
-            margin: EdgeInsets.only(
-              top: 20,
-              left: 10,
-              right: 10,
-              bottom: 90,
-            ),
+            // margin: EdgeInsets.only(
+            //   top: 20,
+            //   left: 10,
+            //   right: 10,
+            //   bottom: 90,
+            // ),
             child: Column(
               children: [
                 Stack(
@@ -41,7 +42,7 @@ class _EventScreenState extends State<EventScreen> {
                   children: [
                     Container(
                       alignment: Alignment.topLeft,
-                      height: MediaQuery.of(context).size.height * 0.82,
+                      height: MediaQuery.of(context).size.height * 0.9,
 
                       // decoration: BoxDecoration(
                       //     borderRadius: BorderRadius.circular(18)),
@@ -81,7 +82,7 @@ class _EventScreenState extends State<EventScreen> {
                               children: [
                                 Container(
                                   // width: double.infinity,
-
+                                  // alignment: Alignment.topLeft,
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -138,10 +139,12 @@ class _EventScreenState extends State<EventScreen> {
                                 SizedBox(
                                   height: 5,
                                 ),
-                                SizedBox(
+                                Container(
                                   width: 300,
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.22,
+                                  // constraints: BoxConstraints(
+                                  //     maxHeight:
+                                  //         MediaQuery.of(context).size.height *
+                                  //             0.2),
                                   child: Text(
                                     '$description',
                                     style: kEventExpandedDescription,

@@ -8,7 +8,7 @@ class CustomAppBar extends StatelessWidget {
         decoration: kAppBarBoxDecoration,
         alignment: Alignment.center,
         child: Padding(
-          padding: EdgeInsets.only(top: 30, right: 20, left: 20, bottom: 10),
+          padding: EdgeInsets.only(top: 10, right: 20, left: 20, bottom: 10),
           child: Column(
             children: [
               Row(

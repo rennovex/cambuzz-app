@@ -50,9 +50,10 @@ final List<Post> feed = [
         'https://i.pinimg.com/236x/c5/f4/dc/c5f4dc041aaa2ccfdead0d9a26638003.jpg',
     profileImg:
         'https://i.pinimg.com/236x/d1/0a/fc/d10afcd6295a85852ea189d611e152ac.jpg',
-    title: 'It is a long established fact that a reader will be',
+    title:
+        'It is a long established fact that a reader will be sadf fsfaf sfsf sfsfsfseerra',
     profileName: 'The Java Room',
-    userName: 'hanging_gnomies_by_the_',
+    userName: 'hangin_ggnomiesitisadfas',
     time: '',
     postType: PostType.ImagePost,
   ),
@@ -157,8 +158,7 @@ final List<Event> events = [
     image:
         'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
     communityName: 'IEI',
-    description:
-        'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
+    description: 'Lorem Ipsum is simply dummy text of the printing',
     eventName: 'Event Header',
     tag: 'Hackathon',
   ),

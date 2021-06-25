@@ -4,6 +4,7 @@ import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
+import 'package:social_media_app/widgets/app_bar.dart';
 
 import 'dummy_data.dart';
 
@@ -52,6 +53,22 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: AppBar(
+      //   backgroundColor: Color.fromRGBO(28, 28, 28, 1),
+      //   foregroundColor: Colors.white,
+      //   brightness: Brightness.dark,
+      //   shape: RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.only(
+      //       bottomLeft: Radius.circular(18),
+      //       bottomRight: Radius.circular(18),
+      //     ),
+      //   ),
+      //   leading: IconButton(
+      //     icon: Icon(Icons.search),
+      //     onPressed: () {},
+      //   ),
+      //   actions: [],
+      // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
         onPressed: () {},

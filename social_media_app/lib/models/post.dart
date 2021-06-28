@@ -1,35 +1,68 @@
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/user.dart';
 
-enum PostType {
-  ImagePost,
-  TextPost,
-}
 
 class Post {
   User user;
   Community community;
 
-  //remove
-  final String profileImg;
-  final String profileName;
-  final String userName;
-
   final String time;
   final String title;
   final String postImg;
   final String postText;
-  final PostType postType;
 
   Post({
-    @required this.profileImg,
-    @required this.profileName,
-    @required this.time,
-    @required this.title,
-    @required this.userName,
-    @required this.postType,
+    this.user,
+    this.community,
+    this.title,
     this.postImg,
     this.postText,
+    this.time
   });
+
+  bool isUserPost(){
+    return this.community==null?true:false;
+  }
+
+  bool isImagePost(){
+    return this.postImg == null? false:true;
+  }
+
+  static Post userPost(
+    user,
+    title,
+    postImg,
+    postText,
+    time,
+  ){
+    return Post(
+      user:user,
+      title:title,
+      postImg:postImg,
+      postText:postText,
+      time:time,
+    );
+  }
+
+  static Post communityPost(
+    community,
+    user,
+    title,
+    postImg,
+    postText,
+    time,
+  ){
+    return Post(
+      community: community,
+      title:title,
+      postImg: postImg,
+      postText: postText,
+      time:time,
+      user:user,
+    );
+  }
 }

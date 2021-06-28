@@ -38,5 +38,7 @@ class Community {
         coverImage: json['coverImage'],
       );
     }
+
+    return community;
   }
 }

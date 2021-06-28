@@ -7,6 +7,7 @@ enum ProfileType {
 
 class User {
   final ProfileType profileType = ProfileType.UserProfile;
+  final String name;
   final String userName;
   final String image;
   final String coverImage;
@@ -20,6 +21,7 @@ class User {
     @required this.image,
     @required this.coverImage,
     @required this.bio,
+    @required this.name,
     this.followers,
     this.likes,
     this.achievements,
@@ -32,6 +34,7 @@ class User {
         json.containsKey('achievements')) {
       user = new User(
         userName: json['userName'],
+        name:json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
         bio: json['bio'],
@@ -43,9 +46,11 @@ class User {
       user = new User(
         userName: json['userName'],
         image: json['image'],
+        name:json['name'],
         coverImage: json['coverImage'],
         bio: json['bio'],
       );
     }
+    return user;
   }
 }

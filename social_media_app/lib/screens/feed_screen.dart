@@ -37,16 +37,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             shrinkWrap: true,
                             itemBuilder: (ctx, ind) {
                               return PostItem(
-                                postImg: snapshot.data[ind]['postImage'],
-                                profileImg:
-                                    'https://i.pinimg.com/236x/96/4d/50/964d50b13ddb8011ae44f9fc2521866a.jpg',
-                                profileName: snapshot.data[ind]['user']
-                                    ['userName'],
-                                userName: snapshot.data[ind]['user']['name'],
-                                title: snapshot.data[ind]['title'],
-                                time: '',
-                                postText: '',
-                                postType: PostType.ImagePost,
+                                post: snapshot.data[ind]
                               );
                             }
                             // Text(snapshot.data[ind]['postImage']),

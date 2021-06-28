@@ -8,15 +8,7 @@ import 'package:social_media_app/screens/post_view_screen.dart';
 class PostItem extends StatelessWidget {
   //final Profile user;
 
-  final String profileImg;
-  final String profileName;
-  final String userName;
-
-  final String time;
-  final String title;
-  final String postImg;
-  final String postText;
-  final PostType postType;
+  final Post post;
 
   // PostItem(
   //     {this.imgsrc =
@@ -25,14 +17,7 @@ class PostItem extends StatelessWidget {
   //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
 
   PostItem({
-    this.profileImg,
-    this.postImg,
-    this.profileName,
-    this.time,
-    this.title,
-    this.userName,
-    this.postType,
-    this.postText,
+    @required this.post
   });
 
   @override
@@ -52,7 +37,7 @@ class PostItem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(profileImg),
+                  backgroundImage: NetworkImage(post.postImg),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -64,7 +49,7 @@ class PostItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$$profileName',
+                            post.isUserPost()?post.user.name:'\$'+post.community.name,
                             style: kPostHeaderTextStyle,
                             // textAlign: TextAlign.start,
                           ),
@@ -74,7 +59,7 @@ class PostItem extends StatelessWidget {
                           SizedBox(
                             width: 150,
                             child: Text(
-                              '$userName',
+                              post.user.userName,
                               overflow: TextOverflow.ellipsis,
                               style: kPostSubHeaderTextStyle,
                               // maxLines: 1,
@@ -118,7 +103,7 @@ class PostItem extends StatelessWidget {
             Container(
               // width: 300,
               child: Text(
-                '$title',
+                post.title,
                 overflow: TextOverflow.ellipsis,
                 style: kPostTitleTextStyle,
                 // softWrap: true,
@@ -126,19 +111,19 @@ class PostItem extends StatelessWidget {
               ),
             ),
             SizedBox(height: 7),
-            if (postType == PostType.ImagePost)
+            if (post.isImagePost())
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
                 child: Image.network(
-                  postImg,
+                  post.postImg,
                   width: double.infinity,
                   height: 350,
                   fit: BoxFit.cover,
                 ),
               ),
-            if (postType == PostType.TextPost)
+            if (!post.isImagePost())
               Container(
-                child: Text(postText),
+                child: Text(post.postText),
               ),
             SizedBox(
               height: 10,

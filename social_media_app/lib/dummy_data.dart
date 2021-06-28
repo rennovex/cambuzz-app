@@ -5,7 +5,7 @@ import 'models/post.dart';
 import 'models/profile.dart';
 
 final List<Profile> profiles = [
-  Profile(
+  /*Profile(
     profileType: ProfileType.CommunityProfile,
     profileName: '\$Memes',
     profileImg:
@@ -30,11 +30,11 @@ final List<Profile> profiles = [
     achievements: 4,
     followers: 100,
     likes: 69,
-  ),
+  ),*/
 ];
 
 final List<Post> feed = [
-  Post(
+  /*Post(
     postImg: 'https://picsum.photos/id/237/200/300',
     profileImg:
         'https://i.pinimg.com/236x/b7/1c/5f/b71c5f377615229c2d23c79686400eff.jpg',
@@ -91,7 +91,7 @@ final List<Post> feed = [
     postType: PostType.TextPost,
     postText:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
-  ),
+  ),*/
 ];
 
 final List<TrendingPost> trending = [
@@ -100,7 +100,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),
@@ -109,7 +108,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1623885765804-b7bc6c4082ee?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),
@@ -118,7 +116,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.TextPost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
     text:
@@ -129,7 +126,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1623872233463-921e585ee68e?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMnx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),

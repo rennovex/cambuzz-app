@@ -16,7 +16,7 @@ class PostViewScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              PostItem(
+              /*PostItem(
                 postImg:
                     'https://i.pinimg.com/236x/0c/17/ca/0c17ca0e82e873d6b0bd5a44790c7813.jpg',
                 profileImg:
@@ -27,7 +27,7 @@ class PostViewScreen extends StatelessWidget {
                 userName: 'BadKarma',
                 time: '',
                 postType: PostType.ImagePost,
-              ),
+              ),*/
               Text('Comments'),
               ListView.builder(
                 shrinkWrap: true,

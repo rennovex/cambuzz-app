@@ -38,7 +38,6 @@ class CommunityTrending extends StatelessWidget {
                   userName: trending[index].userName,
                   image: trending[index].image,
                   likeCount: trending[index].likeCount,
-                  postType: trending[index].postType,
                   text: trending[index].text,
                   title: trending[index].title,
                 ),

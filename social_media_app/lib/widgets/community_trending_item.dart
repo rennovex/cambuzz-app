@@ -11,7 +11,6 @@ class CommunityTrendingItem extends StatelessWidget {
   final String image;
   final String text;
   final num likeCount;
-  final PostType postType;
 
   // final flag = false;
 
@@ -22,7 +21,6 @@ class CommunityTrendingItem extends StatelessWidget {
     this.title,
     this.likeCount,
     this.text,
-    this.postType,
   });
 
   @override
@@ -35,6 +33,7 @@ class CommunityTrendingItem extends StatelessWidget {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            /*
             postType == PostType.ImagePost
                 ? SizedBox(
                     width: 10,
@@ -61,7 +60,7 @@ class CommunityTrendingItem extends StatelessWidget {
                 : PostBody(text),
             SizedBox(
               width: 10,
-            ),
+            ),*/
           ],
         ),
       ),

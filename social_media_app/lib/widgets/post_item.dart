@@ -2,12 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
 
 class PostItem extends StatelessWidget {
+  //final Profile user;
+
   final String profileImg;
   final String profileName;
   final String userName;
+
   final String time;
   final String title;
   final String postImg;

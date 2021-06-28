@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/profile.dart';
+import 'package:social_media_app/models/secureStorage.dart';
+import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
   final Profile profile;
 
-  ProfileScreen({this.profile});
+  ProfileScreen({this.profile}) {
+    // print(SecureStorage.readApiToken());
+  }
   // const ProfileScreen({ Key? key }) : super(key: key);
 
   @override
@@ -128,7 +134,10 @@ class ProfileScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        SecureStorage.readApiToken()
+                            .then((value) => print(value));
+                      },
                       child: Text(
                         profile.profileType == ProfileType.CommunityProfile
                             ? '+Join'
@@ -167,7 +176,12 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(width: 5),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false);
+                      provider.logout();
+                    },
                     child: Text(
                       profile.profileType == ProfileType.CommunityProfile
                           ? 'Edit Community'

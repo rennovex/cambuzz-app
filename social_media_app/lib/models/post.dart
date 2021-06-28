@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/models/community.dart';
+import 'package:social_media_app/models/user.dart';
 
 enum PostType {
   ImagePost,
@@ -6,9 +8,14 @@ enum PostType {
 }
 
 class Post {
+  User user;
+  Community community;
+
+  //remove
   final String profileImg;
   final String profileName;
   final String userName;
+
   final String time;
   final String title;
   final String postImg;

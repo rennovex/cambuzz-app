@@ -264,3 +264,18 @@ const kEventExpandedDescription = TextStyle(
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 14,
 );
+
+// Search
+
+const kSearchTitle = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  color: Colors.black,
+  fontSize: 18,
+);
+const kSearchFilterText = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+  fontSize: 13,
+);

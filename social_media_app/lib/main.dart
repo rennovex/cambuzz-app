@@ -1,5 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/http_helper.dart';
+import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
@@ -8,7 +15,10 @@ import 'package:social_media_app/widgets/app_bar.dart';
 
 import 'dummy_data.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
@@ -16,20 +26,47 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        backgroundColor: Color.fromRGBO(229, 229, 229, 1),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: GoogleSignInProvider()),
+        ChangeNotifierProvider.value(value: Api()),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+          backgroundColor: Color.fromRGBO(229, 229, 229, 1),
 
-        // textTheme: TextTheme(
-        //   title: TitleTextStyle,
-        //   subtitle: SubtitleTextStyle,
-        //   body1: BodyprimaryTextStyle,
-        //   body2: BodySecondaryTextStyle,
-        // )
+          // textTheme: TextTheme(
+          //   title: TitleTextStyle,
+          //   subtitle: SubtitleTextStyle,
+          //   body1: BodyprimaryTextStyle,
+          //   body2: BodySecondaryTextStyle,
+          // )
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            final provider = Provider.of<GoogleSignInProvider>(context);
+
+            if (provider.isSigningIn) {
+              return buildLoading();
+            } else if (snapshot.hasData) {
+              return MyHomePage();
+            } else {
+              return AuthScreen();
+            }
+          },
+        ),
       ),
-      home: MyHomePage(),
+    );
+  }
+
+  Widget buildLoading() {
+    return Scaffold(
+      body: Center(
+        child: CircularProgressIndicator(),
+      ),
     );
   }
 }
@@ -49,6 +86,13 @@ class _MyHomePageState extends State<MyHomePage> {
     TrendingScreen(),
     EventScreen(events),
   ];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    HttpHelper();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

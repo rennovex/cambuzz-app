@@ -16,21 +16,20 @@ import 'package:social_media_app/models/user.dart';
     return jsonDecode(response.body);
   }
   */
-  class Api with ChangeNotifier{
+class Api with ChangeNotifier{
   Future<List<Post>> getFeed() async {
     final response = await HttpHelper().getApi('/feed');
+
+    if(response.statusCode!=200){
+      throw response.body;
+    }
+
     final json = jsonDecode(response.body) as List;
 
     final List<Post> posts = [];
 
     json.forEach((post) {
-      var user = User.fromJson(post['user']);
-
-      posts.add(
-        post['postType']=='userPost'?Post.userPost(user, post['title'], post['postImage'], post['postText'], post['time']):
-
-          Post.communityPost(Community.fromJson(post['community']), user, post['title'], post['postImage'], post['postText'], post['time'])
-        );
+      return posts.add(Post.fromJson(post));
     });
 
     return posts;

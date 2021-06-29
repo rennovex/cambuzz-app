@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:async/async.dart';
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
@@ -9,31 +10,33 @@ import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/models/user.dart';
 // import 'package:provider/provider.dart';
 
-  /*
+/*
   Future getFeed() async {
     final response = await HttpHelper().getApi('/feed');
 
     return jsonDecode(response.body);
   }
   */
-class Api with ChangeNotifier{
-  Future<List<Post>> getFeed() async {
-    final response = await HttpHelper().getApi('/feed');
+class Api {
+  static final AsyncMemoizer _memoizer = AsyncMemoizer();
 
-    if(response.statusCode!=200){
-      throw response.body;
-    }
+  static Future getFeed() => _memoizer.runOnce(() async {
+        final response = await HttpHelper().getApi('/feed');
 
-    final json = jsonDecode(response.body) as List;
+        if (response.statusCode != 200) {
+          throw response.body;
+        }
 
-    final List<Post> posts = [];
+        final json = jsonDecode(response.body) as List;
 
-    json.forEach((post) {
-      return posts.add(Post.fromJson(post));
-    });
+        final List<Post> posts = [];
 
-    return posts;
-  }
+        json.forEach((post) {
+          return posts.add(Post.fromJson(post));
+        });
+
+        return posts;
+      });
 
   /*
   getEventsFromCommunity(String communityId){

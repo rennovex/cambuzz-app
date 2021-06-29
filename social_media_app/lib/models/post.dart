@@ -64,7 +64,7 @@ class Post {
     );
   }
 
-  static Post fromJson(json) {
+  factory Post.fromJson(json) {
     var user = User.fromJson(json['user']);
 
     if (json['postType'] == 'userPost') {

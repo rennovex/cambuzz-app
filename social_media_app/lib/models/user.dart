@@ -27,14 +27,14 @@ class User {
     this.achievements,
   });
 
-  static User fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(Map<String, dynamic> json) {
     User user;
     if (json.containsKey('followers') &&
         json.containsKey('likes') &&
         json.containsKey('achievements')) {
       user = new User(
         userName: json['userName'],
-        name:json['name'],
+        name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
         bio: json['bio'],
@@ -46,7 +46,7 @@ class User {
       user = new User(
         userName: json['userName'],
         image: json['image'],
-        name:json['name'],
+        name: json['name'],
         coverImage: json['coverImage'],
         bio: json['bio'],
       );

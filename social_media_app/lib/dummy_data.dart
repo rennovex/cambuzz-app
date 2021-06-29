@@ -5,7 +5,7 @@ import 'models/post.dart';
 import 'models/profile.dart';
 
 final List<Profile> profiles = [
-  /*Profile(
+  Profile(
     profileType: ProfileType.CommunityProfile,
     profileName: '\$Memes',
     profileImg:
@@ -30,7 +30,7 @@ final List<Profile> profiles = [
     achievements: 4,
     followers: 100,
     likes: 69,
-  ),*/
+  ),
 ];
 
 final List<Post> feed = [

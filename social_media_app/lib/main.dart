@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        ChangeNotifierProvider.value(value: Api()),
+        // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -82,7 +82,9 @@ class _MyHomePageState extends State<MyHomePage> {
     //ProfileScreen(
     //  profile: profiles[1],
     //),
-    FeedScreen(),
+    ProfileScreen(
+      profile: profiles[0],
+    ),
     FeedScreen(),
     FeedScreen(),
     FeedScreen(),

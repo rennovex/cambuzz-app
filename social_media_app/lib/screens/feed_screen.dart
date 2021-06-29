@@ -14,9 +14,29 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  Future feed;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    print('feed callled');
+    feed = Api.getFeed();
+    // print(feed);
+    super.initState();
+  }
+
+  // @override
+  // void didChangeDependencies() {
+  //   // TODO: implement didChangeDependencies
+  //   print('changeDependancy');
+  //   feed = Api.getFeed();
+  //   super.didChangeDependencies();
+  // }
+
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<Api>(context, listen: false);
+    // final provider = Provider.of<Api>(context, listen: false);
+    feed.then((value) => print(value));
     return SafeArea(
       child: Container(
         child: SingleChildScrollView(
@@ -26,7 +46,7 @@ class _FeedScreenState extends State<FeedScreen> {
               children: [
                 SingleChildScrollView(
                   child: FutureBuilder(
-                    future: provider.getFeed(),
+                    future: feed,
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         print(snapshot.data);
@@ -36,9 +56,7 @@ class _FeedScreenState extends State<FeedScreen> {
                             itemCount: snapshot.data.length,
                             shrinkWrap: true,
                             itemBuilder: (ctx, ind) {
-                              return PostItem(
-                                post: snapshot.data[ind]
-                              );
+                              return PostItem(post: snapshot.data[ind]);
                             }
                             // Text(snapshot.data[ind]['postImage']),
 

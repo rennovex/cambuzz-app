@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/models/event.dart';
+import 'package:social_media_app/models/user.dart';
 
 enum ProfileType {
   UserProfile,
@@ -10,8 +12,9 @@ class Community {
   final String name;
   final String image;
   final String coverImage;
-  final num members;
-  final num events;
+  final List<User> members;
+  final List<Event> events;
+  final List<User> followers;
 
   Community({
     @required this.name,
@@ -19,6 +22,7 @@ class Community {
     @required this.coverImage,
     this.members,
     this.events,
+    this.followers,
   });
 
   static Community fromJson(Map<String, dynamic> json) {

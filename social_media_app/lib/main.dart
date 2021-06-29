@@ -14,6 +14,7 @@ import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 
 import 'dummy_data.dart';
+import 'models/user.dart' as User;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -82,15 +83,17 @@ class _MyHomePageState extends State<MyHomePage> {
     //ProfileScreen(
     //  profile: profiles[1],
     //),
-    ProfileScreen(
-      profile: profiles[0],
-    ),
+    ProfileScreen.user(User.User(
+          userName: 'rohan',
+          image:
+              'https://i.pinimg.com/236x/3d/17/e7/3d17e7af25951b9fd988ca292fc4b45f.jpg',
+          coverImage:
+              'https://i.pinimg.com/236x/3d/17/e7/3d17e7af25951b9fd988ca292fc4b45f.jpg',
+          bio: 'rohan is the best',
+          name: 'rohan')),
     FeedScreen(),
-    FeedScreen(),
-    FeedScreen(),
-
-    //TrendingScreen(),
-    //EventScreen(events),
+    TrendingScreen(),
+    EventScreen(events),
   ];
 
   @override

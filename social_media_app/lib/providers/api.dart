@@ -18,25 +18,33 @@ import 'package:social_media_app/models/user.dart';
   }
   */
 class Api {
-  static final AsyncMemoizer _memoizer = AsyncMemoizer();
+  static AsyncMemoizer _memoizer = AsyncMemoizer();
 
-  static Future getFeed() => _memoizer.runOnce(() async {
-        final response = await HttpHelper().getApi('/feed');
+  static Future feedRefresh() async {
+    print('refresh');
+    // _memoizer = await AsyncMemoizer();
+    // return getFeed();
+    // await getFeed();
+  }
 
-        if (response.statusCode != 200) {
-          throw response.body;
-        }
+  static Future getFeed() async {
+    print('getfeedRefresh');
+    final response = await HttpHelper().getApi('/feed');
 
-        final json = jsonDecode(response.body) as List;
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
 
-        final List<Post> posts = [];
+    final json = jsonDecode(response.body) as List;
 
-        json.forEach((post) {
-          return posts.add(Post.fromJson(post));
-        });
+    final List<Post> posts = [];
 
-        return posts;
-      });
+    json.forEach((post) {
+      return posts.add(Post.fromJson(post));
+    });
+
+    return posts;
+  }
 
   /*
   getEventsFromCommunity(String communityId){

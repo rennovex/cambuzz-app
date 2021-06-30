@@ -4,6 +4,7 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/post.dart';
 import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PostItem extends StatelessWidget {
   //final Profile user;
@@ -16,9 +17,7 @@ class PostItem extends StatelessWidget {
   //     this.proimgsrc =
   //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
 
-  PostItem({
-    @required this.post
-  });
+  PostItem({@required this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +36,9 @@ class PostItem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(post.postImg),
+                  backgroundImage: CachedNetworkImageProvider(
+                    post.postImg,
+                  ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -49,7 +50,9 @@ class PostItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            post.isUserPost()?post.user.name:'\$'+post.community.name,
+                            post.isUserPost()
+                                ? post.user.name
+                                : '\$' + post.community.name,
                             style: kPostHeaderTextStyle,
                             // textAlign: TextAlign.start,
                           ),

@@ -39,38 +39,41 @@ class _FeedScreenState extends State<FeedScreen> {
     feed.then((value) => print(value));
     return SafeArea(
       child: Container(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            CustomAppBar(),
-            Column(
-              children: [
-                SingleChildScrollView(
-                  child: FutureBuilder(
-                    future: feed,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        print(snapshot.data);
-                        // final snapshot.data = snapshot.data;
-                        return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data.length,
-                            shrinkWrap: true,
-                            itemBuilder: (ctx, ind) {
-                              return PostItem(post: snapshot.data[ind]);
-                            }
-                            // Text(snapshot.data[ind]['postImage']),
+        child: RefreshIndicator(
+          onRefresh: () => Api.feedRefresh(),
+          child: SingleChildScrollView(
+            child: Column(children: [
+              CustomAppBar(),
+              Column(
+                children: [
+                  SingleChildScrollView(
+                    child: FutureBuilder(
+                      future: feed,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          print(snapshot.data);
+                          // final snapshot.data = snapshot.data;
+                          return ListView.builder(
+                              physics: ClampingScrollPhysics(),
+                              itemCount: snapshot.data.length,
+                              shrinkWrap: true,
+                              itemBuilder: (ctx, ind) {
+                                return PostItem(post: snapshot.data[ind]);
+                              }
+                              // Text(snapshot.data[ind]['postImage']),
 
-                            );
-                      } else
-                        return Center(
-                          child: Text('Loading'),
-                        );
-                    },
+                              );
+                        } else
+                          return Center(
+                            child: Text('Loading'),
+                          );
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ]),
+                ],
+              ),
+            ]),
+          ),
         ),
       ),
     );

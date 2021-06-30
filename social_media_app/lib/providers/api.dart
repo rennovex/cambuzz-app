@@ -46,6 +46,17 @@ class Api {
     return posts;
   }
 
+  Future<User> getUser() async {
+    final response = await HttpHelper().getApi('/users');
+
+    print(response.body);
+    print('response got');
+
+    final json = jsonDecode(response.body);
+    User user = User.fromJson(json);
+    return user;
+  }
+
   /*
   getEventsFromCommunity(String communityId){
     final response = await HttpHelper().getApi('/events/community/'+communityId);

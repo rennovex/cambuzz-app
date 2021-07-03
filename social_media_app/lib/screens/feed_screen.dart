@@ -23,7 +23,7 @@ class _FeedScreenState extends State<FeedScreen> {
     // TODO: implement initState
     print('feed callled');
     feed = Api.getFeed();
-    // print(feed);
+    print(feed);
     super.initState();
   }
 

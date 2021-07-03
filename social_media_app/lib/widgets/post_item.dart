@@ -22,6 +22,7 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('${post.title}, ${post.user.name}, ${post.isUserPost()}, ${post.community?.name}');
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,

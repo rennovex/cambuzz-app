@@ -71,8 +71,9 @@ class Post {
       return Post.userPost(user, json['title'], json['postImage'],
           json['postText'], json['time']);
     } else {
+      print(json);
       return Post.communityPost(Community.fromJson(json['community']), user,
-          json['title'], json['postImage'], json['postText'], json['time']);
+      json['title'], json['postImage'], json['postText'], json['time']);
     }
   }
 }

@@ -37,7 +37,7 @@ class Community {
       );
     } else {
       community = new Community(
-        name: json['userName'],
+        name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
       );

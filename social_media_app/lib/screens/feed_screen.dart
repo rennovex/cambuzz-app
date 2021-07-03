@@ -64,17 +64,18 @@ class _FeedScreenState extends State<FeedScreen> {
                               }
                               // Text(snapshot.data[ind]['postImage']),
 
-                            );
-                      } else
-                        return Center(
-                          child: Container(
-                            child: SpinKitWave(
-                              color: kPrimaryColor,
+                              );
+                        } else
+                          return Center(
+                            child: Container(
+                              child: SpinKitWave(
+                                color: kPrimaryColor,
+                              ),
+                              height: MediaQuery.of(context).size.height * .8,
                             ),
-                            height: MediaQuery.of(context).size.height * .8,
-                          ),
-                        );
-                    },
+                          );
+                      },
+                    ),
                   ),
                 ],
               ),

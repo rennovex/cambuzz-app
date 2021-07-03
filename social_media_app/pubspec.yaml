@@ -35,11 +35,8 @@ dependencies:
   google_sign_in: ^5.0.4
   http: ^0.13.3
   flutter_secure_storage: ^4.2.0
-<<<<<<< HEAD
   cached_network_image: ^3.0.0
-=======
   flutter_spinkit: "^4.1.2"
->>>>>>> 9cefb5241869f0bea727ab7e7ac058c4b12ae5a0
 
 dev_dependencies:
   flutter_test:

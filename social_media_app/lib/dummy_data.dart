@@ -1,7 +1,7 @@
 import 'package:social_media_app/models/event.dart';
 import 'package:social_media_app/models/trending_post.dart';
 
-import 'models/post.dart';
+import 'providers/post.dart';
 import 'models/profile.dart';
 
 final List<Profile> profiles = [

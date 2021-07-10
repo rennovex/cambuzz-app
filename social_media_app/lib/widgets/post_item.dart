@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +10,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 class PostItem extends StatelessWidget {
   //final Profile user;
 
-  final Post post;
+  // final Post post;
 
   // PostItem(
   //     {this.imgsrc =
@@ -17,11 +18,12 @@ class PostItem extends StatelessWidget {
   //     this.proimgsrc =
   //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
 
-  PostItem({@required this.post});
+  // PostItem({@required this.post});
 
   @override
   Widget build(BuildContext context) {
-    print('${post.title}, ${post.user.name}, ${post.isUserPost()}, ${post.community?.name}');
+    final post = Provider.of<Post>(context);
+    print(post.isLiked);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
@@ -30,6 +32,7 @@ class PostItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
@@ -38,7 +41,7 @@ class PostItem extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundImage: CachedNetworkImageProvider(
-                    post.postImg,
+                    post.user.image,
                   ),
                 ),
                 SizedBox(width: 10),
@@ -112,14 +115,17 @@ class PostItem extends StatelessWidget {
                 style: kPostTitleTextStyle,
                 // softWrap: true,
                 maxLines: 2,
+                textAlign: TextAlign.start,
               ),
             ),
             SizedBox(height: 7),
             if (post.isImagePost())
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: Image.network(
-                  post.postImg,
+                child: CachedNetworkImage(
+                  imageUrl: post.postImg,
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator()),
                   width: double.infinity,
                   height: 350,
                   fit: BoxFit.cover,
@@ -140,9 +146,15 @@ class PostItem extends StatelessWidget {
                     IconButton(
                         padding: EdgeInsets.all(0),
                         constraints: BoxConstraints(),
-                        icon: Icon(Icons.favorite_border),
-                        onPressed: () {}),
-                    Text('102', style: kPostBottomMetricTextStyle),
+                        icon: post.isLiked
+                            ? Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : Icon(Icons.favorite_border),
+                        onPressed: () => post.toggleLike(post.postId)),
+                    Text('${post.likeCount}',
+                        style: kPostBottomMetricTextStyle),
                   ],
                 ),
                 Row(
@@ -158,7 +170,7 @@ class PostItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '46',
+                      '${post.comments.length}',
                       style: kPostBottomMetricTextStyle,
                     ),
                   ],

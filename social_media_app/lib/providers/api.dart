@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/user.dart';
 // import 'package:provider/provider.dart';
 
@@ -18,8 +18,6 @@ import 'package:social_media_app/models/user.dart';
   }
   */
 class Api {
-  static AsyncMemoizer _memoizer = AsyncMemoizer();
-
   static Future feedRefresh() async {
     print('refresh');
     // _memoizer = await AsyncMemoizer();
@@ -28,7 +26,6 @@ class Api {
   }
 
   static Future getFeed() async {
-    print('getfeedRefresh');
     final response = await HttpHelper().getApi('/feed');
 
     if (response.statusCode != 200) {
@@ -46,11 +43,12 @@ class Api {
     return posts;
   }
 
-  Future<User> getUser() async {
+  static Future<User> getUser() async {
     final response = await HttpHelper().getApi('/users');
 
-    print(response.body);
-    print('response got');
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
 
     final json = jsonDecode(response.body);
     User user = User.fromJson(json);

@@ -1,9 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/http_helper.dart';
+import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/screens/auth_screen.dart';
@@ -14,11 +17,14 @@ import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 
 import 'dummy_data.dart';
+import 'providers/post.dart';
 import 'models/user.dart' as User;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Global.apiToken = await SecureStorage.readApiToken();
+  Global.uid = await SecureStorage.readUid();
 
   runApp(MyApp());
 }
@@ -78,29 +84,41 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-  final List<Widget> _childern = [
-    //ProfileScreen(
-    //  profile: profiles[1],
-    //),
-    ProfileScreen.user(User.User(
-          userName: 'rohan',
-          image:
-              'https://i.pinimg.com/236x/3d/17/e7/3d17e7af25951b9fd988ca292fc4b45f.jpg',
-          coverImage:
-              'https://i.pinimg.com/236x/3d/17/e7/3d17e7af25951b9fd988ca292fc4b45f.jpg',
-          bio: 'rohan is the best',
-          name: 'rohan')),
-    FeedScreen(),
-    TrendingScreen(),
-    EventScreen(events),
-  ];
+  int _selectedPageIndex;
+  PageController _pageController;
+  List<Widget> _pages;
 
   @override
   void initState() {
     // TODO: implement initState
-    HttpHelper();
+    // HttpHelper();
+    // init();
+    SecureStorage.readApiToken();
+    // Api.getUser();
+    _selectedPageIndex = 0;
+
+    _pages = [
+      FeedScreen(),
+      ProfileScreen.user(),
+      TrendingScreen(),
+      EventScreen(events),
+    ];
+
+    _pageController = PageController(initialPage: _selectedPageIndex);
+
     super.initState();
+  }
+
+  // Future init() async {
+  //   final uid = await SecureStorage.readUid();
+  //   Global.uid = uid;
+  //   print(Global().uid);
+  // }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
@@ -138,7 +156,11 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         elevation: 2.0,
       ),
-      body: _childern.elementAt(_currentIndex),
+      body: PageView(
+        controller: _pageController,
+        children: _pages,
+        physics: NeverScrollableScrollPhysics(),
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.only(
@@ -160,17 +182,18 @@ class _MyHomePageState extends State<MyHomePage> {
           child: BottomNavigationBar(
             backgroundColor: Colors.white,
             type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
+            currentIndex: _selectedPageIndex,
             onTap: (index) {
               setState(() {
-                _currentIndex = index;
+                _selectedPageIndex = index;
+                _pageController.jumpToPage(index);
               });
             },
             selectedItemColor: kPrimaryColor,
             items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.account_circle), label: 'Account'),
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.trending_up), label: 'Trending'),
               BottomNavigationBarItem(

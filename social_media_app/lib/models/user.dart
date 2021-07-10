@@ -12,7 +12,7 @@ class User {
   final String image;
   final String coverImage;
   final String bio;
-  final num followers;
+  final List followers;
   final num likes;
   final num achievements;
 

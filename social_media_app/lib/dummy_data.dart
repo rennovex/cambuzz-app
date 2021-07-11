@@ -132,6 +132,7 @@ final List<TrendingPost> trending = [
 ];
 
 final List<Event> events = [
+  /*
   Event(
     image:
         'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
@@ -166,5 +167,5 @@ final List<Event> events = [
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
     eventName: 'Event Header',
     tag: 'Hackathon',
-  ),
+  ),*/
 ];

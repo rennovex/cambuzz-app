@@ -31,7 +31,7 @@ class ProfileHeader extends StatelessWidget {
               width: double.infinity,
               height: size.height * 0.25,
             ),
-          ),
+          ), 
         ),
         Positioned(
           // left: 150,

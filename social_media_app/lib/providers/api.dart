@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:async/async.dart';
 import 'dart:ffi';
+import 'package:social_media_app/models/event.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -55,6 +56,22 @@ class Api {
     return user;
   }
 
+  static Future<List<Event>> getEvents() async {
+    final response = await HttpHelper().getApi('/events/all');
+
+    print(response.body);
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Event> events = [];
+    json.forEach((e) {
+      print(e);
+      events.add(Event.fromJson(e));
+    });
+    print(events);
+
+    return events;
+  }
   /*
   getEventsFromCommunity(String communityId){
     final response = await HttpHelper().getApi('/events/community/'+communityId);

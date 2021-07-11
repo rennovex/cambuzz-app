@@ -121,7 +121,7 @@ class PostItem extends StatelessWidget {
             SizedBox(height: 7),
             if (post.isImagePost())
               GestureDetector(
-                onDoubleTap: () => post.toggleLike(post.postId),
+                onDoubleTap: () => post.toggleLike(post.id),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   child: CachedNetworkImage(
@@ -169,11 +169,11 @@ class PostItem extends StatelessWidget {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => PostViewScreen()),
+                            builder: (context) => PostViewScreen(post)),
                       ),
                     ),
                     Text(
-                      '${post.comments.length}',
+                      '${post.commentCount}',
                       style: kPostBottomMetricTextStyle,
                     ),
                   ],

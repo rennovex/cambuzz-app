@@ -5,11 +5,12 @@ import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/screens/post_view_screen.dart';
 
 class Post with ChangeNotifier {
   User user;
   Community community;
-  
+
   final String id;
   final DateTime time;
   final String title;
@@ -19,6 +20,7 @@ class Post with ChangeNotifier {
   final List likes;
   num likeCount;
   final List comments;
+  num commentCount;
 
   Post({
     this.id,
@@ -35,22 +37,20 @@ class Post with ChangeNotifier {
   }) {
     this.isLiked = Liked ?? false;
     this.likeCount = likes.length;
+    this.commentCount = comments.length;
   }
 
   String get howLongAgo {
     DateTime today = DateTime.now();
     Duration duration = today.difference(this.time);
-    if(duration.inDays > 0){
-      return duration.inDays.toString()+' days ago';
-    }
-    else if(duration.inHours > 0){
-      return duration.inHours.toString()+' hours ago';
-    }
-    else if(duration.inMinutes > 0){
-      return duration.inMinutes.toString()+' minutes ago';
-    }
-    else if(duration.inSeconds > 0){
-      return duration.inSeconds.toString()+' seconds ago';
+    if (duration.inDays > 0) {
+      return duration.inDays.toString() + ' days ago';
+    } else if (duration.inHours > 0) {
+      return duration.inHours.toString() + ' hours ago';
+    } else if (duration.inMinutes > 0) {
+      return duration.inMinutes.toString() + ' minutes ago';
+    } else if (duration.inSeconds > 0) {
+      return duration.inSeconds.toString() + ' seconds ago';
     }
     return 'error';
   }
@@ -118,8 +118,15 @@ class Post with ChangeNotifier {
     var user = User.fromJson(json['user']);
 
     if (json['postType'] == 'userPost') {
-      return Post.userPost(json['_id'], user, json['title'], json['postImage'],
-          json['postText'], DateTime.parse(json['time']), json['likes'], json['comments']);
+      return Post.userPost(
+          json['_id'],
+          user,
+          json['title'],
+          json['postImage'],
+          json['postText'],
+          DateTime.parse(json['time']),
+          json['likes'],
+          json['comments']);
     } else {
       print(json);
       return Post.communityPost(

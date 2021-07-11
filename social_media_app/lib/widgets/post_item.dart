@@ -85,7 +85,7 @@ class PostItem extends StatelessWidget {
                                 Icons.access_time_sharp,
                                 size: 18,
                               ),
-                              Text('7 min ago',
+                              Text(post.howLongAgo,
                                   softWrap: true, style: kPostTimeTextStyle),
                             ],
                           ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/constants.dart';
@@ -19,7 +20,7 @@ class TrendingUserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('image'+post.postImg);
+    print('image' + post.postImg);
     print(post.user.coverImage);
     return Column(
       // mainAxisAlignment: MainAxisAlignment.center,
@@ -35,8 +36,8 @@ class TrendingUserItem extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
-                child: Image.network(
-                  '${post.postImg}',
+                child: CachedNetworkImage(
+                  imageUrl: '${post.postImg}',
                   fit: BoxFit.cover,
                   width: width,
                   height: height,

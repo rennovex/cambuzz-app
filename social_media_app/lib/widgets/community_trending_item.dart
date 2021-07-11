@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/providers/post.dart';
 
@@ -13,6 +14,7 @@ class CommunityTrendingItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(post.isImagePost());
     return Card(
       color: Color.fromRGBO(73, 73, 73, 1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -30,7 +32,7 @@ class CommunityTrendingItem extends StatelessWidget {
             SizedBox(
               width: 10,
             ),
-            (!post.isImagePost()) ? PostView(post) : PostBody(post.postText),
+            (post.isImagePost()) ? PostView(post) : PostBody(post.postText),
             SizedBox(
               width: 10,
             ),
@@ -143,8 +145,8 @@ class ImageView extends StatelessWidget {
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(18),
-        child: Image.network(
-          '${image}',
+        child: CachedNetworkImage(
+          imageUrl: '$image',
           width: 145,
           height: 155,
           fit: BoxFit.cover,

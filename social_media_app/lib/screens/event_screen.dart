@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,8 +19,22 @@ class EventScreen extends StatefulWidget {
   }
 }
 
-class _EventScreenState extends State<EventScreen> {
-  List months = ['jan', 'feb', 'mar', 'apr', 'may','jun','jul','aug','sep','oct','nov','dec'];
+class _EventScreenState extends State<EventScreen>
+    with AutomaticKeepAliveClientMixin<EventScreen> {
+  List months = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec'
+  ];
 
   expandEvent({context, Event event}) {
     return showDialog(
@@ -62,8 +77,8 @@ class _EventScreenState extends State<EventScreen> {
 
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
-                        child: Image.network(
-                          event.image,
+                        child: CachedNetworkImage(
+                          imageUrl: event.image,
                           width: double.infinity,
                           fit: BoxFit.cover,
                           height: MediaQuery.of(context).size.height * 0.4,
@@ -104,7 +119,7 @@ class _EventScreenState extends State<EventScreen> {
                                             width: 5,
                                           ),
                                           Text(
-                                            months[event.time.month-1],
+                                            months[event.time.month - 1],
                                             style: kEventExpandedMonth,
                                           ),
                                           SizedBox(
@@ -247,8 +262,7 @@ class _EventScreenState extends State<EventScreen> {
                 child: EventItem(snapshot.data[ind]),
               ),
             );
-          }
-          else{
+          } else {
             return SpinKitWave(
               color: kPrimaryColor,
             );
@@ -257,12 +271,29 @@ class _EventScreenState extends State<EventScreen> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
 
 class EventItem extends StatelessWidget {
   final Event event;
 
-  List months = ['jan', 'feb', 'mar', 'apr', 'may','jun','jul','aug','sep','oct','nov','dec'];
+  List months = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec'
+  ];
 
   EventItem(this.event);
 
@@ -284,8 +315,8 @@ class EventItem extends StatelessWidget {
               topLeft: Radius.circular(18),
               topRight: Radius.circular(18),
             ),
-            child: Image.network(
-              event.image,
+            child: CachedNetworkImage(
+              imageUrl: event.image,
               fit: BoxFit.cover,
               width: double.infinity,
               height: 150,
@@ -307,7 +338,7 @@ class EventItem extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            months[event.time.month-1],
+                            months[event.time.month - 1],
                             style: kEventMonth,
                           ),
                           Text(

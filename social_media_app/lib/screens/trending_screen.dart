@@ -17,7 +17,7 @@ class TrendingScreen extends StatelessWidget {
             children: [
               CustomAppBar(),
               UserTrending(),
-              CommunityTrending(trending),
+              CommunityTrending(),
             ],
           ),
         ),

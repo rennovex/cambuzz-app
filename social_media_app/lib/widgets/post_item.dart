@@ -120,15 +120,18 @@ class PostItem extends StatelessWidget {
             ),
             SizedBox(height: 7),
             if (post.isImagePost())
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: CachedNetworkImage(
-                  imageUrl: post.postImg,
-                  placeholder: (context, url) =>
-                      Center(child: CircularProgressIndicator()),
-                  width: double.infinity,
-                  height: 350,
-                  fit: BoxFit.cover,
+              GestureDetector(
+                onDoubleTap: () => post.toggleLike(post.postId),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  child: CachedNetworkImage(
+                    imageUrl: post.postImg,
+                    placeholder: (context, url) =>
+                        Center(child: CircularProgressIndicator()),
+                    width: double.infinity,
+                    height: 350,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             if (!post.isImagePost())

@@ -9,8 +9,8 @@ import 'package:social_media_app/models/user.dart';
 class Post with ChangeNotifier {
   User user;
   Community community;
-
-  final String postId;
+  
+  final String id;
   final String time;
   final String title;
   final String postImg;
@@ -21,7 +21,7 @@ class Post with ChangeNotifier {
   final List comments;
 
   Post({
-    this.postId,
+    this.id,
     this.user,
     this.community,
     this.title,
@@ -61,7 +61,7 @@ class Post with ChangeNotifier {
     comments,
   ) {
     return Post(
-      postId: postId,
+      id: postId,
       user: user,
       title: title,
       postImg: postImg,
@@ -84,7 +84,7 @@ class Post with ChangeNotifier {
     comments,
   ) {
     return Post(
-      postId: postId,
+      id: postId,
       community: community,
       title: title,
       postImg: postImg,

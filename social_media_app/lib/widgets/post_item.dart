@@ -152,7 +152,7 @@ class PostItem extends StatelessWidget {
                                 color: Colors.red,
                               )
                             : Icon(Icons.favorite_border),
-                        onPressed: () => post.toggleLike(post.postId)),
+                        onPressed: () => post.toggleLike(post.id)),
                     Text('${post.likeCount}',
                         style: kPostBottomMetricTextStyle),
                   ],

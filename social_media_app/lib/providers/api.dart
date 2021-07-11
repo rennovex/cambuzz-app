@@ -72,6 +72,52 @@ class Api {
 
     return events;
   }
+
+  
+  static Future<List<Post>> getTrendingCommunityPosts() async {
+    final response = await HttpHelper().getApi('/trending/community-posts/all');
+
+    if (response.statusCode != 200) {
+      print('error');
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Post> posts = [];
+
+    json.forEach((post) {
+      print(post);
+      return posts.add(Post.fromJson(post));
+    });
+
+    print(posts);
+
+    return posts;
+  }
+
+  static Future<List<Post>> getTrendingUserPosts() async {
+    final response = await HttpHelper().getApi('/trending/user-posts/all');
+
+    if (response.statusCode != 200) {
+      print('error');
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Post> posts = [];
+
+    json.forEach((post) {
+      print(post);
+      return posts.add(Post.fromJson(post));
+    });
+
+    print(posts);
+
+    return posts;
+
+  }
   /*
   getEventsFromCommunity(String communityId){
     final response = await HttpHelper().getApi('/events/community/'+communityId);

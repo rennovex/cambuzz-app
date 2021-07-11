@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/providers/post.dart';
 
 class TrendingUserItem extends StatelessWidget {
   final height;
   final width;
   final Widget ranking;
-  final String src;
+  final Post post;
 
   TrendingUserItem({
+    this.post,
     this.ranking,
-    this.src,
     this.height,
     this.width,
   });
@@ -18,6 +19,8 @@ class TrendingUserItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('image'+post.postImg);
+    print(post.user.coverImage);
     return Column(
       // mainAxisAlignment: MainAxisAlignment.center,
       // crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,7 +36,7 @@ class TrendingUserItem extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(18),
                 child: Image.network(
-                  '$src',
+                  '${post.postImg}',
                   fit: BoxFit.cover,
                   width: width,
                   height: height,
@@ -53,7 +56,7 @@ class TrendingUserItem extends StatelessWidget {
                     ),
                     CircleAvatar(
                       backgroundImage: NetworkImage(
-                        'https://images.unsplash.com/photo-1610451915828-7cc4782b3850?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwxOHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
+                        post.user.image,
                       ),
                       radius: 14,
                     ),
@@ -65,11 +68,11 @@ class TrendingUserItem extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
-                          'Ashfin Nannase',
+                          post.user.userName,
                           style: kTrendingUserName,
                         ),
                         Text(
-                          'Photography',
+                          post.title,
                           style: kTrendingUserText,
                         ),
                       ],
@@ -90,7 +93,7 @@ class TrendingUserItem extends StatelessWidget {
               Icons.favorite_border,
               color: Colors.orange,
             ),
-            Text('40'),
+            Text(post.likeCount.toString()),
           ],
         ),
       ],

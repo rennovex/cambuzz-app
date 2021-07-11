@@ -85,7 +85,7 @@ class PostItem extends StatelessWidget {
                                 Icons.access_time_sharp,
                                 size: 18,
                               ),
-                              Text('7 min ago',
+                              Text(post.howLongAgo,
                                   softWrap: true, style: kPostTimeTextStyle),
                             ],
                           ),
@@ -155,7 +155,7 @@ class PostItem extends StatelessWidget {
                                 color: Colors.red,
                               )
                             : Icon(Icons.favorite_border),
-                        onPressed: () => post.toggleLike(post.postId)),
+                        onPressed: () => post.toggleLike(post.id)),
                     Text('${post.likeCount}',
                         style: kPostBottomMetricTextStyle),
                   ],

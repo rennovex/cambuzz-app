@@ -74,6 +74,9 @@ class PostView extends StatelessWidget {
   final String title;
   final num likeCount;
 
+  Post post;
+
+
   PostView({
     @required this.communityName,
     @required this.userName,

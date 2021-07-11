@@ -9,9 +9,9 @@ import 'package:social_media_app/models/user.dart';
 class Post with ChangeNotifier {
   User user;
   Community community;
-
-  final String postId;
-  final String time;
+  
+  final String id;
+  final DateTime time;
   final String title;
   final String postImg;
   final String postText;
@@ -21,7 +21,7 @@ class Post with ChangeNotifier {
   final List comments;
 
   Post({
-    this.postId,
+    this.id,
     this.user,
     this.community,
     this.title,
@@ -35,6 +35,24 @@ class Post with ChangeNotifier {
   }) {
     this.isLiked = Liked ?? false;
     this.likeCount = likes.length;
+  }
+
+  String get howLongAgo {
+    DateTime today = DateTime.now();
+    Duration duration = today.difference(this.time);
+    if(duration.inDays > 0){
+      return duration.inDays.toString()+' days ago';
+    }
+    else if(duration.inHours > 0){
+      return duration.inHours.toString()+' hours ago';
+    }
+    else if(duration.inMinutes > 0){
+      return duration.inMinutes.toString()+' minutes ago';
+    }
+    else if(duration.inSeconds > 0){
+      return duration.inSeconds.toString()+' seconds ago';
+    }
+    return 'error';
   }
 
   bool get Liked {
@@ -61,7 +79,7 @@ class Post with ChangeNotifier {
     comments,
   ) {
     return Post(
-      postId: postId,
+      id: postId,
       user: user,
       title: title,
       postImg: postImg,
@@ -84,7 +102,7 @@ class Post with ChangeNotifier {
     comments,
   ) {
     return Post(
-      postId: postId,
+      id: postId,
       community: community,
       title: title,
       postImg: postImg,
@@ -101,7 +119,7 @@ class Post with ChangeNotifier {
 
     if (json['postType'] == 'userPost') {
       return Post.userPost(json['_id'], user, json['title'], json['postImage'],
-          json['postText'], json['time'], json['likes'], json['comments']);
+          json['postText'], DateTime.parse(json['time']), json['likes'], json['comments']);
     } else {
       print(json);
       return Post.communityPost(
@@ -111,7 +129,7 @@ class Post with ChangeNotifier {
         json['title'],
         json['postImage'],
         json['postText'],
-        json['time'],
+        DateTime.parse(json['time']),
         json['likes'],
         json['comments'],
       );

@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> {
       FeedScreen(),
       ProfileScreen.user(),
       TrendingScreen(),
-      EventScreen(events),
+      EventScreen(),
     ];
 
     _pageController = PageController(initialPage: _selectedPageIndex);

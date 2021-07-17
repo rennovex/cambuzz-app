@@ -1,24 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/secureStorage.dart';
-import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
-import 'package:social_media_app/widgets/app_bar.dart';
-
-import 'dummy_data.dart';
-import 'providers/post.dart';
-import 'models/user.dart' as User;
+import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +34,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: Color.fromRGBO(141, 38, 221, 1),
           backgroundColor: Color.fromRGBO(229, 229, 229, 1),
 
           // textTheme: TextTheme(
@@ -142,7 +135,11 @@ class _MyHomePageState extends State<MyHomePage> {
       // ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () => showModalBottomSheet<dynamic>(
+          isScrollControlled: true,
+          context: context,
+          builder: (context) => AddPost(context),
+        ),
         tooltip: 'Increment',
         child: Container(
           child: Icon(

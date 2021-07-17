@@ -73,7 +73,6 @@ class Api {
     return events;
   }
 
-  
   static Future<List<Post>> getTrendingCommunityPosts() async {
     final response = await HttpHelper().getApi('/trending/community-posts/all');
 
@@ -116,8 +115,8 @@ class Api {
     print(posts);
 
     return posts;
-
   }
+
   /*
   getEventsFromCommunity(String communityId){
     final response = await HttpHelper().getApi('/events/community/'+communityId);
@@ -126,4 +125,12 @@ class Api {
 
   }
   */
+  static Future postcomment({String id, String comment}) async {
+    final response = await HttpHelper()
+        .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
+
+    if (response.statusCode != 200) {
+      throw 'Not Commented ' + response.body;
+    }
+  }
 }

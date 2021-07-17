@@ -49,7 +49,7 @@ class _FeedScreenState extends State<FeedScreen>
                         if (snapshot.hasData) {
                           // final snapshot.data = snapshot.data;
                           return ListView.builder(
-                            physics: ClampingScrollPhysics(),
+                            physics: NeverScrollableScrollPhysics(),
                             itemCount: snapshot.data.length,
                             shrinkWrap: true,
                             itemBuilder: (ctx, ind) =>

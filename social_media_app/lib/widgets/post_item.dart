@@ -8,18 +8,6 @@ import 'package:social_media_app/screens/post_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PostItem extends StatelessWidget {
-  //final Profile user;
-
-  // final Post post;
-
-  // PostItem(
-  //     {this.imgsrc =
-  //         'https://ahseeit.com//king-include/uploads/2021/01/122370488_2409620752667825_9215636083039238392_n-4472762206.jpg',
-  //     this.proimgsrc =
-  //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
-
-  // PostItem({@required this.post});
-
   @override
   Widget build(BuildContext context) {
     final post = Provider.of<Post>(context);
@@ -29,17 +17,15 @@ class PostItem extends StatelessWidget {
       elevation: 5,
       margin: EdgeInsets.all(15),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
+          // crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
+                  radius: 23,
                   backgroundImage: CachedNetworkImageProvider(
                     post.user.image,
                   ),
@@ -50,7 +36,6 @@ class PostItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
@@ -60,50 +45,49 @@ class PostItem extends StatelessWidget {
                             style: kPostHeaderTextStyle,
                             // textAlign: TextAlign.start,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 150,
-                            child: Text(
-                              post.user.userName,
-                              overflow: TextOverflow.ellipsis,
-                              style: kPostSubHeaderTextStyle,
-                              // maxLines: 1,
-                              // softWrap: true,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: 22),
                           Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.access_time_sharp,
-                                size: 18,
+                              SizedBox(
+                                width: 100,
+                                child: Text(
+                                  post.user.userName,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: kPostSubHeaderTextStyle,
+                                  // maxLines: 1,
+                                  // softWrap: true,
+                                ),
                               ),
-                              Text(post.howLongAgo,
-                                  softWrap: true, style: kPostTimeTextStyle),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.access_time_sharp,
+                                    size: 18,
+                                  ),
+                                  Text(post.howLongAgo,
+                                      softWrap: true,
+                                      style: kPostTimeTextStyle),
+                                ],
+                              ),
                             ],
-                          ),
+                          )
                         ],
                       ),
+                      IconButton(
+                          padding: EdgeInsets.only(right: 15),
+                          constraints: BoxConstraints(),
+                          icon: Icon(
+                            Icons.more_horiz,
+                            size: 36,
+                          ),
+                          // splashRadius: 1,
+                          onPressed: () {}),
                     ],
                   ),
                 ),
+
+                //
                 // SizedBox(width: 10),
-                IconButton(
-                    padding: EdgeInsets.all(0),
-                    constraints: BoxConstraints(),
-                    icon: Icon(
-                      Icons.more_vert,
-                      size: 36,
-                    ),
-                    // splashRadius: 1,
-                    onPressed: () {}),
               ],
             ),
             SizedBox(height: 15),
@@ -206,6 +190,33 @@ class PostItem extends StatelessWidget {
                 ),
               ],
             ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(left: 8.0),
+            //       child: SizedBox(
+            //         width: 300,
+            //         child: Text(
+            //           post.title,
+            //           overflow: TextOverflow.ellipsis,
+            //           style: kPostTitleTextStyle,
+            //           // softWrap: true,
+            //           maxLines: 2,
+            //           textAlign: TextAlign.start,
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.grey,
+            //         shape: BoxShape.rectangle,
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //       child: Text('More'),
+            //     ),
           ],
         ),
       ),

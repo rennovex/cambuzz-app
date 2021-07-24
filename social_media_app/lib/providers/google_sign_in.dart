@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 
@@ -29,8 +30,6 @@ class GoogleSignInProvider with ChangeNotifier {
 
   Future login() async {
     isSigningIn = true;
-    // AuthResult authResult;
-    // final httpHelper = new HttpHelper(context);
 
     try {
       final user = await googleSignIn.signIn();
@@ -59,7 +58,6 @@ class GoogleSignInProvider with ChangeNotifier {
             logout();
             currentUser.delete();
             throw 'something bad happened + ${response.body}';
-            // return;
           }
           // print(response.headers['x-auth-token']);
           SecureStorage.setApiToken(response.headers['x-auth-token']);
@@ -72,11 +70,11 @@ class GoogleSignInProvider with ChangeNotifier {
           final responseDecoded = jsonDecode(response.body);
           SecureStorage.setApiToken(response.headers['x-auth-token']);
           SecureStorage.setUid(responseDecoded['_id']);
+          Global.apiToken = response.headers['x-auth-token'];
+          Global.uid = response.headers['_id'];
         }
       }
-      // isSigningIn = false;
     } on PlatformException catch (err) {
-      // isSigningIn = false;
       var message = 'An error has occured';
 
       if (err.message != null) {
@@ -84,7 +82,6 @@ class GoogleSignInProvider with ChangeNotifier {
       }
       print(message);
     } catch (err) {
-      // isSigningIn = false;
       print(err);
     } finally {
       isSigningIn = false;

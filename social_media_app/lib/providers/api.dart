@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:async/async.dart';
+import 'package:image_picker/image_picker.dart';
 import 'dart:ffi';
 import 'package:social_media_app/models/event.dart';
 
@@ -40,6 +41,7 @@ class Api {
     json.forEach((post) {
       return posts.add(Post.fromJson(post));
     });
+    print('Fetched Feed from Api');
 
     return posts;
   }
@@ -59,16 +61,18 @@ class Api {
   static Future<List<Event>> getEvents() async {
     final response = await HttpHelper().getApi('/events/all');
 
-    print(response.body);
+    if (response.statusCode != 200) {
+      throw 'Events not fetched' + response.body;
+    }
 
     final json = jsonDecode(response.body) as List;
 
     final List<Event> events = [];
+
     json.forEach((e) {
-      print(e);
       events.add(Event.fromJson(e));
     });
-    print(events);
+    print('Fetched events from API');
 
     return events;
   }
@@ -86,11 +90,10 @@ class Api {
     final List<Post> posts = [];
 
     json.forEach((post) {
-      print(post);
       return posts.add(Post.fromJson(post));
     });
 
-    print(posts);
+    print('Fetched Community trending from Api');
 
     return posts;
   }
@@ -112,7 +115,7 @@ class Api {
       return posts.add(Post.fromJson(post));
     });
 
-    print(posts);
+    print('Fetched User trending from Api');
 
     return posts;
   }
@@ -131,6 +134,89 @@ class Api {
 
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
+    }
+  }
+
+  static Future getCommunitySearch({String key}) async {
+    final response = await HttpHelper().getApi('/communities/search/$key');
+    if (response.statusCode != 200) {
+      throw 'Not Commented ' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List searchResults = [];
+
+    json.forEach((result) {
+      return searchResults.add(result);
+    });
+
+    print('Fetched Search results from Api');
+
+    return searchResults;
+  }
+
+  static Future postCommunityTextPost(
+      {String id, String title, String text}) async {
+    final response = await HttpHelper().post(
+        uri: '/posts/community/$id/text',
+        body: {"title": "$title", "postText": "$text"});
+
+    if (response.statusCode != 201) {
+      throw 'Not posted ' + response.body;
+    }
+  }
+
+  static Future postCommunityImagePost(
+      {String id, XFile image, String title}) async {
+    final apiResponse = await HttpHelper().post(
+        uri: '/posts/community/$id/image',
+        body: {"title": "$title", "fileType": ".jpeg"});
+
+    if (apiResponse.statusCode != 201) {
+      throw 'Not posted ' + apiResponse.body;
+    }
+
+    final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
+
+    final awsResponse =
+        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+
+    if (awsResponse.statusCode != 200) {
+      throw 'Not posted ' + awsResponse.body;
+    }
+
+    print('image is posted' + awsResponse.body);
+  }
+
+  static Future postUserImagePost(
+      {String id, XFile image, String title}) async {
+    final apiResponse = await HttpHelper().post(
+        uri: '/posts/user/image',
+        body: {"title": "$title", "fileType": ".jpeg"});
+
+    if (apiResponse.statusCode != 201) {
+      throw 'Not posted ' + apiResponse.body;
+    }
+
+    final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
+
+    final awsResponse =
+        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+
+    if (awsResponse.statusCode != 200) {
+      throw 'Not posted ' + awsResponse.body;
+    }
+    print('image is posted' + awsResponse.body);
+  }
+
+  static Future postUserTextPost({String title, String text}) async {
+    final response = await HttpHelper().post(
+        uri: '/posts/user/text',
+        body: {"title": "$title", "postText": "$text"});
+
+    if (response.statusCode != 201) {
+      throw 'Not posted ' + response.body;
     }
   }
 }

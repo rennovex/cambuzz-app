@@ -16,8 +16,8 @@ import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  Global.apiToken = await SecureStorage.readApiToken();
-  Global.uid = await SecureStorage.readUid();
+  Global.apiToken = await SecureStorage.readApiToken() ?? '';
+  Global.uid = await SecureStorage.readUid() ?? '';
 
   runApp(MyApp());
 }
@@ -83,11 +83,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // HttpHelper();
-    // init();
-    SecureStorage.readApiToken();
-    // Api.getUser();
+    super.initState();
+
     _selectedPageIndex = 0;
 
     _pages = [
@@ -98,8 +95,6 @@ class _MyHomePageState extends State<MyHomePage> {
     ];
 
     _pageController = PageController(initialPage: _selectedPageIndex);
-
-    super.initState();
   }
 
   // Future init() async {
@@ -116,86 +111,89 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Color.fromRGBO(28, 28, 28, 1),
-      //   foregroundColor: Colors.white,
-      //   brightness: Brightness.dark,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(18),
-      //       bottomRight: Radius.circular(18),
-      //     ),
-      //   ),
-      //   leading: IconButton(
-      //     icon: Icon(Icons.search),
-      //     onPressed: () {},
-      //   ),
-      //   actions: [],
-      // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => showModalBottomSheet<dynamic>(
-          isScrollControlled: true,
-          context: context,
-          builder: (context) => AddPost(context),
-        ),
-        tooltip: 'Increment',
-        child: Container(
-          child: Icon(
-            Icons.add,
-            size: 30,
+    return SafeArea(
+      child: Scaffold(
+        // appBar: AppBar(
+        //   backgroundColor: Color.fromRGBO(28, 28, 28, 1),
+        //   foregroundColor: Colors.white,
+        //   brightness: Brightness.dark,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.only(
+        //       bottomLeft: Radius.circular(18),
+        //       bottomRight: Radius.circular(18),
+        //     ),
+        //   ),
+        //   leading: IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () {},
+        //   ),
+        //   actions: [],
+        // ),
+        resizeToAvoidBottomInset: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showModalBottomSheet<dynamic>(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => AddPost(context),
           ),
-          width: 60,
-          height: 60,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, gradient: kLinearGradient),
-        ),
-        elevation: 2.0,
-      ),
-      body: PageView(
-        controller: _pageController,
-        children: _pages,
-        physics: NeverScrollableScrollPhysics(),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-          color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black38,
-              spreadRadius: 0,
-              blurRadius: 1,
+          tooltip: 'Increment',
+          child: Container(
+            child: Icon(
+              Icons.add,
+              size: 30,
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, gradient: kLinearGradient),
           ),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _selectedPageIndex,
-            onTap: (index) {
-              setState(() {
-                _selectedPageIndex = index;
-                _pageController.jumpToPage(index);
-              });
-            },
-            selectedItemColor: kPrimaryColor,
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle), label: 'Account'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.trending_up), label: 'Trending'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
+          elevation: 2.0,
+        ),
+        body: PageView(
+          controller: _pageController,
+          children: _pages,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+            color: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black38,
+                spreadRadius: 0,
+                blurRadius: 1,
+              ),
             ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30),
+              topLeft: Radius.circular(30),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _selectedPageIndex,
+              onTap: (index) {
+                setState(() {
+                  _selectedPageIndex = index;
+                  _pageController.jumpToPage(index);
+                });
+              },
+              selectedItemColor: kPrimaryColor,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.account_circle), label: 'Account'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.trending_up), label: 'Trending'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
+              ],
+            ),
           ),
         ),
       ),

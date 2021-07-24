@@ -32,6 +32,5 @@ class _TrendingScreenState extends State<TrendingScreen>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

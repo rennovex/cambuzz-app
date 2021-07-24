@@ -11,7 +11,6 @@ class PostItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final post = Provider.of<Post>(context);
-    print(post.isLiked);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
@@ -19,7 +18,7 @@ class PostItem extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           // mainAxisSize: MainAxisSize.min,
           children: [
             Row(

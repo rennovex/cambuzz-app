@@ -17,31 +17,34 @@ class PostViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ChangeNotifierProvider.value(
-                      value: post,
-                      child: PostItem(),
-                    ),
-                    Text('Comments'),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: post.commentCount,
-                      itemBuilder: (ctx, ind) =>
-                          CommentItem(Comment.fromJson(post.comments[ind])),
-                    ),
-                  ],
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+        child: Scaffold(
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ChangeNotifierProvider.value(
+                        value: post,
+                        child: PostItem(),
+                      ),
+                      Text('Comments'),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: post.commentCount,
+                        itemBuilder: (ctx, ind) =>
+                            CommentItem(Comment.fromJson(post.comments[ind])),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            NewComment(post.id),
-          ],
+              NewComment(post),
+            ],
+          ),
         ),
       ),
     );
@@ -49,9 +52,9 @@ class PostViewScreen extends StatelessWidget {
 }
 
 class NewComment extends StatefulWidget {
-  final String postId;
+  final Post post;
 
-  NewComment(this.postId);
+  NewComment(this.post);
   @override
   _NewCommentState createState() => _NewCommentState();
 }
@@ -63,8 +66,8 @@ class _NewCommentState extends State<NewComment> {
 
   void postComment() {
     print(textEditingController.value.text);
-    Api.postcomment(
-        id: widget.postId, comment: textEditingController.value.text.trim());
+    widget.post.postcomment(
+        id: widget.post.id, comment: textEditingController.value.text.trim());
     textEditingController.clear();
     focusNode.unfocus();
   }

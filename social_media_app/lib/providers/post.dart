@@ -1,11 +1,9 @@
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart';
 import 'package:social_media_app/Global/globals.dart';
+import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
-import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/screens/post_view_screen.dart';
 
 class Post with ChangeNotifier {
   User user;
@@ -19,7 +17,7 @@ class Post with ChangeNotifier {
   bool isLiked;
   final List likes;
   num likeCount;
-  final List comments;
+  List comments;
   num commentCount;
 
   Post({
@@ -35,7 +33,7 @@ class Post with ChangeNotifier {
     this.likeCount,
     this.isLiked = false,
   }) {
-    this.isLiked = Liked ?? false;
+    this.isLiked = liked ?? false;
     this.likeCount = likes.length;
     this.commentCount = comments.length;
   }
@@ -55,8 +53,7 @@ class Post with ChangeNotifier {
     return 'error';
   }
 
-  bool get Liked {
-    print(Global.uid);
+  bool get liked {
     return likes?.contains(Global.uid);
   }
 
@@ -128,7 +125,6 @@ class Post with ChangeNotifier {
           json['likes'],
           json['comments']);
     } else {
-      print(json);
       return Post.communityPost(
         json['_id'],
         Community.fromJson(json['community']),
@@ -144,7 +140,6 @@ class Post with ChangeNotifier {
   }
 
   void toggleLike(String postId) async {
-    print(postId);
     final oldStatus = isLiked;
     final oldCount = likeCount;
 
@@ -166,5 +161,19 @@ class Post with ChangeNotifier {
       notifyListeners();
       throw 'Cant like' + '${response.body}';
     }
+  }
+
+  Future postcomment({String id, String comment}) async {
+    final response = await HttpHelper()
+        .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
+
+    if (response.statusCode != 200) {
+      throw 'Not Commented ' + response.body;
+    }
+
+    // comments.add(Comment(id: id,user: Global.uid,text: comment));
+    // Post postDecoded = Post.fromJson(response.body);
+    // comments = postDecoded.comments;
+    // notifyListeners();
   }
 }

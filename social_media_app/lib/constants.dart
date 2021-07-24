@@ -35,8 +35,8 @@ const kTitleTextStyle = TextStyle(
 const kSubtitleTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.normal,
-  fontSize: kLargeTextSize,
-  color: Colors.white,
+  fontSize: kSmallTextSize,
+  color: Colors.black,
 );
 const kBodyprimaryTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,

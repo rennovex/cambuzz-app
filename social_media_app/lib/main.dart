@@ -10,6 +10,7 @@ import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
+import 'package:social_media_app/screens/registration_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 
@@ -44,20 +45,21 @@ class MyApp extends StatelessWidget {
           //   body2: BodySecondaryTextStyle,
           // )
         ),
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            final provider = Provider.of<GoogleSignInProvider>(context);
+        home:RegistrationScreen()
+        // home: StreamBuilder(
+        //   stream: FirebaseAuth.instance.authStateChanges(),
+        //   builder: (context, snapshot) {
+        //     final provider = Provider.of<GoogleSignInProvider>(context);
 
-            if (provider.isSigningIn) {
-              return buildLoading();
-            } else if (snapshot.hasData) {
-              return MyHomePage();
-            } else {
-              return AuthScreen();
-            }
-          },
-        ),
+        //     if (provider.isSigningIn) {
+        //       return buildLoading();
+        //     } else if (snapshot.hasData) {
+        //       return MyHomePage();
+        //     } else {
+        //       return AuthScreen();
+        //     }
+        //   },
+        // ),
       ),
     );
   }

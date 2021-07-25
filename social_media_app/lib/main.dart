@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
           //   body2: BodySecondaryTextStyle,
           // )
         ),
-        home:RegistrationScreen(intro)
+        home:RegistrationScreen()
         // home: StreamBuilder(
         //   stream: FirebaseAuth.instance.authStateChanges(),
         //   builder: (context, snapshot) {

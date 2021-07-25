@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 class LabelledTextField extends StatelessWidget {
   final String labelText;
-  const LabelledTextField({Key key, @required this.labelText})
+  final TextInputType inputType;
+  final int maxLines;
+  const LabelledTextField({Key key, @required this.labelText,this.maxLines=1, this.inputType=TextInputType.text})
       : super(key: key);
 
   @override
@@ -17,11 +19,15 @@ class LabelledTextField extends StatelessWidget {
             style:
                 TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w800),
           ),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(6),
+          Container(
+            child: TextField(
+              keyboardType: inputType,
+              maxLines: maxLines,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: const BorderRadius.all(
+                    const Radius.circular(6),
+                  ),
                 ),
               ),
             ),

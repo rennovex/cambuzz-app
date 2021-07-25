@@ -39,7 +39,7 @@ class RegistrationScreenSkeleton extends StatelessWidget {
                 child: registrationElement.bottomElement)),
         Padding(
             padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-            child: registrationElement.primaryActionButton)
+            child: Container(width: MediaQuery.of(context).size.width*.8,child: registrationElement.primaryActionButton))
       ],
     );
   }

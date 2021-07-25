@@ -14,7 +14,7 @@ class PrimaryGradientButton extends StatelessWidget {
     return TextButton(
       onPressed: this.onPressed,
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.80,
+        //width: MediaQuery.of(context).size.width * 0.80,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
           gradient: LinearGradient(

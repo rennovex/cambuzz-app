@@ -6,13 +6,16 @@ class RegistrationStepTop extends StatelessWidget {
   const RegistrationStepTop({
     Key key,
     @required this.header,
-    @required this.step,
+    this.step=-1,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Column(children: [
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+        
         Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -60,8 +63,9 @@ class RegistrationStepTop extends StatelessWidget {
                   fontWeight: FontWeight.w700),
             ),
             SizedBox(height: 10),
+            
             Text(
-              "Step ${this.step.toString()} of 3",
+              this.step!=-1?"Step ${this.step.toString()} of 3":"You're all set to use the app",
               style: TextStyle(
                 color: Colors.white,
                 fontFamily: 'poppins',

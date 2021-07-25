@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -248,32 +249,51 @@ class _EventScreenState extends State<EventScreen>
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: FutureBuilder(
-        future: widget.events,
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (ctx, ind) => GestureDetector(
-                onTap: () => expandEvent(
-                  context: context,
-                  event: snapshot.data[ind],
+      child: Scaffold(
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  shrinkWrap: true,
+                  itemBuilder: (_, ind) => Card(
+                    child: Image.network('https://picsum.photos/536/354'),
+                  ),
                 ),
-                child: EventItem(snapshot.data[ind]),
               ),
-            );
-          } else {
-            return SpinKitWave(
-              color: kPrimaryColor,
-            );
-          }
-        },
+              FutureBuilder(
+                future: widget.events,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (ctx, ind) => GestureDetector(
+                        onTap: () => expandEvent(
+                          context: context,
+                          event: snapshot.data[ind],
+                        ),
+                        child: EventItem(snapshot.data[ind]),
+                      ),
+                    );
+                  } else {
+                    return SpinKitWave(
+                      color: kPrimaryColor,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }
 

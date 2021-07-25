@@ -31,50 +31,50 @@ class _FeedScreenState extends State<FeedScreen>
       child: Scaffold(
         // appBar: AppBar(),
         body: RefreshIndicator(
-          onRefresh: () async {
-            return feed = Api.getFeed().whenComplete(
-              () => setState(() {}),
-            );
-          },
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CustomAppBar(),
-                FutureBuilder(
-                  future: feed,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      // final snapshot.data = snapshot.data;
-                      return ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        // cacheExtent: 999,
-                        itemCount: snapshot.data.length,
-                        // addAutomaticKeepAlives: true,
-                        shrinkWrap: true,
-                        itemBuilder: (ctx, ind) => ChangeNotifierProvider.value(
-                          value: snapshot.data[ind] as Post,
-                          child: PostItem(),
-                        ),
-                        // {
-                        //   return PostItem(post: snapshot.data[ind]);
-                        // }
-                        // Text(snapshot.data[ind]['postImage']),
-                      );
-                    } else
-                      return Center(
-                        child: Container(
-                          child: SpinKitWave(
-                            color: kPrimaryColor,
+            onRefresh: () async {
+              return feed = Api.getFeed().whenComplete(
+                () => setState(() {}),
+              );
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  CustomAppBar(),
+                  FutureBuilder(
+                    future: feed,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        // final snapshot.data = snapshot.data;
+                        return ListView.builder(
+                          cacheExtent: 1500,
+                          itemCount: snapshot.data.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          // addAutomaticKeepAlives: true,
+                          shrinkWrap: true,
+                          itemBuilder: (ctx, ind) =>
+                              ChangeNotifierProvider.value(
+                            value: snapshot.data[ind] as Post,
+                            child: PostItem(),
                           ),
-                          height: MediaQuery.of(context).size.height * .8,
-                        ),
-                      );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
+                          // {
+                          //   return PostItem(post: snapshot.data[ind]);
+                          // }
+                          // Text(snapshot.data[ind]['postImage']),
+                        );
+                      } else
+                        return Center(
+                          child: Container(
+                            child: SpinKitWave(
+                              color: kPrimaryColor,
+                            ),
+                            height: MediaQuery.of(context).size.height * .8,
+                          ),
+                        );
+                    },
+                  ),
+                ],
+              ),
+            )),
       ),
     );
   }

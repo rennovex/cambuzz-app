@@ -74,6 +74,7 @@ class _AddPostState extends State<AddPost> {
               image: chosenImage,
             );
     }
+    Navigator.of(context).pop();
   }
 
   @override

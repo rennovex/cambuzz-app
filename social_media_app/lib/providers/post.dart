@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/comment.dart';
@@ -163,7 +165,7 @@ class Post with ChangeNotifier {
     }
   }
 
-  Future postcomment({String id, String comment}) async {
+  void postcomment({String id, String comment}) async {
     final response = await HttpHelper()
         .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 
@@ -171,9 +173,10 @@ class Post with ChangeNotifier {
       throw 'Not Commented ' + response.body;
     }
 
-    // comments.add(Comment(id: id,user: Global.uid,text: comment));
-    // Post postDecoded = Post.fromJson(response.body);
-    // comments = postDecoded.comments;
+    // final updatedComments = jsonDecode(response.body);
+
+    // comments = updatedComments;
     // notifyListeners();
+    // print('commented');
   }
 }

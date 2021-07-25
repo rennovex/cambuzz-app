@@ -3,7 +3,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/post.dart';
-import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -24,7 +23,7 @@ class PostItem extends StatelessWidget {
             Row(
               children: [
                 CircleAvatar(
-                  radius: 23,
+                  radius: 21,
                   backgroundImage: CachedNetworkImageProvider(
                     post.user.image,
                   ),
@@ -76,7 +75,8 @@ class PostItem extends StatelessWidget {
                           padding: EdgeInsets.only(right: 15),
                           constraints: BoxConstraints(),
                           icon: Icon(
-                            Icons.more_horiz,
+                            Icons.more_vert,
+                            color: Color.fromRGBO(97, 97, 97, 1),
                             size: 36,
                           ),
                           // splashRadius: 1,
@@ -125,35 +125,70 @@ class PostItem extends StatelessWidget {
               height: 10,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Row(
-                  children: [
-                    IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: post.isLiked
-                            ? Icon(
-                                Icons.favorite,
-                                color: Colors.red,
-                              )
-                            : Icon(Icons.favorite_border),
-                        onPressed: () => post.toggleLike(post.id)),
-                    Text('${post.likeCount}',
-                        style: kPostBottomMetricTextStyle),
-                  ],
+                GestureDetector(
+                  onTap: () => post.toggleLike(post.id),
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: post.isLiked
+                          ? Colors.red
+                          : Color.fromRGBO(235, 237, 236, 1),
+                    ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                            padding: EdgeInsets.all(0),
+                            constraints: BoxConstraints(),
+                            icon: post.isLiked
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: Colors.white,
+                                  )
+                                : Icon(
+                                    Icons.favorite,
+                                    color: Colors.black,
+                                  ),
+                            onPressed: () => post.toggleLike(post.id)),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 5, top: 5, bottom: 5),
+                          child: SizedBox(
+                            width: 35,
+                            child: Text(
+                              '${post.likeCount}',
+                              style: TextStyle(
+                                color:
+                                    post.isLiked ? Colors.white : Colors.black,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20,
                 ),
                 Row(
                   children: [
                     IconButton(
                       padding: EdgeInsets.all(0),
                       constraints: BoxConstraints(),
-                      icon: Icon(MdiIcons.commentTextMultipleOutline),
+                      icon: Icon(
+                        MdiIcons.comment,
+                      ),
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) => PostViewScreen(post)),
                       ),
+                    ),
+                    SizedBox(
+                      width: 4,
                     ),
                     Text(
                       '${post.commentCount}',
@@ -161,32 +196,32 @@ class PostItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                Row(
-                  children: [
-                    IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(MdiIcons.trophyOutline),
-                        onPressed: () {}),
-                    Text(
-                      '3',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(MdiIcons.shareAllOutline),
-                        onPressed: () {}),
-                    Text(
-                      '3',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //         padding: EdgeInsets.all(0),
+                //         constraints: BoxConstraints(),
+                //         icon: Icon(MdiIcons.trophyOutline),
+                //         onPressed: () {}),
+                //     Text(
+                //       '3',
+                //       style: kPostBottomMetricTextStyle,
+                //     ),
+                //   ],
+                // ),
+                // Row(
+                //   children: [
+                //     IconButton(
+                //         padding: EdgeInsets.all(0),
+                //         constraints: BoxConstraints(),
+                //         icon: Icon(MdiIcons.shareAllOutline),
+                //         onPressed: () {}),
+                //     Text(
+                //       '3',
+                //       style: kPostBottomMetricTextStyle,
+                //     ),
+                //   ],
+                // ),
               ],
             ),
             // SizedBox(

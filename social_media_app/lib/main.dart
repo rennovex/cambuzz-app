@@ -127,7 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
         //     icon: Icon(Icons.search),
         //     onPressed: () {},
         //   ),
-        //   actions: [],
+        //   actions: [
+        //     IconButton(
+        //       icon: Icon(Icons.near_me),
+        //       onPressed: () {},
+        //     )
+        //   ],
         // ),
         resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

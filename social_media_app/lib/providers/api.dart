@@ -1,32 +1,17 @@
 import 'dart:convert';
-import 'package:async/async.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:ffi';
 import 'package:social_media_app/models/event.dart';
 
-import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/user.dart';
-// import 'package:provider/provider.dart';
 
-/*
-  Future getFeed() async {
-    final response = await HttpHelper().getApi('/feed');
-
-    return jsonDecode(response.body);
-  }
-  */
 class Api {
   static Future feedRefresh() async {
     print('refresh');
-    // _memoizer = await AsyncMemoizer();
-    // return getFeed();
-    // await getFeed();
   }
 
+  // Get Feed from Api
   static Future getFeed() async {
     final response = await HttpHelper().getApi('/feed');
 
@@ -46,6 +31,7 @@ class Api {
     return posts;
   }
 
+  //Get User from Api
   static Future<User> getUser() async {
     final response = await HttpHelper().getApi('/users');
 
@@ -58,6 +44,7 @@ class Api {
     return user;
   }
 
+  //Get Events from Api
   static Future<List<Event>> getEvents() async {
     final response = await HttpHelper().getApi('/events/all');
 
@@ -77,6 +64,7 @@ class Api {
     return events;
   }
 
+  //Get Community Trending post from Api
   static Future<List<Post>> getTrendingCommunityPosts() async {
     final response = await HttpHelper().getApi('/trending/community-posts/all');
 
@@ -98,6 +86,7 @@ class Api {
     return posts;
   }
 
+  //Get user Trending post from Api
   static Future<List<Post>> getTrendingUserPosts() async {
     final response = await HttpHelper().getApi('/trending/user-posts/all');
 
@@ -120,14 +109,7 @@ class Api {
     return posts;
   }
 
-  /*
-  getEventsFromCommunity(String communityId){
-    final response = await HttpHelper().getApi('/events/community/'+communityId);
-    //Parse
-    return {Event(), Event(), Event()}
-
-  }
-  */
+  // Post comments to APi
   static Future postcomment({String id, String comment}) async {
     final response = await HttpHelper()
         .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});

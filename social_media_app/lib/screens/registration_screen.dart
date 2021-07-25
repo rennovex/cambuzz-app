@@ -12,6 +12,9 @@ import 'package:social_media_app/widgets/Registration/registration_screen_skelet
 
 
 class RegistrationScreen extends StatelessWidget {
+  final RegistrationElement registrationElement;
+  RegistrationScreen(this.registrationElement);
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

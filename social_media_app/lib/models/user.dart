@@ -6,15 +6,17 @@ enum ProfileType {
 }
 
 class User {
-  final ProfileType profileType = ProfileType.UserProfile;
-  final String name;
-  final String userName;
-  final String image;
-  final String coverImage;
-  final String bio;
-  final List followers;
-  final num likes;
-  final num achievements;
+  ProfileType profileType = ProfileType.UserProfile;
+  String name;
+  String userName;
+  String image;
+  String coverImage;
+  String bio;
+  List followers;
+  num likes;
+  num achievements;
+  String email;
+  List<String> skills;
 
   User({
     @required this.userName,
@@ -25,6 +27,8 @@ class User {
     this.followers,
     this.likes,
     this.achievements,
+    this.email,
+    this.skills
   });
 
   factory User.fromJson(Map<String, dynamic> json) {

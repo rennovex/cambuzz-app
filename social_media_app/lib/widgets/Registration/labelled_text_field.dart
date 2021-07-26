@@ -1,11 +1,44 @@
 import 'package:flutter/material.dart';
 
-class LabelledTextField extends StatelessWidget {
+class LabelledTextField extends StatefulWidget {
   final String labelText;
   final TextInputType inputType;
   final int maxLines;
-  const LabelledTextField({Key key, @required this.labelText,this.maxLines=1, this.inputType=TextInputType.text})
-      : super(key: key);
+  final Function(String) onChanged;
+  Function() onEditingComplete;
+  Function(String) onSubmitted;
+  final String value;
+
+  LabelledTextField({
+    Key key,
+    this.onSubmitted,
+    this.onEditingComplete,
+    @required this.onChanged,
+    @required this.labelText,
+    this.maxLines = 1,
+    this.inputType = TextInputType.text,
+    this.value=''
+  }) : super(key: key);
+
+  @override
+  _LabelledTextFieldState createState() => _LabelledTextFieldState();
+}
+
+class _LabelledTextFieldState extends State<LabelledTextField> {
+  TextEditingController valueContoller;
+
+
+  @override
+  void initState() {
+    super.initState();
+    valueContoller = TextEditingController(text: widget.value);
+  }
+
+  @override
+  void dispose() {
+    valueContoller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +48,18 @@ class LabelledTextField extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            labelText,
+            widget.labelText,
             style:
                 TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w800),
           ),
           Container(
             child: TextField(
-              keyboardType: inputType,
-              maxLines: maxLines,
+              controller: valueContoller,
+              onEditingComplete: widget.onEditingComplete,
+              onChanged: widget.onChanged,
+              onSubmitted: widget.onSubmitted,
+              keyboardType: widget.inputType,
+              maxLines: widget.maxLines,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: const BorderRadius.all(

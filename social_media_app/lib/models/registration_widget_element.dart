@@ -13,14 +13,12 @@ class RegistrationElement {
   final bool hasBackButton;
   final Function primaryButtonOnPressed;
   Function onBackButonPressed;
-  Function pageChange;
   RegistrationElement(
       {@required this.topElement,
       @required this.bottomElement,
       @required this.primaryButtonText,
       @required this.primaryButtonOnPressed,
       this.onBackButonPressed,
-      this.pageChange,
       this.hasBackButton = false,
       this.topElementStackBottomPositioning,
       this.bottomElementStackBottomPositioning});
@@ -40,7 +38,6 @@ class RegistrationElement {
                   child: TextButton(
                     onPressed: (){
                       onBackButonPressed();
-                      pageChange();
                     },
                     child: Icon(
                       Icons.chevron_left,
@@ -53,7 +50,6 @@ class RegistrationElement {
         Expanded(
           child: PrimaryGradientButton(
             onPressed: () {
-              this.pageChange();
               this.primaryButtonOnPressed();
             },
             text: this.primaryButtonText,

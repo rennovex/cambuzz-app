@@ -1,17 +1,14 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/registration_widget_element.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
-import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
-import 'package:social_media_app/screens/registration_screen.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 

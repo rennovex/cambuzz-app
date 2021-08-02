@@ -5,6 +5,7 @@ import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/event.dart';
 
 import 'package:social_media_app/models/http_helper.dart';
+import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/screens/FeedScreen/listPage.dart';
@@ -28,6 +29,62 @@ class Api {
     print(posts);
 
     return ListPage(itemList: posts);
+  }
+
+  static Future postUser(User user, XFile image) async {
+    final response = await HttpHelper().post(uri: '/users', body: {
+      'name': user.name,
+      'email': user.email,
+      'userName': user.userName,
+      'bio': user.bio ?? '',
+      'skills': user.skills ?? [],
+      'fileType':'.jpg'
+    });
+    if (response.statusCode == 201) {
+      if (image != null) {
+        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
+
+        final awsResponse =
+            await HttpHelper().put(uri: '$awsUploadLink', body: image);
+
+        if (awsResponse.statusCode != 200) {
+          throw 'User could not be created due to image upload error  ' + awsResponse.body;
+        }
+        print('User is created' + awsResponse.body);
+      }
+
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+  static Future getSkills() async {
+    final response = await HttpHelper().getApi('/skills');
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List;
+
+      final List<Skill> skills = [];
+
+      json.forEach((skill) {
+        skills.add(Skill.fromJson(skill));
+      });
+      return skills;
+    } else {
+      throw 'error could not get skills';
+    }
+  }
+
+  static Future isUsernameAvailable(String userName) async {
+    final response =
+        await HttpHelper().getApi('/users/username-available/' + userName);
+    if (response.statusCode == 409) {
+      return false;
+    } else if (response.statusCode == 200) {
+      return true;
+    } else
+      throw 'error username availability cannot be checked';
   }
 
   // Get Feed from Api

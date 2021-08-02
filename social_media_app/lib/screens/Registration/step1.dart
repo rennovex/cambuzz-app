@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/models/registration_widget_element.dart';
+import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
 import 'package:social_media_app/widgets/Registration/pill_toggle_button.dart';
 import 'package:social_media_app/widgets/Registration/registration_screen_skeleton.dart';
@@ -17,6 +19,7 @@ class step1 extends StatelessWidget {
   bool emailIsValid;
   bool nameIsValid;
   bool usernameIsValid;
+  bool isUsernameAvailable = false;
 
   step1(
       {Key key,
@@ -30,6 +33,7 @@ class step1 extends StatelessWidget {
       this.nameIsValid,
       this.nameValue,
       this.usernameIsValid,
+      this.isUsernameAvailable,
       this.usernameValue})
       : super(key: key);
 
@@ -43,57 +47,59 @@ class step1 extends StatelessWidget {
             step: 1,
           ),
           bottomElement: Container(
-            child: Column(
-              children: [
-                LabelledTextField(
-                  labelText: 'Email',
-                  onChanged: onEmailChange,
-                  inputType: TextInputType.emailAddress,
-                  value: emailValue,
-                ),
-                (!emailIsValid)
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'email not valid',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                LabelledTextField(
-                  labelText: 'Name',
-                  onChanged: onNameChange,
-                  value: nameValue,
-                ),
-                (!nameIsValid)
-                    ? Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Text(
-                            'name not valid',
-                            style: TextStyle(color: Colors.red),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                LabelledTextField(
-                  labelText: 'Username',
-                  onChanged: onUsernameChange,
-                  value: usernameValue,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text('available', style: TextStyle(color: Colors.green)),
-                    Icon(
-                      Icons.done,
-                      color: Colors.green,
-                    ),
-                  ],
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  LabelledTextField(
+                    labelText: 'Username',
+                    onChanged: onUsernameChange,
+                    value: usernameValue,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text((isUsernameAvailable)?'available':'taken', style: TextStyle(color: (isUsernameAvailable)?Colors.green:Colors.red)),
+                      Icon(
+                        (isUsernameAvailable)?Icons.done:Icons.error,
+                        color: (isUsernameAvailable)?Colors.green:Colors.red,
+                      ),
+                    ],
+                  ),
+                  LabelledTextField(
+                    labelText: 'Email',
+                    value: emailValue,
+                    onChanged: onEmailChange,
+                    inputType: TextInputType.emailAddress,
+                  ),
+                  (!emailIsValid)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'email not valid',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  LabelledTextField(
+                    labelText: 'Name',
+                    onChanged: onNameChange,
+                    value: nameValue,
+                  ),
+                  (!nameIsValid)
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              'name not valid',
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ],
+                        )
+                      : Container(),
+                ],
+              ),
             ),
           ),
           primaryButtonText: "Let's set your dp >",

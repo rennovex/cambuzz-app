@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/Registration/end.dart';
 import 'package:social_media_app/screens/Registration/intro.dart';
 import 'package:social_media_app/screens/Registration/step1.dart';
@@ -9,6 +11,13 @@ import 'package:social_media_app/screens/Registration/step3.dart';
 final user = {};
 
 class RegistrationScreen extends StatefulWidget {
+  bool isGoogleRegistered;
+  String emailValue;
+  Function onRegistrationComplete;
+  RegistrationScreen(bool isGoogleRegistered, {String email='', @required this.onRegistrationComplete}){
+    this.isGoogleRegistered = isGoogleRegistered;
+    this.emailValue = email;
+  }
   @override
   _RegistrationScreenState createState() => _RegistrationScreenState();
 }
@@ -20,8 +29,22 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   var isUsernameValid = true;
   var isEmailValid = true;
 
+  var isUsernameAvailable = false;
+
   List<Widget> pages;
-  int page = 0;
+  int page;
+
+  ImagePicker picker;
+  XFile pickedImage;
+
+  @override
+  void initState() {
+    page = (widget.isGoogleRegistered)?1:0;
+    user.email = widget.emailValue;
+    super.initState();
+
+    picker = ImagePicker();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +57,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
       ),
       step1(
+        isUsernameAvailable: isUsernameAvailable,
         emailIsValid: isEmailValid,
         nameIsValid: isNameValid,
         usernameIsValid: isUsernameValid,
@@ -86,13 +110,28 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
             user.name = value;
           });
         },
-        onUsernameChange: (value) {
-          setState(() {
+        onUsernameChange: (value) async {
+          isUsernameAvailable = await Api.isUsernameAvailable(value);
+          print(isUsernameAvailable);
+          setState(()  {
             user.userName = value;
           });
         },
       ),
       step2(
+        image:pickedImage,
+        onRemoveImageButtonPressed: (){
+          setState(() {
+            pickedImage = null;
+          });
+        },
+        onSelectImageButtonPressed: () async {
+          XFile selectedImage = await picker.pickImage(source: ImageSource.gallery);
+
+          setState(() {
+            if(selectedImage != null) pickedImage = selectedImage;
+          });
+        },
         onBackButonPressed: () {
           setState(() {
             page--;
@@ -105,7 +144,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
       ),
       step3(
-        skills: ['Programmer','Web Developer','App Developer','Content creator','Singer','Dancer','Mechanic','Artist','Entrepreneur'],
         onSkillAdded: (skill){
           setState(() {
             user.skills.add(skill);
@@ -125,7 +163,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         bioMax: 100,
         bioValue: user.bio,
-        primaryButtonOnPressed: () {
+        primaryButtonOnPressed: () async {
+           var completed = await Api.postUser(user, pickedImage);
+          if(completed){
+            print('completee');
+          }
+          else{
+            print('error');
+          }
           setState(() {
             page++;
           });
@@ -138,14 +183,14 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       ),
       end(
         primaryButtonOnPressed: () {
-          print([user.userName, user.email, user.name, user.bio, user.skills]);
+          widget.onRegistrationComplete();
         },
       ),
     ];
 
     return Scaffold(
       key: Key('registration_Screen'),
-      resizeToAvoidBottomInset: false,
+      
       body: pages[page],
     );
   }

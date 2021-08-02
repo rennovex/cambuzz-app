@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/registration_widget_element.dart';
+import 'package:social_media_app/models/skill.dart';
+import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
 import 'package:social_media_app/widgets/Registration/pill_toggle_button.dart';
 import 'package:social_media_app/widgets/Registration/registration_screen_skeleton.dart';
@@ -11,7 +15,6 @@ class step3 extends StatelessWidget {
   final Function(String) onBioChanged;
   final String bioValue;
   final int bioMax;
-  final List<String> skills;
   final Function(String) onSkillAdded;
   final Function(String) onSkillRemoved;
 
@@ -22,7 +25,6 @@ class step3 extends StatelessWidget {
     @required this.onBioChanged,
     this.bioValue = '',
     @required this.bioMax,
-    @required this.skills,
     @required this.onSkillAdded,
     @required this.onSkillRemoved,
   }) : super(key: key);
@@ -48,31 +50,45 @@ class step3 extends StatelessWidget {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: [Text('${bioValue?.length??0}/$bioMax')],
+                    children: [Text('${bioValue?.length ?? 0}/$bioMax')],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Skills',
-                        style: TextStyle(
-                            fontFamily: 'poppins', fontWeight: FontWeight.w800),
-                      ),
-                      SingleChildScrollView(
-                        child: Wrap(
-                          children: skills.map((e) => PillToggleButton(text: e, onPressed: (value){
-                            if(value){
-                              onSkillAdded(e);
-                            }
-                            else{
-                              onSkillRemoved(e);
-                            }
-                          })).toList(),
-                        ),
-                      )
-                    ],
-                  )
+                  FutureBuilder(
+                      future: Api.getSkills(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData)
+                          return SpinKitCircle(
+                            color: kPrimaryColor,
+                          );
+                        return Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Skills',
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontWeight: FontWeight.w800),
+                            ),
+                            SingleChildScrollView(
+                              child: Wrap(
+                                children: snapshot.data
+                                    .map<Widget>((skill) {
+                                          return PillToggleButton(
+                                              text: skill.name,
+                                              onPressed: (value) {
+                                                if (value) {
+                                                  onSkillAdded(skill.id);
+                                                } else {
+                                                  onSkillRemoved(skill.id);
+                                                }
+                                              });
+                                        })
+                                    .toList(),
+                              ),
+                            )
+                          ],
+                        );
+                      })
                 ],
               ),
             ),

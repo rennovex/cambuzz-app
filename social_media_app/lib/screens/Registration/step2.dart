@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/registration_widget_element.dart';
 import 'package:social_media_app/widgets/Registration/registration_screen_skeleton.dart';
 import 'package:social_media_app/widgets/Registration/registration_step_top.dart';
@@ -7,11 +10,17 @@ import 'package:social_media_app/widgets/Registration/registration_step_top.dart
 class step2 extends StatelessWidget {
   final Function primaryButtonOnPressed;
   final Function onBackButonPressed;
+  final Function onSelectImageButtonPressed;
+  final Function onRemoveImageButtonPressed;
+  final XFile image;
 
   const step2({
     Key key,
+    @required this.image,
     @required this.onBackButonPressed,
     @required this.primaryButtonOnPressed,
+    @required this.onRemoveImageButtonPressed,
+    @required this.onSelectImageButtonPressed
   }) : super(key: key);
 
   @override
@@ -30,7 +39,7 @@ class step2 extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 100,
-              backgroundImage: NetworkImage('https://picsum.photos/200'),
+              backgroundImage:(image==null)?NetworkImage('https://picsum.photos/200'):FileImage(File(image.path)),
             ),
             SizedBox(height: 30),
             Container(
@@ -39,7 +48,9 @@ class step2 extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      onSelectImageButtonPressed();
+                    },
                     child: Text(
                       'Select an image',
                       style: TextStyle(
@@ -54,7 +65,9 @@ class step2 extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        onRemoveImageButtonPressed();
+                      },
                       child: Text(
                         'Remove selected',
                         style: TextStyle(

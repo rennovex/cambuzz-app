@@ -1,14 +1,33 @@
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/event.dart';
 
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/screens/FeedScreen/listPage.dart';
 
 class Api {
-  static Future feedRefresh() async {
-    print('refresh');
+  static Future<ListPage<Post>> getFeedByPage(int page) async {
+    final response = await HttpHelper().getApi('/feed/$page');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Post> posts = [];
+
+    json.forEach((post) {
+      return posts.add(Post.fromJson(post));
+    });
+    print('Fetched page $page  from Api');
+    print(posts);
+
+    return ListPage(itemList: posts);
   }
 
   // Get Feed from Api
@@ -42,6 +61,44 @@ class Api {
     final json = jsonDecode(response.body);
     User user = User.fromJson(json);
     return user;
+  }
+
+  static Future<User> getUserWithId(String userId) async {
+    final response = await HttpHelper().getApi('/users/$userId');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body);
+    User user = User.fromJson(json);
+    return user;
+  }
+
+  //Get community from Api
+  static Future<Community> getCommunity() async {
+    final response = await HttpHelper().getApi('/communities');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+    final json = jsonDecode(response.body) as Map;
+
+    Community community = Community.fromJson(json);
+    // print(community.name);
+    return community;
+  }
+
+  static Future<Community> getCommunityWithId(String id) async {
+    final response = await HttpHelper().getApi('/communities/$id');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+    final json = jsonDecode(response.body) as Map;
+
+    Community community = Community.fromJson(json);
+    return community;
   }
 
   //Get Events from Api
@@ -199,6 +256,43 @@ class Api {
 
     if (response.statusCode != 201) {
       throw 'Not posted ' + response.body;
+    }
+  }
+
+  static Future<List<User>> getBlocked() async {
+    final response = await HttpHelper().getApi('/users/blocked');
+
+    if (response.statusCode != 200) {
+      throw 'Events not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    if (json.isEmpty) {
+      print('No Accounts Blocked');
+      return null;
+    }
+
+    final List<User> blocked = [];
+
+    json.forEach((e) {
+      blocked.add(User.fromJson(e));
+    });
+    print('Fetched blocked from API');
+    print(blocked);
+
+    return blocked;
+  }
+
+  static Future unBlock(String id) async {
+    final response = await HttpHelper().delete(
+      uri: '/users/block/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t unblock !');
+      throw 'Could not unblock' + response.body;
     }
   }
 }

@@ -13,10 +13,11 @@ class UserTrending extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     trendingUserPosts = Api.getTrendingUserPosts();
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      height: 300,
+      // height: 300,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         child: FutureBuilder(
@@ -32,49 +33,95 @@ class UserTrending extends StatelessWidget {
                 ),
               );
             }
-            return Row(
+            // return Row(
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //       flex: 8,
+            //       child: TrendingUserItem(
+            //         height: 121.0,
+            //         width: 121.0,
+            //         ranking: Text('2'),
+            //         post: snapshot.data[1],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 5,
+            //     ),
+            //     Expanded(
+            //       flex: 9,
+            //       child: TrendingUserItem(
+            //         height: 145.0,
+            //         width: 140.0,
+            //         ranking: Icon(
+            //           MdiIcons.crown,
+            //           size: 30,
+            //         ),
+            //         post: snapshot.data[0],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 5,
+            //     ),
+            //     Expanded(
+            //       flex: 8,
+            //       child: TrendingUserItem(
+            //         height: 121.0,
+            //         width: 121.0,
+            //         ranking: Text('3'),
+            //         post: snapshot.data[2],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // );
+            return Column(
               children: [
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  flex: 8,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: TrendingUserItem(
-                    height: 121.0,
-                    width: 121.0,
-                    ranking: Text('2'),
-                    post: snapshot.data[1],
-                  ),
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Expanded(
-                  flex: 9,
-                  child: TrendingUserItem(
-                    height: 145.0,
-                    width: 140.0,
-                    ranking: Icon(
-                      MdiIcons.crown,
-                      size: 30,
-                    ),
+                    height: 250.0,
+                    width: double.infinity,
                     post: snapshot.data[0],
+                    ranking: Text('1'),
                   ),
                 ),
-                SizedBox(
-                  width: 5,
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TrendingUserItem(
+                        height: 200.0,
+                        width: double.infinity,
+                        post: snapshot.data[1],
+                        ranking: Text('2'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TrendingUserItem(
+                        height: 200.0,
+                        width: double.infinity,
+                        post: snapshot.data[2],
+                        ranking: Text('3'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 8,
-                  child: TrendingUserItem(
-                    height: 121.0,
-                    width: 121.0,
-                    ranking: Text('3'),
-                    post: snapshot.data[2],
-                  ),
-                ),
                 SizedBox(
-                  width: 10,
+                  height: 10,
                 ),
               ],
             );

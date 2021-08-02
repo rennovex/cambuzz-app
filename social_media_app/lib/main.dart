@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -5,8 +6,13 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
+import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
+import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
+import 'package:social_media_app/screens/auth_screen.dart';
+import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
-import 'package:social_media_app/screens/feed_screen.dart';
+import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
@@ -43,21 +49,29 @@ class MyApp extends StatelessWidget {
           //   body2: BodySecondaryTextStyle,
           // )
         ),
-        home:RegistrationScreen()
-        // home: StreamBuilder(
-        //   stream: FirebaseAuth.instance.authStateChanges(),
-        //   builder: (context, snapshot) {
-        //     final provider = Provider.of<GoogleSignInProvider>(context);
+        // home:RegistrationScreen()
+        // initialRoute: '/',
+        routes: {
+          // '/': (ctx) => PasswordOverview(),
+          CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
+          BlockedScreen.routeName: (ctx) => BlockedScreen(),
+          AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
+        },
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            final provider = Provider.of<GoogleSignInProvider>(context);
 
-        //     if (provider.isSigningIn) {
-        //       return buildLoading();
-        //     } else if (snapshot.hasData) {
-        //       return MyHomePage();
-        //     } else {
-        //       return AuthScreen();
-        //     }
-        //   },
-        // ),
+            if (provider.isSigningIn) {
+              return buildLoading();
+            } else if (snapshot.hasData) {
+              return MyHomePage();
+            } else {
+              // print(snapshot.data);
+              return AuthScreen();
+            }
+          },
+        ),
       ),
     );
   }
@@ -89,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _pages = [
       FeedScreen(),
-      ProfileScreen.user(),
+      UserProfileScreen(),
       TrendingScreen(),
       EventScreen(),
     ];
@@ -124,9 +138,16 @@ class _MyHomePageState extends State<MyHomePage> {
         //     ),
         //   ),
         //   leading: IconButton(
-        //     icon: Icon(Icons.search),
+        //     icon: CircleAvatar(
+        //       backgroundImage: NetworkImage(
+        //         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80',
+        //       ),
+        //       radius: 19,
+        //     ),
         //     onPressed: () {},
         //   ),
+        //   title: Text('CamBuzz'),
+        //   centerTitle: true,
         //   actions: [
         //     IconButton(
         //       icon: Icon(Icons.near_me),

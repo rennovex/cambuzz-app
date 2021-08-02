@@ -252,15 +252,33 @@ class _EventScreenState extends State<EventScreen>
       child: Scaffold(
         body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                child: Text(
+                  'Filter events',
+                  style: kTitleTextStyle,
+                ),
+              ),
               SizedBox(
-                height: 200,
+                height: 136,
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemCount: 10,
                   shrinkWrap: true,
-                  itemBuilder: (_, ind) => Card(
-                    child: Image.network('https://picsum.photos/536/354'),
+                  itemBuilder: (_, ind) => Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: Image.network(
+                        'https://picsum.photos/536/354',
+                        height: 136,
+                        width: 112,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
               ),

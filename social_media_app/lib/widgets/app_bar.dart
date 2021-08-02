@@ -36,6 +36,7 @@ class CustomAppBar extends StatelessWidget {
                   ),
                   Expanded(
                     child: TextField(
+                      enabled: false,
                       style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                           border: OutlineInputBorder(

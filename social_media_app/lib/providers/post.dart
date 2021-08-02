@@ -6,6 +6,7 @@ import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/widgets/post_item.dart';
 
 class Post with ChangeNotifier {
   User user;
@@ -36,8 +37,8 @@ class Post with ChangeNotifier {
     this.isLiked = false,
   }) {
     this.isLiked = liked ?? false;
-    this.likeCount = likes.length;
-    this.commentCount = comments.length;
+    this.likeCount = likes?.length ?? 0;
+    this.commentCount = comments?.length ?? 0;
   }
 
   String get howLongAgo {
@@ -114,6 +115,8 @@ class Post with ChangeNotifier {
   }
 
   factory Post.fromJson(json) {
+    // if(json.containsKey)
+    // if (json['user'] == null) return Post();
     var user = User.fromJson(json['user']);
 
     if (json['postType'] == 'userPost') {
@@ -166,6 +169,13 @@ class Post with ChangeNotifier {
   }
 
   void postcomment({String id, String comment}) async {
+    comments.add(
+      Comment(
+        text: comment,
+        user: user,
+      ),
+    );
+    notifyListeners();
     final response = await HttpHelper()
         .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 

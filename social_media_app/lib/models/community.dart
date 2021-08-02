@@ -9,14 +9,16 @@ enum ProfileType {
 
 class Community {
   final ProfileType profileType = ProfileType.CommunityProfile;
+  final String uid;
   final String name;
   final String image;
   final String coverImage;
-  final List<User> members;
-  final List<Event> events;
-  final List<User> followers;
+  final List members;
+  final List events;
+  final List followers;
 
   Community({
+    @required this.uid,
     @required this.name,
     @required this.image,
     @required this.coverImage,
@@ -29,6 +31,7 @@ class Community {
     Community community;
     if (json.containsKey('members') && json.containsKey('events')) {
       community = new Community(
+        uid: json['_id'],
         name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
@@ -37,6 +40,7 @@ class Community {
       );
     } else {
       community = new Community(
+        uid: json['_id'],
         name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],

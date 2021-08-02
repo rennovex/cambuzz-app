@@ -3,10 +3,39 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/post.dart';
+import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
+import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PostItem extends StatelessWidget {
+  final bool disableComments;
+  // final Post post;
+
+  PostItem({
+    this.disableComments = false,
+    // @required this.post,
+    Key key,
+  }) : super(key: key);
+
+  void showUser(context, id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserProfileScreen(userId: id),
+      ),
+    );
+  }
+
+  void showCommunity(context, id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CommunityProfileScreen(uid: id),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final post = Provider.of<Post>(context);
@@ -22,10 +51,13 @@ class PostItem extends StatelessWidget {
           children: [
             Row(
               children: [
-                CircleAvatar(
-                  radius: 21,
-                  backgroundImage: CachedNetworkImageProvider(
-                    post.user.image,
+                GestureDetector(
+                  onTap: () => showUser(context, post.user.uid),
+                  child: CircleAvatar(
+                    radius: 21,
+                    backgroundImage: CachedNetworkImageProvider(
+                      post.user?.image ?? '',
+                    ),
                   ),
                 ),
                 SizedBox(width: 10),
@@ -36,12 +68,19 @@ class PostItem extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            post.isUserPost()
-                                ? post.user.name
-                                : '\$' + post.community.name,
-                            style: kPostHeaderTextStyle,
-                            // textAlign: TextAlign.start,
+                          GestureDetector(
+                            onTap: () {
+                              post.isUserPost()
+                                  ? showUser(context, post.user.uid)
+                                  : showCommunity(context, post.community.uid);
+                            },
+                            child: Text(
+                              post.isUserPost()
+                                  ? post.user.name
+                                  : '\$' + post.community.name,
+                              style: kPostHeaderTextStyle,
+                              // textAlign: TextAlign.start,
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -109,8 +148,8 @@ class PostItem extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   child: CachedNetworkImage(
                     imageUrl: post.postImg,
-                    placeholder: (context, url) =>
-                        Center(child: CircularProgressIndicator()),
+                    // placeholder: (context, url) =>
+                    //     Center(child: CircularProgressIndicator()),
                     width: double.infinity,
                     height: 350,
                     fit: BoxFit.cover,
@@ -118,8 +157,11 @@ class PostItem extends StatelessWidget {
                 ),
               ),
             if (!post.isImagePost())
-              Container(
-                child: Text(post.postText),
+              GestureDetector(
+                onDoubleTap: () => post.toggleLike(post.id),
+                child: Container(
+                  child: Text(post.postText),
+                ),
               ),
             SizedBox(
               height: 10,
@@ -181,11 +223,13 @@ class PostItem extends StatelessWidget {
                       icon: Icon(
                         MdiIcons.comment,
                       ),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PostViewScreen(post)),
-                      ),
+                      onPressed: disableComments
+                          ? null
+                          : () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => PostViewScreen(post)),
+                              ),
                     ),
                     SizedBox(
                       width: 4,

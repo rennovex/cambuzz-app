@@ -1,10 +1,8 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/Global/globals.dart';
-import 'package:social_media_app/models/secureStorage.dart';
 
 class HttpHelper {
   static const serverUrl =

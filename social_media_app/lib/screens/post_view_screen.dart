@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
@@ -28,7 +29,9 @@ class PostViewScreen extends StatelessWidget {
                     children: [
                       ChangeNotifierProvider.value(
                         value: post,
-                        child: PostItem(),
+                        child: PostItem(
+                          disableComments: true,
+                        ),
                       ),
                       Text('Comments'),
                       ListView.builder(
@@ -134,20 +137,16 @@ class CommentItem extends StatelessWidget {
       margin: EdgeInsets.all(8),
       elevation: 3,
       child: ListTile(
-        contentPadding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-        isThreeLine: true,
+        // isThreeLine: true,
         leading: CircleAvatar(
           backgroundImage: CachedNetworkImageProvider(comment.user.image),
           radius: 22,
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(comment.user.userName),
-            // Text('7 min ago'),
-          ],
+        title: Text(comment.user.userName),
+        subtitle: Text(
+          '${comment.text}',
+          style: kSubtitleTextStyle,
         ),
-        subtitle: Text('${comment.text}'),
         trailing: IconButton(
           icon: Icon(Icons.more_vert),
           onPressed: () {},

@@ -11,6 +11,7 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
+import 'package:social_media_app/widgets/profile_settings.dart';
 
 class ProfileScreen extends StatefulWidget {
   User user;
@@ -67,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                 Container(
                   width: 200,
                   child: Text(
-                    '${widget.isUserProfile ? widget.user?.bio : ''}',
+                    '${widget.isUserProfile ? widget.user.bio ?? '' : ''}',
                     maxLines: 2,
                     textAlign: TextAlign.center,
                   ),
@@ -87,8 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       color: Colors.blue,
                     ),
                     Text(
-                      '${widget.isUserProfile ? widget.user?.followers : widget.community?.followers} Followers' ??
-                          0,
+                      '${widget.isUserProfile ? widget.user?.followers ?? 0 : widget.community?.followers ?? 0} Followers',
                       style: kProfileLabel,
                     ),
                   ],
@@ -107,12 +107,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     if (!widget.isUserProfile)
                       Text(
-                        '${widget.community?.members} Members' ?? 0,
+                        '${widget.community?.members ?? 0} Members',
                         style: kProfileLabel,
                       ),
                     if (widget.isUserProfile)
                       Text(
-                        '${widget.user?.likes} Likes' ?? 0,
+                        '${widget.user?.likes ?? 0} Likes',
                         style: kProfileLabel,
                       ),
                   ],
@@ -131,12 +131,12 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     if (!widget.isUserProfile)
                       Text(
-                        '${widget.community?.events} Events' ?? 0,
+                        '${widget.community?.events ?? 0} Events',
                         style: kProfileLabel,
                       ),
                     if (widget.isUserProfile)
                       Text(
-                        '${widget.user?.achievements} Achievements' ?? 0,
+                        '${widget.user?.achievements ?? 0} Achievements',
                         style: kProfileLabel,
                       ),
                   ],
@@ -226,6 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen>
             SizedBox(
               height: 20,
             ),
+            ProfileSettings(),
             Row(
               children: [
                 SizedBox(
@@ -248,6 +249,5 @@ class _ProfileScreenState extends State<ProfileScreen>
   }
 
   @override
-  // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
 }

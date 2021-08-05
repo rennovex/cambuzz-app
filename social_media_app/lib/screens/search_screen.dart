@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/search_filters.dart';
 import 'package:social_media_app/widgets/search_results.dart';
@@ -10,6 +11,7 @@ enum FilterType {
 }
 
 class SearchScreen extends StatefulWidget {
+  static const routeName = '/search';
   const SearchScreen({Key key}) : super(key: key);
 
   @override
@@ -22,7 +24,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _filterType = FilterType.All;
     super.initState();
   }
@@ -38,37 +39,124 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+          appBar: buildAppBar(context),
           body: CustomPaint(
-        // size: MediaQuery.of(context).size,
-        painter: SearchPainter(),
+            // size: MediaQuery.of(context).size,
+            painter: SearchPainter(),
 
-        child: ConstrainedBox(
-          constraints:
-              BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-          child: SingleChildScrollView(
-            child: Column(
-              // mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomAppBar(),
-                Container(
-                  margin: EdgeInsets.only(
-                    top: 20,
-                    left: 20,
-                    bottom: 10,
-                  ),
-                  child: Text(
-                    'Filters',
-                    style: kSearchTitle,
-                  ),
+            child: ConstrainedBox(
+              constraints:
+                  BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+              child: SingleChildScrollView(
+                child: Column(
+                  // mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // CustomAppBar(),
+                    Container(
+                      margin: EdgeInsets.only(
+                        top: 20,
+                        left: 20,
+                        bottom: 10,
+                      ),
+                      child: Text(
+                        'Filters',
+                        style: kSearchTitle,
+                      ),
+                    ),
+                    SearchFilters(_filterType, _selectedIndex, setFilter),
+                    if (_filterType == FilterType.Selected) SearchResults(),
+                  ],
                 ),
-                SearchFilters(_filterType, _selectedIndex, setFilter),
-                if (_filterType == FilterType.Selected) SearchResults(),
-              ],
+              ),
             ),
-          ),
+          )),
+    );
+  }
+}
+
+AppBar buildAppBar(BuildContext context) {
+  return AppBar(
+    toolbarHeight: 50,
+    title: GestureDetector(
+      onTap: () async {
+        await showSearch(
+          context: context,
+          delegate: CustomSearchDelegate(),
+        );
+      },
+      child: Container(
+        height: 38,
+        decoration: BoxDecoration(
+            color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.search),
+            ),
+            Text('Search'),
+          ],
         ),
-      )),
+      ),
+    ),
+  );
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List searchResult;
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () => query = '',
+        icon: Icon(
+          Icons.clear,
+        ),
+      )
+    ];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () => close(context, null),
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return ListView.builder(
+      itemCount: searchResult.length,
+      itemBuilder: (_, ind) => ListTile(
+        title: Text(searchResult[ind]['name']),
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(searchResult[ind]['image']),
+        ),
+        onTap: () => close(context, searchResult[ind]),
+      ),
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return FutureBuilder(
+      future: Api.getCommunitySearch(key: query),
+      builder: (_, snapshot) {
+        if (!snapshot.hasData) return Center(child: Text('No data'));
+        searchResult = snapshot.data;
+        return ListView.builder(
+          itemCount: snapshot.data.length,
+          itemBuilder: (_, ind) => ListTile(
+            title: Text(snapshot.data[ind]['name']),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(snapshot.data[ind]['image']),
+            ),
+            onTap: () => close(context, snapshot.data[ind]),
+          ),
+        );
+      },
     );
   }
 }

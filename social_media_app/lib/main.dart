@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
@@ -16,6 +17,7 @@ import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 
@@ -57,6 +59,7 @@ class MyApp extends StatelessWidget {
           CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
+          SearchScreen.routeName: (ctx) => SearchScreen(),
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
@@ -130,6 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
     return FutureBuilder(
         future: Api.getUser(),
         builder: (context, snapshot) {
+          if (!snapshot.hasData)
+            return Container(
+              child: SpinKitCircle(
+                color: kPrimaryColor,
+              ),
+            );
           if (snapshot.data == null && !registrationJustCompleted)
             return RegistrationScreen(true, email: '',
                 onRegistrationComplete: () {

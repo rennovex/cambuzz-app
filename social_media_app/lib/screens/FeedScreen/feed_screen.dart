@@ -5,6 +5,7 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/paged_feed_list_view.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -31,6 +32,11 @@ class _FeedScreenState extends State<FeedScreen>
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () =>
+                Navigator.pushNamed(context, SearchScreen.routeName),
+          ),
           actions: [
             TextButton(
               onPressed: () =>

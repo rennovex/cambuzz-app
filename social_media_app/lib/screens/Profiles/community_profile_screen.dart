@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
@@ -33,9 +34,14 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: FutureBuilder(
+    return SafeArea(
+      child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.transparent,
+        ),
+        body: FutureBuilder(
           future: future,
           builder: (BuildContext context, AsyncSnapshot<Community> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {

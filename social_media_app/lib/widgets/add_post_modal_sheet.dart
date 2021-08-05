@@ -251,7 +251,12 @@ class _AddPostState extends State<AddPost> {
                         maxLines: 8,
                       ),
                     )
-                  : ImagePickerHelper(chosenImage, setImage),
+                  : ImagePickerHelper(
+                      chosenImage,
+                      setImage,
+                      imageHeight: 0.3,
+                      imageWidth: 0.8,
+                    ),
               Row(
                 children: [
                   Expanded(
@@ -344,8 +349,14 @@ class CustomButton extends StatelessWidget {
 class ImagePickerHelper extends StatefulWidget {
   XFile previousImage;
   Function setImage;
+  final double imageHeight, imageWidth;
 
-  ImagePickerHelper(this.previousImage, this.setImage);
+  ImagePickerHelper(
+    this.previousImage,
+    this.setImage, {
+    this.imageHeight,
+    this.imageWidth,
+  });
 
   @override
   _ImagePickerState createState() => _ImagePickerState();
@@ -388,8 +399,9 @@ class _ImagePickerState extends State<ImagePickerHelper> {
               // mainAxisSize: MainAxisSize.min,
               children: [
                 SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  height:
+                      MediaQuery.of(context).size.height * widget.imageHeight,
+                  width: MediaQuery.of(context).size.width * widget.imageWidth,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
                     child: Image.file(

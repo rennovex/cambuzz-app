@@ -59,9 +59,12 @@ class GoogleSignInProvider with ChangeNotifier {
             currentUser.delete();
             throw 'something bad happened + ${response.body}';
           }
-          // print(response.headers['x-auth-token']);
+
+          final responseDecoded = jsonDecode(response.body);
           SecureStorage.setApiToken(response.headers['x-auth-token']);
-          // apiToken = response.headers['x-auth-token'];
+          SecureStorage.setUid(responseDecoded['_id']);
+          Global.apiToken = response.headers['x-auth-token'];
+          Global.uid = response.headers['_id'];
         } else {
           final response = await HttpHelper().post(uri: '/auth/login', body: {
             'email': '${currentUser.email}',

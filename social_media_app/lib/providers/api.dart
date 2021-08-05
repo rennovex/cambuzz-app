@@ -3,6 +3,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/event.dart';
+import 'package:social_media_app/models/eventType.dart';
 
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/skill.dart';
@@ -26,7 +27,6 @@ class Api {
       return posts.add(Post.fromJson(post));
     });
     print('Fetched page $page  from Api');
-    print(posts);
 
     return ListPage(itemList: posts);
   }
@@ -38,7 +38,7 @@ class Api {
       'userName': user.userName,
       'bio': user.bio ?? '',
       'skills': user.skills ?? [],
-      'fileType':'.jpg'
+      'fileType': '.jpg'
     });
     if (response.statusCode == 201) {
       if (image != null) {
@@ -48,7 +48,8 @@ class Api {
             await HttpHelper().put(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
-          throw 'User could not be created due to image upload error  ' + awsResponse.body;
+          throw 'User could not be created due to image upload error  ' +
+              awsResponse.body;
         }
         print('User is created' + awsResponse.body);
       }
@@ -176,6 +177,57 @@ class Api {
     print('Fetched events from API');
 
     return events;
+  }
+
+  static Future getEventTypes() async {
+    final response = await HttpHelper().getApi('/event-types');
+    if (response.statusCode == 200) {
+      final json = jsonDecode(response.body) as List;
+
+      final List<EventType> eventTypes = [];
+
+      json.forEach((eventType) {
+        eventTypes.add(EventType.fromJson(eventType));
+      });
+      return eventTypes;
+    } else {
+      throw 'error could not get skills';
+    }
+  }
+
+  static Future postEvent({
+    String title,
+    XFile image,
+    String time,
+    String descritpion,
+    String contact,
+    String link,
+    String eventType,
+  }) async {
+    final apiResponse = await HttpHelper().post(uri: '/events', body: {
+      "fileType": ".jpeg",
+      "title": "$title",
+      "time": "$time",
+      "description": "$descritpion",
+      "contact": "$contact",
+      "link": "$link",
+      "eventType": "$eventType"
+    });
+
+    if (apiResponse.statusCode != 201) {
+      throw 'Not posted ' + apiResponse.body;
+    }
+
+    final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
+
+    final awsResponse =
+        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+
+    if (awsResponse.statusCode != 200) {
+      throw 'Not posted ' + awsResponse.body;
+    }
+    print('image is posted' + awsResponse.body);
+    Fluttertoast.showToast(msg: 'Event posted');
   }
 
   //Get Community Trending post from Api

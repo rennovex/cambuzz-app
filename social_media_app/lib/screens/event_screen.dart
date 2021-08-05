@@ -287,6 +287,7 @@ class _EventScreenState extends State<EventScreen>
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
                     return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
                       shrinkWrap: true,
                       itemCount: snapshot.data.length,
                       itemBuilder: (ctx, ind) => GestureDetector(
@@ -342,6 +343,7 @@ class EventItem extends StatelessWidget {
         top: 20,
         left: 10,
         right: 10,
+        bottom: 20,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       elevation: 3,

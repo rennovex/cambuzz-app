@@ -7,13 +7,26 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
-class PostViewScreen extends StatelessWidget {
+class PostViewScreen extends StatefulWidget {
   // static const routeName = '/post-view';
 
   // const PostViewScreen({ Key? key }) : super(key: key);
 
   final Post post;
   PostViewScreen(this.post);
+
+  @override
+  _PostViewScreenState createState() => _PostViewScreenState();
+}
+
+class _PostViewScreenState extends State<PostViewScreen> {
+  Future _future;
+
+  @override
+  void initState() {
+    super.initState();
+    _future = widget.post.getComments();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,24 +41,34 @@ class PostViewScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       ChangeNotifierProvider.value(
-                        value: post,
+                        value: widget.post,
                         child: PostItem(
                           disableComments: true,
                         ),
                       ),
                       Text('Comments'),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: post.commentCount,
-                        itemBuilder: (ctx, ind) =>
-                            CommentItem(Comment.fromJson(post.comments[ind])),
-                      ),
+                      FutureBuilder(
+                          future: _future,
+                          builder: (_, snapshot) {
+                            if (snapshot.hasData) {
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: snapshot.data?.length ?? 0,
+                                itemBuilder: (ctx, ind) => CommentItem(
+                                  Comment.fromJson(snapshot.data[ind]),
+                                ),
+                              );
+                            } else
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                          }),
                     ],
                   ),
                 ),
               ),
-              NewComment(post),
+              NewComment(widget.post),
             ],
           ),
         ),

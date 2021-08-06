@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -23,6 +24,7 @@ class CommunityProfileScreen extends StatefulWidget {
 class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
   Future<Community> future;
   Community community;
+  bool isOwner;
 
   @override
   void initState() {
@@ -60,6 +62,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
               );
             } else {
               community = snapshot.data;
+              isOwner = community.owner.uid == Global.uid ? true : false;
               return SingleChildScrollView(
                 child: Column(
                   // crossAxisAlignment: CrossAxisAlignment.center,
@@ -141,49 +144,51 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                     Row(
                       children: [
                         SizedBox(width: 15),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Edit Community',
-                              textAlign: TextAlign.center,
-                              style: kProfileButtonText,
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              primary: Color.fromRGBO(40, 102, 253, 1),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                width: 1.3,
-                                color: Color.fromRGBO(40, 102, 253, 1),
+                        if (isOwner)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Edit Community',
+                                textAlign: TextAlign.center,
+                                style: kProfileButtonText,
                               ),
-                            ),
+                              style: OutlinedButton.styleFrom(
+                                primary: Color.fromRGBO(40, 102, 253, 1),
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(
+                                  width: 1.3,
+                                  color: Color.fromRGBO(40, 102, 253, 1),
+                                ),
+                              ),
 
-                            // color: Colors.purpleAccent,
+                              // color: Colors.purpleAccent,
+                            ),
                           ),
-                        ),
                         SizedBox(width: 5),
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => showModalBottomSheet<dynamic>(
-                              context: context,
-                              builder: (context) => CommunitySettings(),
-                            ),
-                            child: Text(
-                              'Manage',
-                              textAlign: TextAlign.center,
-                              style: kProfileButtonText,
-                            ),
-                            // color: Colors.purpleAccent,
-                            style: OutlinedButton.styleFrom(
-                              primary: Color.fromRGBO(225, 37, 255, 1),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                width: 1.3,
-                                color: Color.fromRGBO(225, 37, 255, 1),
+                        if (isOwner)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => showModalBottomSheet<dynamic>(
+                                context: context,
+                                builder: (context) => CommunitySettings(),
+                              ),
+                              child: Text(
+                                'Manage',
+                                textAlign: TextAlign.center,
+                                style: kProfileButtonText,
+                              ),
+                              // color: Colors.purpleAccent,
+                              style: OutlinedButton.styleFrom(
+                                primary: Color.fromRGBO(225, 37, 255, 1),
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(
+                                  width: 1.3,
+                                  color: Color.fromRGBO(225, 37, 255, 1),
+                                ),
                               ),
                             ),
                           ),
-                        ),
                         SizedBox(width: 15),
                       ],
                     ),

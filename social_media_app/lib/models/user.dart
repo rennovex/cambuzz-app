@@ -35,7 +35,7 @@ class User {
       this.skills});
 
   factory User.fromJson(Map<String, dynamic> json) {
-    User user;
+    // User user;
     // if (json.containsKey('following') ?? false) {
     //   user = new User(
     //     uid: json['_id'],
@@ -48,7 +48,7 @@ class User {
     //     likes: json['likes'],
     //   );
     // } else {
-    user = new User(
+    return User(
       uid: json['_id'],
       userName: json['userName'],
       image: json['image'],
@@ -58,6 +58,6 @@ class User {
     // bio: json['bio'],
     //   );
     // }
-    return user;
+    // return user;
   }
 }

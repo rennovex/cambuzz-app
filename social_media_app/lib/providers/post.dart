@@ -182,11 +182,18 @@ class Post with ChangeNotifier {
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
     }
+  }
 
-    // final updatedComments = jsonDecode(response.body);
+  Future getComments() async {
+    final response = await HttpHelper().getApi('/posts/comments/$id');
 
-    // comments = updatedComments;
-    // notifyListeners();
-    // print('commented');
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+    return json;
+    notifyListeners();
+    // return user;
   }
 }

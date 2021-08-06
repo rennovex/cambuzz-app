@@ -10,6 +10,7 @@ enum ProfileType {
 class Community {
   final ProfileType profileType = ProfileType.CommunityProfile;
   final String uid;
+  final User owner;
   final String name;
   final String image;
   final String coverImage;
@@ -22,16 +23,18 @@ class Community {
     @required this.name,
     @required this.image,
     @required this.coverImage,
+    this.owner,
     this.members,
     this.events,
     this.followers,
   });
 
-  static Community fromJson(Map<String, dynamic> json) {
-    Community community;
-    if (json.containsKey('members') && json.containsKey('events')) {
-      community = new Community(
+  factory Community.fromJson(Map<String, dynamic> json) {
+    if (json.containsKey('managers') || json.containsKey('events')) {
+      return Community(
         uid: json['_id'],
+        owner: User.fromJson(json['owner']),
+        // owner: json['owner'],
         name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
@@ -39,14 +42,13 @@ class Community {
         events: json['events'],
       );
     } else {
-      community = new Community(
+      return Community(
+        // owner: User.fromJson(json['owner']),
         uid: json['_id'],
         name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
       );
     }
-
-    return community;
   }
 }

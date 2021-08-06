@@ -123,7 +123,7 @@ class _AddPostState extends State<AddPost> {
                       onPressed: () async {
                         chosenCommunity = await showSearch(
                           context: context,
-                          delegate: CustomSearchDelegate(),
+                          delegate: CustomCommunitySearchDelegate(),
                         );
                         setState(() {});
                       },
@@ -432,7 +432,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
   }
 }
 
-class CustomSearchDelegate extends SearchDelegate {
+class CustomCommunitySearchDelegate extends SearchDelegate {
   List searchResult;
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -473,7 +473,7 @@ class CustomSearchDelegate extends SearchDelegate {
     return FutureBuilder(
       future: Api.getCommunitySearch(key: query),
       builder: (_, snapshot) {
-        if (!snapshot.hasData) return Center(child: Text('No data'));
+        if (!snapshot.hasData) return Center(child: Text('Choose a community'));
         searchResult = snapshot.data;
         return ListView.builder(
           itemCount: snapshot.data.length,

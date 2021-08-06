@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:social_media_app/models/event.dart';
 import 'package:social_media_app/models/trending_post.dart';
 
@@ -168,4 +169,27 @@ final List<Event> events = [
     eventName: 'Event Header',
     tag: 'Hackathon',
   ),*/
+];
+
+final List<Map<String, Object>> filters = [
+  {
+    'name': 'Web Developers',
+    'color': Color.fromRGBO(4, 110, 187, 0.69),
+  },
+  {
+    'name': 'App Developers',
+    'color': Color.fromRGBO(200, 121, 2, 0.78),
+  },
+  {
+    'name': 'Ui Designers',
+    'color': Color.fromRGBO(0, 111, 71, 0.86),
+  },
+  {
+    'name': 'Singers',
+    'color': Color.fromRGBO(74, 2, 165, 0.79),
+  },
+  {
+    'name': 'Dancers',
+    'color': Color.fromRGBO(191, 0, 149, 0.80),
+  },
 ];

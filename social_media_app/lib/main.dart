@@ -65,7 +65,6 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             final provider = Provider.of<GoogleSignInProvider>(context);
-            print(snapshot.data);
 
             if (provider.isSigningIn) {
               return buildLoading();

@@ -35,7 +35,7 @@ class _FeedScreenState extends State<FeedScreen>
           leading: IconButton(
             icon: Icon(Icons.search),
             onPressed: () =>
-                Navigator.pushNamed(context, SearchScreen.routeName),
+                Navigator.of(context).pushNamed(SearchScreen.routeName),
           ),
           actions: [
             TextButton(

@@ -228,7 +228,10 @@ class PostItem extends StatelessWidget {
                           : () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => PostViewScreen(post)),
+                                    builder: (context) =>
+                                        ChangeNotifierProvider.value(
+                                            value: post,
+                                            child: PostViewScreen())),
                               ),
                     ),
                     SizedBox(

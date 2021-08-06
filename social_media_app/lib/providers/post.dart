@@ -169,19 +169,24 @@ class Post with ChangeNotifier {
   }
 
   void postcomment({String id, String comment}) async {
-    comments.add(
-      Comment(
-        text: comment,
-        user: user,
-      ),
-    );
-    notifyListeners();
+    // comments.add(
+    //   Comment(
+    //     text: comment,
+    //     user: user,
+    //     id: 'adadf',
+    //   ),
+    // );
+    // notifyListeners();
     final response = await HttpHelper()
         .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
     }
+    final responseDecoded = jsonDecode(response.body) as List;
+    comments = responseDecoded;
+    commentCount++;
+    notifyListeners();
   }
 
   Future getComments() async {

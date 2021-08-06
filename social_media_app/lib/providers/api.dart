@@ -404,4 +404,23 @@ class Api {
       throw 'Could not unblock' + response.body;
     }
   }
+
+  static Future getSearch({String key}) async {
+    final response = await HttpHelper().getApi('/search/$key');
+    if (response.statusCode != 200) {
+      throw 'Not Commented ' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List searchResults = [];
+
+    json.forEach((result) {
+      return searchResults.add(result);
+    });
+
+    print('Fetched Search results from Api');
+
+    return searchResults;
+  }
 }

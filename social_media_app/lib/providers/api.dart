@@ -13,7 +13,7 @@ import 'package:social_media_app/screens/FeedScreen/listPage.dart';
 
 class Api {
   static Future<ListPage<Post>> getFeedByPage(int page) async {
-    final response = await HttpHelper().getApi('/feed/$page');
+    final response = await HttpHelper.get('/feed/$page');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -32,7 +32,7 @@ class Api {
   }
 
   static Future postUser(User user, XFile image) async {
-    final response = await HttpHelper().post(uri: '/users', body: {
+    final response = await HttpHelper.post(uri: '/users', body: {
       'name': user.name,
       'email': user.email,
       'userName': user.userName,
@@ -45,7 +45,7 @@ class Api {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
 
         final awsResponse =
-            await HttpHelper().put(uri: '$awsUploadLink', body: image);
+            await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
           throw 'User could not be created due to image upload error  ' +
@@ -62,11 +62,11 @@ class Api {
   }
 
   static Future getSkills() async {
-    final response = await HttpHelper().getApi('/skills');
+    final response = await HttpHelper.get('/skills');
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;
 
-      final List<Skill> skills = [];
+      final List skills = [];
 
       json.forEach((skill) {
         skills.add(Skill.fromJson(skill));
@@ -79,7 +79,7 @@ class Api {
 
   static Future isUsernameAvailable(String userName) async {
     final response =
-        await HttpHelper().getApi('/users/username-available/' + userName);
+        await HttpHelper.get('/users/username-available/' + userName);
     if (response.statusCode == 409) {
       return false;
     } else if (response.statusCode == 200) {
@@ -90,7 +90,7 @@ class Api {
 
   // Get Feed from Api
   static Future getFeed() async {
-    final response = await HttpHelper().getApi('/feed');
+    final response = await HttpHelper.get('/feed');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -110,7 +110,7 @@ class Api {
 
   //Get User from Api
   static Future<User> getUser() async {
-    final response = await HttpHelper().getApi('/users');
+    final response = await HttpHelper.get('/users');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -122,7 +122,7 @@ class Api {
   }
 
   static Future<User> getUserWithId(String userId) async {
-    final response = await HttpHelper().getApi('/users/$userId');
+    final response = await HttpHelper.get('/users/$userId');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -135,7 +135,7 @@ class Api {
 
   //Get community from Api
   static Future<Community> getCommunity() async {
-    final response = await HttpHelper().getApi('/communities');
+    final response = await HttpHelper.get('/communities');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -148,7 +148,7 @@ class Api {
   }
 
   static Future<Community> getCommunityWithId(String id) async {
-    final response = await HttpHelper().getApi('/communities/$id');
+    final response = await HttpHelper.get('/communities/$id');
 
     if (response.statusCode != 200) {
       throw response.body;
@@ -161,7 +161,7 @@ class Api {
 
   //Get Events from Api
   static Future<List<Event>> getEvents() async {
-    final response = await HttpHelper().getApi('/events/all');
+    final response = await HttpHelper.get('/events/all');
 
     if (response.statusCode != 200) {
       throw 'Events not fetched' + response.body;
@@ -180,7 +180,7 @@ class Api {
   }
 
   static Future getEventTypes() async {
-    final response = await HttpHelper().getApi('/event-types');
+    final response = await HttpHelper.get('/event-types');
     if (response.statusCode == 200) {
       final json = jsonDecode(response.body) as List;
 
@@ -204,7 +204,7 @@ class Api {
     String link,
     String eventType,
   }) async {
-    final apiResponse = await HttpHelper().post(uri: '/events', body: {
+    final apiResponse = await HttpHelper.post(uri: '/events', body: {
       "fileType": ".jpeg",
       "title": "$title",
       "time": "$time",
@@ -221,7 +221,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -232,7 +232,7 @@ class Api {
 
   //Get Community Trending post from Api
   static Future<List<Post>> getTrendingCommunityPosts() async {
-    final response = await HttpHelper().getApi('/trending/community-posts/all');
+    final response = await HttpHelper.get('/trending/community-posts/all');
 
     if (response.statusCode != 200) {
       print('error');
@@ -254,7 +254,7 @@ class Api {
 
   //Get user Trending post from Api
   static Future<List<Post>> getTrendingUserPosts() async {
-    final response = await HttpHelper().getApi('/trending/user-posts/all');
+    final response = await HttpHelper.get('/trending/user-posts/all');
 
     if (response.statusCode != 200) {
       print('error');
@@ -277,8 +277,8 @@ class Api {
 
   // Post comments to APi
   static Future postcomment({String id, String comment}) async {
-    final response = await HttpHelper()
-        .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
+    final response = await HttpHelper.post(
+        uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
@@ -286,7 +286,7 @@ class Api {
   }
 
   static Future getCommunitySearch({String key}) async {
-    final response = await HttpHelper().getApi('/communities/search/$key');
+    final response = await HttpHelper.get('/communities/search/$key');
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
     }
@@ -306,7 +306,7 @@ class Api {
 
   static Future postCommunityTextPost(
       {String id, String title, String text}) async {
-    final response = await HttpHelper().post(
+    final response = await HttpHelper.post(
         uri: '/posts/community/$id/text',
         body: {"title": "$title", "postText": "$text"});
 
@@ -317,7 +317,7 @@ class Api {
 
   static Future postCommunityImagePost(
       {String id, XFile image, String title}) async {
-    final apiResponse = await HttpHelper().post(
+    final apiResponse = await HttpHelper.post(
         uri: '/posts/community/$id/image',
         body: {"title": "$title", "fileType": ".jpeg"});
 
@@ -328,7 +328,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -339,7 +339,7 @@ class Api {
 
   static Future postUserImagePost(
       {String id, XFile image, String title}) async {
-    final apiResponse = await HttpHelper().post(
+    final apiResponse = await HttpHelper.post(
         uri: '/posts/user/image',
         body: {"title": "$title", "fileType": ".jpeg"});
 
@@ -350,7 +350,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper().put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -359,7 +359,7 @@ class Api {
   }
 
   static Future postUserTextPost({String title, String text}) async {
-    final response = await HttpHelper().post(
+    final response = await HttpHelper.post(
         uri: '/posts/user/text',
         body: {"title": "$title", "postText": "$text"});
 
@@ -369,7 +369,7 @@ class Api {
   }
 
   static Future<List<User>> getBlocked() async {
-    final response = await HttpHelper().getApi('/users/blocked');
+    final response = await HttpHelper.get('/users/blocked');
 
     if (response.statusCode != 200) {
       throw 'Events not fetched' + response.body;
@@ -394,7 +394,7 @@ class Api {
   }
 
   static Future unBlock(String id) async {
-    final response = await HttpHelper().delete(
+    final response = await HttpHelper.delete(
       uri: '/users/block/$id',
       body: {},
     );
@@ -406,7 +406,7 @@ class Api {
   }
 
   static Future getSearch({String key}) async {
-    final response = await HttpHelper().getApi('/search/$key');
+    final response = await HttpHelper.get('/search/$key');
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
     }
@@ -416,7 +416,32 @@ class Api {
     final List searchResults = [];
 
     json.forEach((result) {
-      return searchResults.add(result);
+      if (result.containsKey('userName'))
+        return searchResults.add(User.fromJson(result));
+      else
+        return searchResults.add(Community.fromJson(result));
+    });
+
+    print('Fetched Search results from Api');
+
+    return searchResults;
+  }
+
+  static Future getSearchWithFilter({String skillId, String key}) async {
+    final response = await HttpHelper.get('/search/filter/id/$skillId/$key');
+    if (response.statusCode != 200) {
+      throw 'Not Commented ' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List searchResults = [];
+
+    json.forEach((result) {
+      if (result.containsKey('userName'))
+        return searchResults.add(User.fromJson(result));
+      else
+        return searchResults.add(Community.fromJson(result));
     });
 
     print('Fetched Search results from Api');

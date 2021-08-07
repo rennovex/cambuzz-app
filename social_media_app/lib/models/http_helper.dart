@@ -10,7 +10,7 @@ class HttpHelper {
 
   // var _apiToken;
 
-  Future<http.Response> put({String uri, XFile body}) async {
+  static Future<http.Response> put({String uri, XFile body}) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse('$uri');
     return http.put(
@@ -19,7 +19,8 @@ class HttpHelper {
     );
   }
 
-  Future<http.Response> post({String uri, Map<String, dynamic> body}) async {
+  static Future<http.Response> post(
+      {String uri, Map<String, dynamic> body}) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse(serverUrl + '$uri');
     return http.post(
@@ -33,7 +34,8 @@ class HttpHelper {
     );
   }
 
-  Future<http.Response> delete({String uri, Map<String, dynamic> body}) async {
+  static Future<http.Response> delete(
+      {String uri, Map<String, dynamic> body}) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse(serverUrl + '$uri');
     return http.delete(
@@ -47,7 +49,7 @@ class HttpHelper {
     );
   }
 
-  Future<http.Response> getApi(String uri) async {
+  static Future<http.Response> get(String uri) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse(serverUrl + '$uri');
     return await http.get(

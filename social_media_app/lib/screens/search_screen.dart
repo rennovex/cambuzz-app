@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 // import 'package:social_media_app/widgets/searchfilters.dart';
-import 'package:social_media_app/widgets/search_filters.dart';
 import 'package:social_media_app/widgets/search_results.dart';
 
 import '../dummy_data.dart';
@@ -22,13 +22,15 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  var _filterType;
-  var _selectedIndex;
+  Future _future;
+  Skill _filterType;
+  int _selectedIndex;
 
   @override
   void initState() {
-    _filterType = FilterType.All;
     super.initState();
+    // _filterType = FilterType.All;
+    _future = Api.getSkills();
   }
 
   void setFilter(filter, index) {
@@ -67,7 +69,53 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: kSearchTitle,
                     ),
                   ),
-                  SearchFilters(_filterType, _selectedIndex, setFilter),
+                  FutureBuilder(
+                      future: _future,
+                      builder: (_, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        } else {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: snapshot.data?.length ?? 0,
+                            itemBuilder: (_, ind) => Card(
+                              margin: EdgeInsets.symmetric(
+                                vertical: 5,
+                                horizontal: 15,
+                              ),
+                              color: filters[ind]['color'],
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(13),
+                              ),
+                              child: ListTile(
+                                onTap: () {
+                                  // setFilter(FilterType.Selected, ind);
+                                  showSearch(
+                                      context: context,
+                                      delegate: CustomSearchDelegate(
+                                          filterType: snapshot.data[ind],
+                                          selectedIndex: ind));
+                                },
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                leading: Text(
+                                  '${snapshot.data[ind].name}',
+                                  style: kSearchFilterText,
+                                ),
+                                trailing: Icon(
+                                  Icons.filter_alt,
+                                  color: Colors.white,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      }),
+                  // SearchFilters(_filterType, _selectedIndex, setFilter),
                   // if (_filterType == FilterType.Selected) SearchResults(),
                 ],
               ),
@@ -77,10 +125,45 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+
+  // Widget buildFilters() {
+  //     return
+  // }
 }
+
+// Widget buildFilter(int ind, setFilter) => Card(
+//       margin: EdgeInsets.symmetric(
+//         vertical: 5,
+//         horizontal: 15,
+//       ),
+//       color: filters[ind]['color'],
+//       shape: RoundedRectangleBorder(
+//         borderRadius: BorderRadius.circular(13),
+//       ),
+//       child: ListTile(
+//         onTap: () {
+//           setFilter(FilterType.Selected, ind);
+//           showSearch(
+//               context: context,
+//               delegate: CustomSearchDelegate(
+//                   filterType: FilterType.Selected, selectedIndex: ind));
+//         },
+//         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+//         leading: Text(
+//           '${filters[ind]['name']}',
+//           style: kSearchFilterText,
+//         ),
+//         trailing: Icon(
+//           Icons.filter_alt,
+//           color: Colors.white,
+//           size: 30,
+//         ),
+//       ),
+//     );
 
 AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
   return AppBar(
+    foregroundColor: Colors.black,
     toolbarHeight: 50,
     title: GestureDetector(
       onTap: () async {
@@ -95,7 +178,8 @@ AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
       child: Container(
         height: 38,
         decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(10)),
+            color: Color.fromRGBO(82, 82, 82, 1),
+            borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
             Padding(
@@ -111,10 +195,10 @@ AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
 }
 
 class CustomSearchDelegate extends SearchDelegate {
-  final FilterType filterType;
+  final Skill filterType;
   final selectedIndex;
   CustomSearchDelegate({
-    this.filterType = FilterType.All,
+    this.filterType,
     this.selectedIndex,
   });
   List searchResult;
@@ -144,9 +228,9 @@ class CustomSearchDelegate extends SearchDelegate {
     return ListView.builder(
       itemCount: searchResult.length,
       itemBuilder: (_, ind) => ListTile(
-        title: Text(searchResult[ind]['name']),
+        title: Text(searchResult[ind].name),
         leading: CircleAvatar(
-          backgroundImage: NetworkImage(searchResult[ind]['image']),
+          backgroundImage: NetworkImage(searchResult[ind]?.image ?? ''),
         ),
         onTap: () => close(context, searchResult[ind]),
       ),
@@ -156,11 +240,13 @@ class CustomSearchDelegate extends SearchDelegate {
   @override
   Widget buildSuggestions(BuildContext context) {
     return FutureBuilder(
-      future: Api.getCommunitySearch(key: query),
+      future: filterType == null
+          ? Api.getSearch(key: query)
+          : Api.getSearchWithFilter(skillId: filterType.id, key: query),
       builder: (_, snapshot) {
         if (!snapshot.hasData) {
           // return SearchScreen();
-          if (filterType == FilterType.Selected)
+          if (filterType != null)
             return Card(
               margin: EdgeInsets.symmetric(
                 vertical: 5,
@@ -188,7 +274,7 @@ class CustomSearchDelegate extends SearchDelegate {
                 ),
               ),
             );
-          if (filterType == FilterType.All)
+          if (filterType == null)
             return Center(
               child: Text('No Data'),
             );
@@ -197,13 +283,13 @@ class CustomSearchDelegate extends SearchDelegate {
         return SingleChildScrollView(
           child: Column(
             children: [
-              if (filterType == FilterType.Selected)
+              if (filterType != null)
                 Card(
                   margin: EdgeInsets.symmetric(
                     vertical: 5,
                     horizontal: 15,
                   ),
-                  color: filters[filterType == FilterType.Selected
+                  color: filters[filterType != null
                       ? selectedIndex
                       : selectedIndex]['color'],
                   shape: RoundedRectangleBorder(
@@ -218,7 +304,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: Text(
-                      '${filters[filterType == FilterType.Selected ? selectedIndex : selectedIndex]['name']}',
+                      '${filters[filterType != null ? selectedIndex : selectedIndex]['name']}',
                       style: kSearchFilterText,
                     ),
                     trailing: Icon(
@@ -231,10 +317,12 @@ class CustomSearchDelegate extends SearchDelegate {
               ListView.builder(
                 itemCount: snapshot.data.length,
                 shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (_, ind) => ListTile(
-                  title: Text(snapshot.data[ind]['name']),
+                  title: Text(snapshot.data[ind].name),
                   leading: CircleAvatar(
-                    backgroundImage: NetworkImage(snapshot.data[ind]['image']),
+                    backgroundImage:
+                        NetworkImage(snapshot.data[ind]?.image ?? ''),
                   ),
                   onTap: () => close(context, snapshot.data[ind]),
                 ),
@@ -261,7 +349,7 @@ class SearchPainter extends CustomPainter {
 
     Path ovalPath = Path();
 
-    //Start paint from 30% height to the left
+    //Start paint from 35% height to the left
     ovalPath.moveTo(0, height * 0.35);
 
     //Paint a curve from current position to end

@@ -49,8 +49,7 @@ class GoogleSignInProvider with ChangeNotifier {
         final currentUser = FirebaseAuth.instance.currentUser;
 
         if (authResult.additionalUserInfo.isNewUser) {
-          final response =
-              await HttpHelper().post(uri: '/auth/register', body: {
+          final response = await HttpHelper.post(uri: '/auth/register', body: {
             'email': '${currentUser.email}',
             'uid': '${currentUser.uid}',
           });
@@ -66,7 +65,7 @@ class GoogleSignInProvider with ChangeNotifier {
           Global.apiToken = response.headers['x-auth-token'];
           Global.uid = response.headers['_id'];
         } else {
-          final response = await HttpHelper().post(uri: '/auth/login', body: {
+          final response = await HttpHelper.post(uri: '/auth/login', body: {
             'email': '${currentUser.email}',
             'uid': '${currentUser.uid}',
           });

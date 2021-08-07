@@ -152,11 +152,11 @@ class Post with ChangeNotifier {
     isLiked ? likeCount++ : likeCount--;
     notifyListeners();
     final response = isLiked
-        ? await HttpHelper().post(
+        ? await HttpHelper.post(
             uri: '/posts/like/$postId',
             body: {},
           )
-        : await HttpHelper().delete(
+        : await HttpHelper.delete(
             uri: '/posts/like/$postId',
             body: {},
           );
@@ -177,8 +177,8 @@ class Post with ChangeNotifier {
     //   ),
     // );
     // notifyListeners();
-    final response = await HttpHelper()
-        .post(uri: '/posts/comments/$id', body: {"commentText": "$comment"});
+    final response = await HttpHelper.post(
+        uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;
@@ -190,7 +190,7 @@ class Post with ChangeNotifier {
   }
 
   Future getComments() async {
-    final response = await HttpHelper().getApi('/posts/comments/$id');
+    final response = await HttpHelper.get('/posts/comments/$id');
 
     if (response.statusCode != 200) {
       throw response.body;

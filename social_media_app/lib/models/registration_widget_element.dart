@@ -36,7 +36,7 @@ class RegistrationElement {
                     borderRadius: BorderRadius.circular(10)),
                 child: Center(
                   child: TextButton(
-                    onPressed: (){
+                    onPressed: () {
                       onBackButonPressed();
                     },
                     child: Icon(

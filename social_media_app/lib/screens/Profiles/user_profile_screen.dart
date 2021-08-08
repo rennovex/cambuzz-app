@@ -93,7 +93,7 @@ class _userProfileState extends State<UserProfileScreen>
                             color: Colors.blue,
                           ),
                           Text(
-                            '${user.followers?.length ?? 0} Followers',
+                            '${user.followersCount ?? 0} Followers',
                             style: kProfileLabel,
                           ),
                         ],
@@ -117,7 +117,7 @@ class _userProfileState extends State<UserProfileScreen>
                             color: Colors.purpleAccent,
                           ),
                           Text(
-                            '${user.following?.length ?? 0} Following',
+                            '${user.followingCount ?? 0} Following',
                             style: kProfileLabel,
                           ),
                         ],

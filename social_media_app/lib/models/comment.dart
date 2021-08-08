@@ -10,7 +10,7 @@ class Comment {
   factory Comment.fromJson(comment) {
     return Comment(
       id: comment['_id'],
-      user: User.fromJson(comment['user']),
+      user: User.fromJsonAbstract(comment['user']),
       text: comment['text'],
     );
   }

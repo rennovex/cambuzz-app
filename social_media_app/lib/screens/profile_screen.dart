@@ -88,7 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       color: Colors.blue,
                     ),
                     Text(
-                      '${widget.isUserProfile ? widget.user?.followers ?? 0 : widget.community?.followers ?? 0} Followers',
+                      '${widget.isUserProfile ? (!widget.user?.isAbstract) ?? 0 : widget.community?.followers ?? 0} Followers',
                       style: kProfileLabel,
                     ),
                   ],

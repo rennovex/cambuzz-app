@@ -13,12 +13,14 @@ class User {
   String image;
   String coverImage;
   String bio;
-  List followers;
-  List following;
+  int followersCount;
+  int followingCount;
   num likes;
   num achievements;
   String email;
   List<String> skills;
+  bool isAbstract;
+  bool isFollowing;
 
   User(
       {@required this.uid,
@@ -27,37 +29,38 @@ class User {
       this.coverImage,
       this.bio,
       @required this.name,
-      this.followers,
-      this.following,
+      @required this.isAbstract,
+      this.followersCount,
+      this.followingCount,
       this.likes,
       this.achievements,
+      this.isFollowing,
       this.email,
       this.skills});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    // User user;
-    // if (json.containsKey('following') ?? false) {
-    //   user = new User(
-    //     uid: json['_id'],
-    //     userName: json['userName'],
-    //     name: json['name'],
-    //     image: json['image'],
-    //     coverImage: json['coverImage'],
-    //     bio: json['bio'],
-    //     following: json['following'],
-    //     likes: json['likes'],
-    //   );
-    // } else {
+  factory User.fromJson(Map<String, dynamic> json){
+    return User(
+        uid: json['_id'],
+        userName: json['userName'],
+        name: json['name'],
+        image: json['image'],
+        coverImage: json['coverImage'],
+        bio: json['bio'],
+        followingCount: json['followingCount'],
+        followersCount: json['followersCount'],
+        likes: json['likes'],
+        isFollowing: json['isFollowing'],
+        isAbstract: false
+      );
+  }
+
+  factory User.fromJsonAbstract(Map<String, dynamic> json) {
     return User(
       uid: json['_id'],
       userName: json['userName'],
       image: json['image'],
       name: json['name'],
+      isAbstract: true
     );
-    // coverImage: json['coverImage'],
-    // bio: json['bio'],
-    //   );
-    // }
-    // return user;
   }
 }

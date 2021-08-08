@@ -386,7 +386,7 @@ class Api {
     final List<User> blocked = [];
 
     json.forEach((e) {
-      blocked.add(User.fromJson(e));
+      blocked.add(User.fromJsonAbstract(e));
     });
     print('Fetched blocked from API');
     print(blocked);

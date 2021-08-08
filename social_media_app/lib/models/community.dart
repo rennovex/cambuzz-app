@@ -33,7 +33,7 @@ class Community {
     if (json.containsKey('managers') || json.containsKey('events')) {
       return Community(
         uid: json['_id'],
-        owner: User.fromJson(json['owner']),
+        owner: User.fromJsonAbstract(json['owner']),
         // owner: json['owner'],
         name: json['name'],
         image: json['image'],

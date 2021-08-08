@@ -117,7 +117,7 @@ class Post with ChangeNotifier {
   factory Post.fromJson(json) {
     // if(json.containsKey)
     // if (json['user'] == null) return Post();
-    var user = User.fromJson(json['user']);
+    var user = User.fromJsonAbstract(json['user']);
 
     if (json['postType'] == 'userPost') {
       return Post.userPost(

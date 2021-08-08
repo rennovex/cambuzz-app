@@ -19,7 +19,7 @@ class SearchItem {
     if (json.containsKey('userName'))
       return SearchItem(
         profileType: ProfileType.UserProfile,
-        user: User.fromJson(json),
+        user: User.fromJsonAbstract(json),
       );
     else
       return SearchItem(

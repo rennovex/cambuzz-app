@@ -29,26 +29,24 @@ class Community {
     this.followers,
   });
 
+  factory Community.fromJsonAbstract(Map<String, dynamic> json) {
+    return Community(
+        uid: json['_id'],
+        name: json['name'],
+        image: json['image'],
+        coverImage: json['coverImage']);
+  }
+
   factory Community.fromJson(Map<String, dynamic> json) {
-    if (json.containsKey('managers') || json.containsKey('events')) {
-      return Community(
-        uid: json['_id'],
-        owner: User.fromJsonAbstract(json['owner']),
-        // owner: json['owner'],
-        name: json['name'],
-        image: json['image'],
-        coverImage: json['coverImage'],
-        members: json['members'],
-        events: json['events'],
-      );
-    } else {
-      return Community(
-        // owner: User.fromJson(json['owner']),
-        uid: json['_id'],
-        name: json['name'],
-        image: json['image'],
-        coverImage: json['coverImage'],
-      );
-    }
+    return Community(
+      uid: json['_id'],
+      owner: User.fromJsonAbstract(json['owner']),
+      // owner: json['owner'],
+      name: json['name'],
+      image: json['image'],
+      coverImage: json['coverImage'],
+      members: json['members'],
+      events: json['events'],
+    );
   }
 }

@@ -24,7 +24,7 @@ class SearchItem {
     else
       return SearchItem(
         profileType: ProfileType.CommunityProfile,
-        community: Community.fromJson(json),
+        community: Community.fromJsonAbstract(json),
       );
   }
 }

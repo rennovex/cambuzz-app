@@ -132,7 +132,7 @@ class Post with ChangeNotifier {
     } else {
       return Post.communityPost(
         json['_id'],
-        Community.fromJson(json['community']),
+        Community.fromJsonAbstract(json['community']),
         user,
         json['title'],
         json['postImage'],

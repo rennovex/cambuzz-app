@@ -25,7 +25,7 @@ class Event {
 
 
   factory Event.fromJson(json){
-    Community community = Community.fromJson(json['community']);
+    Community community = Community.fromJsonAbstract(json['community']);
     var id = json['_id'];
     var image = json['image'];
     var description = json['description'];

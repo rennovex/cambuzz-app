@@ -48,7 +48,7 @@ class _userProfileState extends State<UserProfileScreen>
             );
           } else {
             user = snapshot.data;
-            isMe = user.uid == Global.uid ? true : false;
+            isMe = user.isMyProfile;
             return SingleChildScrollView(
               child: Column(
                 // crossAxisAlignment: CrossAxisAlignment.center,

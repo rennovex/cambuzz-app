@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/community.dart';
+import 'package:social_media_app/models/searchItem.dart';
 import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
@@ -11,6 +13,11 @@ import '../dummy_data.dart';
 enum FilterType {
   All,
   Selected,
+}
+
+enum ProfileType {
+  UserProfile,
+  CommunityProfile,
 }
 
 class SearchScreen extends StatefulWidget {
@@ -225,86 +232,55 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: searchResult.length,
-      itemBuilder: (_, ind) => ListTile(
-        title: Text(searchResult[ind].name),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(searchResult[ind]?.image ?? ''),
+    return CustomPaint(
+      // size: MediaQuery.of(context).size,
+      painter: SearchPainter(),
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        child: ListView.builder(
+          itemCount: searchResult.length,
+          itemBuilder: (_, ind) => buildSearchItem(searchResult[ind]),
         ),
-        onTap: () => close(context, searchResult[ind]),
       ),
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return FutureBuilder(
-      future: filterType == null
-          ? Api.getSearch(key: query)
-          : Api.getSearchWithFilter(skillId: filterType.id, key: query),
-      builder: (_, snapshot) {
-        if (!snapshot.hasData) {
-          // return SearchScreen();
-          if (filterType != null)
-            return Card(
-              margin: EdgeInsets.symmetric(
-                vertical: 5,
-                horizontal: 15,
-              ),
-              color: filters[selectedIndex]['color'],
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(13),
-              ),
-              child: ListTile(
-                onTap: () {
-                  // setFilter(FilterType.Selected, ind);
-                  Navigator.of(context).pop();
-                },
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                leading: Text(
-                  '${filters[selectedIndex]['name']}',
-                  style: kSearchFilterText,
-                ),
-                trailing: Icon(
-                  Icons.filter_alt,
-                  color: Colors.white,
-                  size: 30,
-                ),
-              ),
-            );
-          if (filterType == null)
-            return Center(
-              child: Text('No Data'),
-            );
-        }
-        searchResult = snapshot.data;
-        return SingleChildScrollView(
-          child: Column(
-            children: [
+    return CustomPaint(
+      // size: MediaQuery.of(context).size,
+      painter: SearchPainter(),
+
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
+        child: FutureBuilder(
+          future: filterType == null
+              ? Api.getSearch(key: query)
+              : Api.getSearchWithFilter(skillId: filterType.id, key: query),
+          builder: (_, snapshot) {
+            if (!snapshot.hasData) {
+              // return SearchScreen();
               if (filterType != null)
-                Card(
+                return Card(
                   margin: EdgeInsets.symmetric(
                     vertical: 5,
                     horizontal: 15,
                   ),
-                  color: filters[filterType != null
-                      ? selectedIndex
-                      : selectedIndex]['color'],
+                  color: filters[selectedIndex]['color'],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(13),
                   ),
                   child: ListTile(
                     onTap: () {
                       // setFilter(FilterType.Selected, ind);
-                      print('pop');
-                      return Navigator.of(context).pop();
+                      Navigator.of(context).pop();
                     },
                     contentPadding:
                         EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     leading: Text(
-                      '${filters[filterType != null ? selectedIndex : selectedIndex]['name']}',
+                      '${filters[selectedIndex]['name']}',
                       style: kSearchFilterText,
                     ),
                     trailing: Icon(
@@ -313,27 +289,92 @@ class CustomSearchDelegate extends SearchDelegate {
                       size: 30,
                     ),
                   ),
-                ),
-              ListView.builder(
-                itemCount: snapshot.data.length,
-                shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                itemBuilder: (_, ind) => ListTile(
-                  title: Text(snapshot.data[ind].name),
-                  leading: CircleAvatar(
-                    backgroundImage:
-                        NetworkImage(snapshot.data[ind]?.image ?? ''),
+                );
+              if (filterType == null)
+                return Center(
+                  child: Text('No Data'),
+                );
+            }
+            searchResult = snapshot.data;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (filterType != null)
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 15,
+                      ),
+                      color: filters[selectedIndex]['color'],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          // setFilter(FilterType.Selected, ind);
+                          print('pop');
+                          return Navigator.of(context).pop();
+                        },
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        leading: Text(
+                          '${filters[selectedIndex]['name']}',
+                          style: kSearchFilterText,
+                        ),
+                        trailing: Icon(
+                          Icons.filter_alt,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ListView.builder(
+                    itemCount: snapshot.data.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, ind) => buildSearchItem(
+                      snapshot.data[ind],
+                    ),
                   ),
-                  onTap: () => close(context, snapshot.data[ind]),
-                ),
+                ],
               ),
-            ],
-          ),
-        );
-      },
+            );
+          },
+        ),
+      ),
     );
   }
 }
+
+Widget buildSearchItem(SearchItem searchResult) => Card(
+      margin: EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 15,
+      ),
+      color: Color.fromRGBO(224, 224, 224, 0.88),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: ListTile(
+        onTap: () {},
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+        leading: CircleAvatar(
+          radius: 28,
+          backgroundImage: NetworkImage(searchResult.isUser()
+              ? searchResult.user?.image ?? ''
+              : searchResult.community?.image ?? ''),
+        ),
+        title: Text(searchResult.isUser()
+            ? searchResult.user.userName
+            : '\$${searchResult.community.name}'),
+        subtitle: Text(searchResult.isUser() ? searchResult.user?.name : ''),
+        trailing: Icon(
+          Icons.arrow_forward_ios_rounded,
+          color: Color.fromRGBO(98, 65, 234, 1),
+          size: 25,
+        ),
+      ),
+    );
 
 class SearchPainter extends CustomPainter {
   @override

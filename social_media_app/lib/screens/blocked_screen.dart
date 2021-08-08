@@ -27,49 +27,38 @@ class _BlockedScreenState extends State<BlockedScreen> {
       appBar: AppBar(
         title: Text('Blocked'),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder(
-              future: future,
-              builder:
-                  (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-                if (!snapshot.hasData) {
-                  return Center(
-                    child: SizedBox(
-                      height: MediaQuery.of(context).size.height,
-                      child: Text('No accounts blocked'),
-                    ),
-                  );
-                } else {
-                  print(snapshot.data);
-                  return ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data?.length,
-                      itemBuilder: (_, ind) => ListTile(
-                            leading: CircleAvatar(
-                              backgroundImage:
-                                  NetworkImage(snapshot.data[ind].image ?? ''),
-                            ),
-                            title: Text(snapshot.data[ind].userName),
-                            trailing: TextButton(
-                              onPressed: () {
-                                Api.unBlock(snapshot.data[ind].uid);
-                                setState(() {
-                                  Fluttertoast.showToast(
-                                      msg:
-                                          '${snapshot.data[ind].userName} unblocked');
-                                  snapshot.data.removeAt(ind);
-                                });
-                              },
-                              child: Text('unblock'),
-                            ),
-                          ));
-                }
-              },
-            ),
-          ],
-        ),
+      body: FutureBuilder(
+        future: future,
+        builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(
+              child: Text('No accounts blocked'),
+            );
+          } else {
+            print(snapshot.data);
+            return ListView.builder(
+                itemCount: snapshot.data?.length,
+                itemBuilder: (_, ind) => ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(snapshot.data[ind].image ?? ''),
+                      ),
+                      title: Text(snapshot.data[ind].userName),
+                      trailing: TextButton(
+                        onPressed: () {
+                          Api.unBlock(snapshot.data[ind].uid);
+                          setState(() {
+                            Fluttertoast.showToast(
+                                msg:
+                                    '${snapshot.data[ind].userName} unblocked');
+                            snapshot.data.removeAt(ind);
+                          });
+                        },
+                        child: Text('unblock'),
+                      ),
+                    ));
+          }
+        },
       ),
     );
   }

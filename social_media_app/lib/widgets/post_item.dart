@@ -7,6 +7,7 @@ import 'package:social_media_app/screens/Profiles/community_profile_screen.dart'
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:social_media_app/widgets/feed_post_action.dart';
 
 class PostItem extends StatelessWidget {
   final bool disableComments;
@@ -111,15 +112,21 @@ class PostItem extends StatelessWidget {
                         ],
                       ),
                       IconButton(
-                          padding: EdgeInsets.only(right: 15),
-                          constraints: BoxConstraints(),
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Color.fromRGBO(97, 97, 97, 1),
-                            size: 36,
+                        padding: EdgeInsets.only(right: 15),
+                        constraints: BoxConstraints(),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Color.fromRGBO(97, 97, 97, 1),
+                          size: 36,
+                        ),
+                        // splashRadius: 1,
+                        onPressed: () => showModalBottomSheet(
+                          context: context,
+                          builder: (context) => FeedPostAction(
+                            post,
                           ),
-                          // splashRadius: 1,
-                          onPressed: () {}),
+                        ),
+                      ),
                     ],
                   ),
                 ),

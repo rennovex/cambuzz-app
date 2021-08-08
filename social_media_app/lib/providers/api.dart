@@ -6,6 +6,7 @@ import 'package:social_media_app/models/event.dart';
 import 'package:social_media_app/models/eventType.dart';
 
 import 'package:social_media_app/models/http_helper.dart';
+import 'package:social_media_app/models/searchItem.dart';
 import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/user.dart';
@@ -405,6 +406,18 @@ class Api {
     }
   }
 
+  static Future block(String id) async {
+    final response = await HttpHelper.post(
+      uri: '/users/block/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t block !');
+      throw 'Could not block' + response.body;
+    }
+  }
+
   static Future getSearch({String key}) async {
     final response = await HttpHelper.get('/search/$key');
     if (response.statusCode != 200) {
@@ -416,10 +429,13 @@ class Api {
     final List searchResults = [];
 
     json.forEach((result) {
-      if (result.containsKey('userName'))
-        return searchResults.add(User.fromJson(result));
-      else
-        return searchResults.add(Community.fromJson(result));
+      // if (result.containsKey('userName'))
+      //   return searchResults.add(User.fromJson(result));
+      // else
+      //   return searchResults.add(Community.fromJson(result));
+      // print(SearchItem.fromJson(result).profileType);
+      // print(SearchItem.fromJson(result).user.name);
+      return searchResults.add(SearchItem.fromJson(result));
     });
 
     print('Fetched Search results from Api');
@@ -438,10 +454,12 @@ class Api {
     final List searchResults = [];
 
     json.forEach((result) {
-      if (result.containsKey('userName'))
-        return searchResults.add(User.fromJson(result));
-      else
-        return searchResults.add(Community.fromJson(result));
+      // if (result.containsKey('userName'))
+      //   return searchResults.add(User.fromJson(result));
+      // else
+      //   return searchResults.add(Community.fromJson(result));
+
+      return searchResults.add(SearchItem.fromJson(result));
     });
 
     print('Fetched Search results from Api');

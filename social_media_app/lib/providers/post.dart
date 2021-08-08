@@ -34,9 +34,8 @@ class Post with ChangeNotifier {
     this.comments,
     this.likes,
     this.likeCount,
-    this.isLiked = false,
+    this.isLiked,
   }) {
-    this.isLiked = liked ?? false;
     this.likeCount = likes?.length ?? 0;
     this.commentCount = comments?.length ?? 0;
   }
@@ -77,6 +76,7 @@ class Post with ChangeNotifier {
     time,
     likes,
     comments,
+    isLiked,
   ) {
     return Post(
       id: postId,
@@ -87,6 +87,7 @@ class Post with ChangeNotifier {
       time: time,
       likes: likes,
       comments: comments,
+      isLiked: isLiked
     );
   }
 
@@ -100,6 +101,7 @@ class Post with ChangeNotifier {
     time,
     likes,
     comments,
+    isLiked,
   ) {
     return Post(
       id: postId,
@@ -111,6 +113,7 @@ class Post with ChangeNotifier {
       user: user,
       likes: likes,
       comments: comments,
+      isLiked: isLiked
     );
   }
 
@@ -128,7 +131,8 @@ class Post with ChangeNotifier {
           json['postText'],
           DateTime.parse(json['time']),
           json['likes'],
-          json['comments']);
+          json['comments'],
+          json['isLiked']);
     } else {
       return Post.communityPost(
         json['_id'],
@@ -140,11 +144,12 @@ class Post with ChangeNotifier {
         DateTime.parse(json['time']),
         json['likes'],
         json['comments'],
+        json['isLiked']
       );
     }
   }
 
-  void toggleLike(String postId) async {
+  void toggleLike() async {
     final oldStatus = isLiked;
     final oldCount = likeCount;
 
@@ -153,18 +158,18 @@ class Post with ChangeNotifier {
     notifyListeners();
     final response = isLiked
         ? await HttpHelper.post(
-            uri: '/posts/like/$postId',
+            uri: '/posts/like/${this.id}',
             body: {},
           )
         : await HttpHelper.delete(
-            uri: '/posts/like/$postId',
+            uri: '/posts/like/${this.id}',
             body: {},
           );
     if (response.statusCode != 200) {
       isLiked = oldStatus;
       likeCount = oldCount;
       notifyListeners();
-      throw 'Cant like' + '${response.body}';
+      throw 'Cant like ${response.body} of post ${this.id}';
     }
   }
 

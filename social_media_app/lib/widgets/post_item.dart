@@ -150,7 +150,7 @@ class PostItem extends StatelessWidget {
             SizedBox(height: 7),
             if (post.isImagePost())
               GestureDetector(
-                onDoubleTap: () => post.toggleLike(post.id),
+                onDoubleTap: () => post.toggleLike(),
                 child: ClipRRect(
                   borderRadius: BorderRadius.all(Radius.circular(15)),
                   child: CachedNetworkImage(
@@ -165,7 +165,7 @@ class PostItem extends StatelessWidget {
               ),
             if (!post.isImagePost())
               GestureDetector(
-                onDoubleTap: () => post.toggleLike(post.id),
+                onDoubleTap: () => post.toggleLike(),
                 child: Container(
                   child: Text(post.postText),
                 ),
@@ -177,7 +177,7 @@ class PostItem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 GestureDetector(
-                  onTap: () => post.toggleLike(post.id),
+                  onTap: () => post.toggleLike(),
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
                     decoration: BoxDecoration(
@@ -200,7 +200,7 @@ class PostItem extends StatelessWidget {
                                     Icons.favorite,
                                     color: Colors.black,
                                   ),
-                            onPressed: () => post.toggleLike(post.id)),
+                            onPressed: () => post.toggleLike()),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 5, top: 5, bottom: 5),

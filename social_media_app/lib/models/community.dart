@@ -14,9 +14,9 @@ class Community {
   final String name;
   final String image;
   final String coverImage;
-  final List members;
-  final List events;
-  final List followers;
+  final int membersCount;
+  final int eventsCount;
+  bool isMember;
 
   Community({
     @required this.uid,
@@ -24,9 +24,9 @@ class Community {
     @required this.image,
     @required this.coverImage,
     this.owner,
-    this.members,
-    this.events,
-    this.followers,
+    this.membersCount,
+    this.eventsCount,
+    this.isMember
   });
 
   factory Community.fromJsonAbstract(Map<String, dynamic> json) {
@@ -45,8 +45,9 @@ class Community {
       name: json['name'],
       image: json['image'],
       coverImage: json['coverImage'],
-      members: json['members'],
-      events: json['events'],
+      membersCount: json['membersCount'],
+      eventsCount: json['eventsCount'],
+      isMember: json['isMember']
     );
   }
 }

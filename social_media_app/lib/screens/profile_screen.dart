@@ -83,18 +83,6 @@ class _ProfileScreenState extends State<ProfileScreen>
               children: [
                 Row(
                   children: [
-                    Icon(
-                      Icons.person,
-                      color: Colors.blue,
-                    ),
-                    Text(
-                      '${widget.isUserProfile ? (!widget.user?.isAbstract) ?? 0 : widget.community?.followers ?? 0} Followers',
-                      style: kProfileLabel,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
                     if (!widget.isUserProfile)
                       Icon(
                         Icons.wallet_membership_outlined,
@@ -107,7 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     if (!widget.isUserProfile)
                       Text(
-                        '${widget.community?.members ?? 0} Members',
+                        '${widget.community?.membersCount ?? 0} Members',
                         style: kProfileLabel,
                       ),
                     if (widget.isUserProfile)
@@ -131,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     if (!widget.isUserProfile)
                       Text(
-                        '${widget.community?.events ?? 0} Events',
+                        '${widget.community?.eventsCount ?? 0} Events',
                         style: kProfileLabel,
                       ),
                     if (widget.isUserProfile)

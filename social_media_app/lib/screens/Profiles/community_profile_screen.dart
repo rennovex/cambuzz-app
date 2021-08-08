@@ -103,23 +103,11 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                         Row(
                           children: [
                             Icon(
-                              Icons.person,
-                              color: Colors.blue,
-                            ),
-                            Text(
-                              '${community.followers?.length ?? 0} Followers',
-                              style: kProfileLabel,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
                               Icons.wallet_membership_outlined,
                               color: Colors.red,
                             ),
                             Text(
-                              '${community.members?.length ?? 0} Members',
+                              '${community.membersCount ?? 0} Members',
                               style: kProfileLabel,
                             ),
                           ],
@@ -131,7 +119,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                               color: Colors.purpleAccent,
                             ),
                             Text(
-                              '${community.events?.length ?? 0} Events',
+                              '${community.eventsCount ?? 0} Events',
                               style: kProfileLabel,
                             ),
                           ],

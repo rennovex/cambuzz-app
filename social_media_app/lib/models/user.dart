@@ -52,7 +52,8 @@ class User {
         followersCount: json['followersCount'],
         likes: json['likes'],
         isFollowing: json['isFollowing'],
-        isAbstract: false
+        isAbstract: false,
+        isMyProfile: false,
       );
   }
 

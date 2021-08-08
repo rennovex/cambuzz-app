@@ -118,7 +118,7 @@ class Api {
     }
 
     final json = jsonDecode(response.body);
-    User user = User.fromJson(json);
+    User user = User.fromJsonMyProfile(json);
     return user;
   }
 

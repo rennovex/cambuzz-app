@@ -21,6 +21,7 @@ class User {
   List<String> skills;
   bool isAbstract;
   bool isFollowing;
+  bool isMyProfile;
 
   User(
       {@required this.uid,
@@ -36,6 +37,7 @@ class User {
       this.achievements,
       this.isFollowing,
       this.email,
+      this.isMyProfile,
       this.skills});
 
   factory User.fromJson(Map<String, dynamic> json){
@@ -51,6 +53,23 @@ class User {
         likes: json['likes'],
         isFollowing: json['isFollowing'],
         isAbstract: false
+      );
+  }
+
+  factory User.fromJsonMyProfile(Map<String, dynamic> json){
+    return User(
+        uid: json['_id'],
+        userName: json['userName'],
+        name: json['name'],
+        image: json['image'],
+        coverImage: json['coverImage'],
+        bio: json['bio'],
+        followingCount: json['followingCount'],
+        followersCount: json['followersCount'],
+        likes: json['likes'],
+        isFollowing: json['isFollowing'],
+        isAbstract: false,
+        isMyProfile: true,
       );
   }
 

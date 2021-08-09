@@ -32,6 +32,7 @@ class Post with ChangeNotifier {
     this.postText,
     this.time,
     this.comments,
+    this.commentCount,
     this.likes,
     this.likeCount,
     this.isLiked,
@@ -67,7 +68,7 @@ class Post with ChangeNotifier {
     return this.postImg == null ? false : true;
   }
 
-  static Post userPost(
+  Post userPost(
     postId,
     user,
     title,
@@ -75,23 +76,22 @@ class Post with ChangeNotifier {
     postText,
     time,
     likes,
-    comments,
+    comment,
     isLiked,
   ) {
     return Post(
-      id: postId,
-      user: user,
-      title: title,
-      postImg: postImg,
-      postText: postText,
-      time: time,
-      likes: likes,
-      comments: comments,
-      isLiked: isLiked
-    );
+        id: postId,
+        user: user,
+        title: title,
+        postImg: postImg,
+        postText: postText,
+        time: time,
+        likes: likes,
+        comments: comments,
+        isLiked: isLiked);
   }
 
-  static Post communityPost(
+  Post communityPost(
     postId,
     community,
     user,
@@ -104,17 +104,16 @@ class Post with ChangeNotifier {
     isLiked,
   ) {
     return Post(
-      id: postId,
-      community: community,
-      title: title,
-      postImg: postImg,
-      postText: postText,
-      time: time,
-      user: user,
-      likes: likes,
-      comments: comments,
-      isLiked: isLiked
-    );
+        id: postId,
+        community: community,
+        title: title,
+        postImg: postImg,
+        postText: postText,
+        time: time,
+        user: user,
+        likes: likes,
+        comments: comments,
+        isLiked: isLiked);
   }
 
   factory Post.fromJson(json) {
@@ -123,7 +122,7 @@ class Post with ChangeNotifier {
     var user = User.fromJsonAbstract(json['user']);
 
     if (json['postType'] == 'userPost') {
-      return Post.userPost(
+      return Post().userPost(
           json['_id'],
           user,
           json['title'],
@@ -134,18 +133,17 @@ class Post with ChangeNotifier {
           json['comments'],
           json['isLiked']);
     } else {
-      return Post.communityPost(
-        json['_id'],
-        Community.fromJsonAbstract(json['community']),
-        user,
-        json['title'],
-        json['postImage'],
-        json['postText'],
-        DateTime.parse(json['time']),
-        json['likes'],
-        json['comments'],
-        json['isLiked']
-      );
+      return Post().communityPost(
+          json['_id'],
+          Community.fromJsonAbstract(json['community']),
+          user,
+          json['title'],
+          json['postImage'],
+          json['postText'],
+          DateTime.parse(json['time']),
+          json['likes'],
+          json['comments'],
+          json['isLiked']);
     }
   }
 
@@ -174,14 +172,6 @@ class Post with ChangeNotifier {
   }
 
   void postcomment({String id, String comment}) async {
-    // comments.add(
-    //   Comment(
-    //     text: comment,
-    //     user: user,
-    //     id: 'adadf',
-    //   ),
-    // );
-    // notifyListeners();
     final response = await HttpHelper.post(
         uri: '/posts/comments/$id', body: {"commentText": "$comment"});
 
@@ -202,8 +192,9 @@ class Post with ChangeNotifier {
     }
 
     final json = jsonDecode(response.body) as List;
-    return json;
+    comments = json;
+    // return json;
     notifyListeners();
-    // return user;
+    return response;
   }
 }

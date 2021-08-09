@@ -7,16 +7,23 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
-class PostViewScreen extends StatelessWidget {
-  // static const routeName = '/post-view';
+class PostViewScreen extends StatefulWidget {
+  @override
+  _PostViewScreenState createState() => _PostViewScreenState();
+}
 
-  // const PostViewScreen({ Key? key }) : super(key: key);
+class _PostViewScreenState extends State<PostViewScreen> {
+  Post post;
 
-  // PostViewScreen(this.post);
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    post = Provider.of<Post>(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final Post post = Provider.of<Post>(context);
+    // final future = post.getComments(post.id);
 
     return SafeArea(
       child: GestureDetector(
@@ -35,14 +42,19 @@ class PostViewScreen extends StatelessWidget {
                         ),
                       ),
                       Text('Comments'),
+
                       ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
-                        itemCount: post.comments?.length,
+                        itemCount: post.comments?.length ?? 0,
                         itemBuilder: (ctx, ind) => CommentItem(
                           Comment.fromJson(post.comments[ind]),
                         ),
                       ),
+
+                      // else{
+                      //   return
+                      // }
 
                       // FutureBuilder(
                       //     future: _future,

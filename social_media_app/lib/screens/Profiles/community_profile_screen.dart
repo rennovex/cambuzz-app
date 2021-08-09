@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
@@ -24,7 +25,7 @@ class CommunityProfileScreen extends StatefulWidget {
 class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
   Future<Community> future;
   Community community;
-  bool isOwner;
+  bool isOwner = false;
 
   @override
   void initState() {
@@ -63,127 +64,175 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
             } else {
               community = snapshot.data;
               isOwner = community.owner.uid == Global.uid ? true : false;
-              return SingleChildScrollView(
-                child: Column(
-                  // crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    ProfileHeader(
-                      coverImg: community?.coverImage,
-                      profileImg: community?.image,
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Column(
-                      // crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${community?.name}',
-                          style: kProfileName,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          width: 200,
-                          child: Text(
-                            '',
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
+              print(community.owner.uid + '  ' + Global.uid);
+              print(isOwner);
+              return ChangeNotifierProvider.value(
+                value: community,
+                child: SingleChildScrollView(
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ProfileHeader(
+                        coverImg: community?.coverImage,
+                        profileImg: community?.image,
+                      ),
+                      SizedBox(
+                        height: 50,
+                      ),
+                      Column(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Text(
+                            '${community?.name}',
+                            style: kProfileName,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.wallet_membership_outlined,
-                              color: Colors.red,
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                            width: 200,
+                            child: Text(
+                              '',
+                              maxLines: 2,
+                              textAlign: TextAlign.center,
                             ),
-                            Text(
-                              '${community.membersCount ?? 0} Members',
-                              style: kProfileLabel,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Icon(
-                              MdiIcons.medal,
-                              color: Colors.purpleAccent,
-                            ),
-                            Text(
-                              '${community.eventsCount ?? 0} Events',
-                              style: kProfileLabel,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 22,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(width: 15),
-                        if (isOwner)
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () {},
-                              child: Text(
-                                'Edit Community',
-                                textAlign: TextAlign.center,
-                                style: kProfileButtonText,
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.wallet_membership_outlined,
+                                color: Colors.red,
                               ),
-                              style: OutlinedButton.styleFrom(
-                                primary: Color.fromRGBO(40, 102, 253, 1),
-                                backgroundColor: Colors.transparent,
-                                side: BorderSide(
-                                  width: 1.3,
-                                  color: Color.fromRGBO(40, 102, 253, 1),
+                              Text(
+                                '${community.membersCount ?? 0} Members',
+                                style: kProfileLabel,
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Icon(
+                                MdiIcons.medal,
+                                color: Colors.purpleAccent,
+                              ),
+                              Text(
+                                '${community.eventsCount ?? 0} Events',
+                                style: kProfileLabel,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 22,
+                      ),
+                      Row(
+                        children: [
+                          SizedBox(width: 15),
+                          if (isOwner)
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Edit Community',
+                                  textAlign: TextAlign.center,
+                                  style: kProfileButtonText,
                                 ),
-                              ),
+                                style: OutlinedButton.styleFrom(
+                                  primary: Color.fromRGBO(40, 102, 253, 1),
+                                  backgroundColor: Colors.transparent,
+                                  side: BorderSide(
+                                    width: 1.3,
+                                    color: Color.fromRGBO(40, 102, 253, 1),
+                                  ),
+                                ),
 
-                              // color: Colors.purpleAccent,
+                                // color: Colors.purpleAccent,
+                              ),
                             ),
-                          ),
-                        SizedBox(width: 5),
-                        if (isOwner)
-                          Expanded(
-                            child: OutlinedButton(
-                              onPressed: () => showModalBottomSheet<dynamic>(
-                                context: context,
-                                builder: (context) => CommunitySettings(),
-                              ),
-                              child: Text(
-                                'Manage',
-                                textAlign: TextAlign.center,
-                                style: kProfileButtonText,
-                              ),
-                              // color: Colors.purpleAccent,
-                              style: OutlinedButton.styleFrom(
-                                primary: Color.fromRGBO(225, 37, 255, 1),
-                                backgroundColor: Colors.transparent,
-                                side: BorderSide(
-                                  width: 1.3,
-                                  color: Color.fromRGBO(225, 37, 255, 1),
+                          if (!isOwner)
+                            Consumer<Community>(
+                              builder: (_, community, __) => Expanded(
+                                child: Ink(
+                                  height: 38,
+                                  decoration: BoxDecoration(
+                                    gradient: kButtonLinearGradient,
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: TextButton(
+                                    onPressed: () => community.toggleJoin(),
+                                    child: Text(
+                                      community.isMember ? 'Joined' : '+Join',
+                                      textAlign: TextAlign.center,
+                                      style: kProfileButtonText,
+                                    ),
+                                    style: TextButton.styleFrom(
+                                      primary: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                        SizedBox(width: 15),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
+                          SizedBox(width: 5),
+                          if (isOwner)
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () => showModalBottomSheet<dynamic>(
+                                  context: context,
+                                  builder: (context) => CommunitySettings(),
+                                ),
+                                child: Text(
+                                  'Manage',
+                                  textAlign: TextAlign.center,
+                                  style: kProfileButtonText,
+                                ),
+                                // color: Colors.purpleAccent,
+                                style: OutlinedButton.styleFrom(
+                                  primary: Color.fromRGBO(225, 37, 255, 1),
+                                  backgroundColor: Colors.transparent,
+                                  side: BorderSide(
+                                    width: 1.3,
+                                    color: Color.fromRGBO(225, 37, 255, 1),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          if (!isOwner)
+                            Expanded(
+                              child: OutlinedButton(
+                                onPressed: () {},
+                                child: Text(
+                                  'Contact Head',
+                                  textAlign: TextAlign.center,
+                                  style: kProfileButtonText,
+                                ),
+                                // color: Colors.purpleAccent,
+                                style: OutlinedButton.styleFrom(
+                                  primary: Color.fromRGBO(225, 37, 255, 1),
+                                  backgroundColor: Colors.transparent,
+                                  side: BorderSide(
+                                    width: 1.3,
+                                    color: Color.fromRGBO(225, 37, 255, 1),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          SizedBox(width: 15),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                    ],
+                  ),
                 ),
               );
             }

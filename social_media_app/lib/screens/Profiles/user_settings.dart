@@ -6,7 +6,8 @@ import 'package:social_media_app/screens/Profiles/community_profile_screen.dart'
 import 'package:social_media_app/screens/blocked_screen.dart';
 
 class UserSettings extends StatelessWidget {
-  // const ({ Key key }) : super(key: key);
+  Function onLogout;
+  UserSettings ({ Key key,this.onLogout, }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +56,7 @@ class UserSettings extends StatelessWidget {
             trailing: Icon(Icons.close),
             onTap: () async {
               Navigator.of(context).pop();
+              onLogout();
               Provider.of<GoogleSignInProvider>(context, listen: false)
                   .logout();
             },

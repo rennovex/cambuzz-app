@@ -23,7 +23,6 @@ class User with ChangeNotifier {
   List<String> skills;
   bool isAbstract;
   bool isFollowing;
-  bool isMyProfile;
 
   User(
       {@required this.uid,
@@ -39,7 +38,6 @@ class User with ChangeNotifier {
       this.achievements,
       this.isFollowing,
       this.email,
-      this.isMyProfile,
       this.skills});
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -55,7 +53,6 @@ class User with ChangeNotifier {
       likes: json['likes'],
       isFollowing: json['isFollowing'],
       isAbstract: false,
-      isMyProfile: false,
     );
   }
 
@@ -72,7 +69,6 @@ class User with ChangeNotifier {
       likes: json['likes'],
       isFollowing: json['isFollowing'],
       isAbstract: false,
-      isMyProfile: true,
     );
   }
 

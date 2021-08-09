@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -34,6 +35,12 @@ class _userProfileState extends State<UserProfileScreen>
     // Api.getsnapshot().then((value) => snapshot = value);
   }
 
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   // user = Provider.of<User>(context);
+  // }
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
@@ -49,182 +56,187 @@ class _userProfileState extends State<UserProfileScreen>
           } else {
             user = snapshot.data;
             isMe = user.isMyProfile;
-            return SingleChildScrollView(
-              child: Column(
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ProfileHeader(
-                    coverImg: user?.coverImage,
-                    profileImg: user?.image,
-                  ),
-                  SizedBox(
-                    height: 50,
-                  ),
-                  Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${user?.name}',
-                        style: kProfileName,
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                        width: 200,
-                        child: Text(
-                          '${user.bio ?? ''}',
-                          maxLines: 2,
-                          textAlign: TextAlign.center,
+            return ChangeNotifierProvider.value(
+              value: user,
+              child: SingleChildScrollView(
+                child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    ProfileHeader(
+                      coverImg: user?.coverImage,
+                      profileImg: user?.image,
+                    ),
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Column(
+                      // crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${user?.name}',
+                          style: kProfileName,
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.person,
-                            color: Colors.blue,
-                          ),
-                          Text(
-                            '${user.followersCount ?? 0} Followers',
-                            style: kProfileLabel,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          ),
-                          Text(
-                            '${user?.likes ?? 0} Likes',
-                            style: kProfileLabel,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            MdiIcons.medal,
-                            color: Colors.purpleAccent,
-                          ),
-                          Text(
-                            '${user.followingCount ?? 0} Following',
-                            style: kProfileLabel,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 22,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 15),
-                      if (isMe)
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {
-                              print(user.likes);
-                            },
-                            child: Text(
-                              'Edit Profile',
-                              textAlign: TextAlign.center,
-                              style: kProfileButtonText,
-                            ),
-                            style: OutlinedButton.styleFrom(
-                              primary: Color.fromRGBO(40, 102, 253, 1),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                width: 1.3,
-                                color: Color.fromRGBO(40, 102, 253, 1),
-                              ),
-                            ),
-
-                            // color: Colors.purpleAccent,
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Container(
+                          width: 200,
+                          child: Text(
+                            '${user.bio ?? ''}',
+                            maxLines: 2,
+                            textAlign: TextAlign.center,
                           ),
                         ),
-                      if (!isMe)
-                        Expanded(
-                          child: Ink(
-                            height: 38,
-                            decoration: BoxDecoration(
-                              gradient: kButtonLinearGradient,
-                              borderRadius: BorderRadius.circular(5),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.person,
+                              color: Colors.blue,
                             ),
-                            child: TextButton(
-                              onPressed: () {},
+                            Text(
+                              '${user.followersCount ?? 0} Followers',
+                              style: kProfileLabel,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
+                            Text(
+                              '${user?.likes ?? 0} Likes',
+                              style: kProfileLabel,
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              MdiIcons.medal,
+                              color: Colors.purpleAccent,
+                            ),
+                            Text(
+                              '${user.followingCount ?? 0} Following',
+                              style: kProfileLabel,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 22,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(width: 15),
+                        if (isMe)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {
+                                print(user.likes);
+                              },
                               child: Text(
-                                'Follow',
+                                'Edit Profile',
                                 textAlign: TextAlign.center,
                                 style: kProfileButtonText,
                               ),
-                              style: TextButton.styleFrom(
-                                primary: Colors.white,
+                              style: OutlinedButton.styleFrom(
+                                primary: Color.fromRGBO(40, 102, 253, 1),
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(
+                                  width: 1.3,
+                                  color: Color.fromRGBO(40, 102, 253, 1),
+                                ),
+                              ),
+
+                              // color: Colors.purpleAccent,
+                            ),
+                          ),
+                        if (!isMe)
+                          Consumer<User>(
+                            builder: (context, user, _) => Expanded(
+                              child: Ink(
+                                height: 38,
+                                decoration: BoxDecoration(
+                                  gradient: kButtonLinearGradient,
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: TextButton(
+                                  onPressed: () => user.toggleFollow(),
+                                  child: Text(
+                                    user.isFollowing ? 'Following' : 'Follow',
+                                    textAlign: TextAlign.center,
+                                    style: kProfileButtonText,
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      SizedBox(width: 5),
-                      if (isMe)
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => showModalBottomSheet<dynamic>(
-                              context: context,
-                              builder: (context) => UserSettings(),
-                            ),
-                            child: Text(
-                              'Settings',
-                              textAlign: TextAlign.center,
-                              style: kProfileButtonText,
-                            ),
-                            // color: Colors.purpleAccent,
-                            style: OutlinedButton.styleFrom(
-                              primary: Color.fromRGBO(225, 37, 255, 1),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                width: 1.3,
-                                color: Color.fromRGBO(225, 37, 255, 1),
+                        SizedBox(width: 5),
+                        if (isMe)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => showModalBottomSheet<dynamic>(
+                                context: context,
+                                builder: (context) => UserSettings(),
+                              ),
+                              child: Text(
+                                'Settings',
+                                textAlign: TextAlign.center,
+                                style: kProfileButtonText,
+                              ),
+                              // color: Colors.purpleAccent,
+                              style: OutlinedButton.styleFrom(
+                                primary: Color.fromRGBO(225, 37, 255, 1),
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(
+                                  width: 1.3,
+                                  color: Color.fromRGBO(225, 37, 255, 1),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      if (!isMe)
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Send a message',
-                              textAlign: TextAlign.center,
-                              style: kProfileButtonText,
-                            ),
-                            // color: Colors.purpleAccent,
-                            style: OutlinedButton.styleFrom(
-                              primary: Color.fromRGBO(225, 37, 255, 1),
-                              backgroundColor: Colors.transparent,
-                              side: BorderSide(
-                                width: 1.3,
-                                color: Color.fromRGBO(225, 37, 255, 1),
+                        if (!isMe)
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Send a message',
+                                textAlign: TextAlign.center,
+                                style: kProfileButtonText,
+                              ),
+                              // color: Colors.purpleAccent,
+                              style: OutlinedButton.styleFrom(
+                                primary: Color.fromRGBO(225, 37, 255, 1),
+                                backgroundColor: Colors.transparent,
+                                side: BorderSide(
+                                  width: 1.3,
+                                  color: Color.fromRGBO(225, 37, 255, 1),
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      SizedBox(width: 15),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                ],
+                        SizedBox(width: 15),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ),
               ),
             );
           }

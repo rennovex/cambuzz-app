@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
+        Provider(create: (ctx) => User),
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -60,6 +61,12 @@ class MyApp extends StatelessWidget {
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
+          // UserProfileScreen.routeName: (
+          //   ctx,
+          // ) =>
+          //     UserProfileScreen(
+          //       userId: id,
+          //     ),
         },
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),

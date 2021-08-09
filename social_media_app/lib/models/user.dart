@@ -17,7 +17,7 @@ class User with ChangeNotifier {
   String bio;
   int followersCount;
   int followingCount;
-  num likes;
+  int likeCount;
   num achievements;
   String email;
   List<String> skills;
@@ -34,7 +34,7 @@ class User with ChangeNotifier {
       @required this.isAbstract,
       this.followersCount,
       this.followingCount,
-      this.likes,
+      this.likeCount,
       this.achievements,
       this.isFollowing,
       this.email,
@@ -50,7 +50,7 @@ class User with ChangeNotifier {
       bio: json['bio'],
       followingCount: json['followingCount'],
       followersCount: json['followersCount'],
-      likes: json['likes'],
+      likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
       isAbstract: false,
     );
@@ -66,7 +66,7 @@ class User with ChangeNotifier {
       bio: json['bio'],
       followingCount: json['followingCount'],
       followersCount: json['followersCount'],
-      likes: json['likes'],
+      likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
       isAbstract: false,
     );

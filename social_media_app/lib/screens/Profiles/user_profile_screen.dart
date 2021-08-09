@@ -129,7 +129,7 @@ class _userProfileState extends State<UserProfileScreen>
                               color: Colors.red,
                             ),
                             Text(
-                              '${user?.likes ?? 0} Likes',
+                              '${user?.likeCount ?? 0} Likes',
                               style: kProfileLabel,
                             ),
                           ],
@@ -169,7 +169,7 @@ class _userProfileState extends State<UserProfileScreen>
                           Expanded(
                             child: OutlinedButton(
                               onPressed: () {
-                                print(user.likes);
+                                //print(user.likes);
                               },
                               child: Text(
                                 'Edit Profile',

@@ -100,7 +100,7 @@ class _ProfileScreenState extends State<ProfileScreen>
                       ),
                     if (widget.isUserProfile)
                       Text(
-                        '${widget.user?.likes ?? 0} Likes',
+                        '${widget.user?.likeCount ?? 0} Likes',
                         style: kProfileLabel,
                       ),
                   ],

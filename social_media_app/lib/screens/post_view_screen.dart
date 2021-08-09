@@ -18,7 +18,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    post = Provider.of<Post>(context);
+    Provider.of<Post>(context, listen: false).getComments();
   }
 
   @override
@@ -35,20 +35,24 @@ class _PostViewScreenState extends State<PostViewScreen> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      ChangeNotifierProvider.value(
-                        value: post,
-                        child: PostItem(
-                          disableComments: true,
+                      Consumer<Post>(
+                        builder: (_, post, __) => ChangeNotifierProvider.value(
+                          value: post,
+                          child: PostItem(
+                            disableComments: true,
+                          ),
                         ),
                       ),
                       Text('Comments'),
 
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: post.comments?.length ?? 0,
-                        itemBuilder: (ctx, ind) => CommentItem(
-                          Comment.fromJson(post.comments[ind]),
+                      Consumer<Post>(
+                        builder: (_, post, __) => ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: post.comments?.length ?? 0,
+                          itemBuilder: (ctx, ind) => CommentItem(
+                            Comment.fromJson(post.comments[ind]),
+                          ),
                         ),
                       ),
 

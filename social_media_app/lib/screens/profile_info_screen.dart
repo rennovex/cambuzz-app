@@ -3,6 +3,7 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/info_tile.dart';
 
 class ProfileInfoScreen extends StatefulWidget {
+  static const routeName = '/profile/profileInfo';
   final String title;
   final String id;
   const ProfileInfoScreen({this.id, this.title, Key key}) : super(key: key);
@@ -37,6 +38,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
               );
             else if (snapshot.hasData) {
               return ListView.builder(
+                  itemCount: snapshot.data.length,
                   itemBuilder: (_, ind) => InfoTile(
                         info: snapshot.data[ind],
                       ));

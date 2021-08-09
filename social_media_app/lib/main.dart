@@ -18,6 +18,7 @@ import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
+import 'package:social_media_app/screens/profile_info_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
+          ProfileInfoScreen.routeName: (ctx) => ProfileInfoScreen(),
           // UserProfileScreen.routeName: (
           //   ctx,
           // ) =>

@@ -11,7 +11,8 @@ import 'package:social_media_app/widgets/post_item.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FeedScreen extends StatefulWidget {
-  //const FeedScreen({ Key? key }) : super(key: key);
+  final user;
+  const FeedScreen(this.user,{ Key key }) : super(key: key);
 
   @override
   _FeedScreenState createState() => _FeedScreenState();
@@ -31,20 +32,21 @@ class _FeedScreenState extends State<FeedScreen>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () =>
-                Navigator.of(context).pushNamed(SearchScreen.routeName),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () =>
-                  Navigator.pushNamed(context, AddEventsScreen.routeName),
-              child: Text('Add Event'),
-            )
-          ],
-        ),
+        appBar: PreferredSize(child: CustomAppBar(widget.user), preferredSize: kAppBarPreferredSize ,),
+        // appBar: AppBar(
+        //   leading: IconButton(
+        //     icon: Icon(Icons.search),
+        //     onPressed: () =>
+        //         Navigator.of(context).pushNamed(SearchScreen.routeName),
+        //   ),
+        //   actions: [
+        //     TextButton(
+        //       onPressed: () =>
+        //           Navigator.pushNamed(context, AddEventsScreen.routeName),
+        //       child: Text('Add Event'),
+        //     )
+        //   ],
+        // ),
         body: PagedFeedListView(),
         // body: RefreshIndicator(
         //     onRefresh: () async {

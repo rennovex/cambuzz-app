@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +22,7 @@ import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
+import 'package:social_media_app/models/user.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -105,6 +108,16 @@ class _MyHomePageState extends State<MyHomePage> {
   PageController _pageController;
   List<Widget> _pages;
   bool registrationJustCompleted = false;
+  var user;
+
+  void initializePages(){
+    _pages = [
+      FeedScreen(user),
+      SearchScreen(),
+      TrendingScreen(user),
+      EventScreen(user),
+    ];
+  }
 
   @override
   void initState() {
@@ -112,12 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
     _selectedPageIndex = 0;
 
-    _pages = [
-      FeedScreen(),
-      UserProfileScreen(),
-      TrendingScreen(),
-      EventScreen(),
-    ];
+    initializePages();
 
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
@@ -152,36 +160,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 registrationJustCompleted = true;
               });
             });
+          user = snapshot.data;
+          initializePages();
           return SafeArea(
             child: Scaffold(
-              // appBar: AppBar(
-              //   backgroundColor: Color.fromRGBO(28, 28, 28, 1),
-              //   foregroundColor: Colors.white,
-              //   brightness: Brightness.dark,
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.only(
-              //       bottomLeft: Radius.circular(18),
-              //       bottomRight: Radius.circular(18),
-              //     ),
-              //   ),
-              //   leading: IconButton(
-              //     icon: CircleAvatar(
-              //       backgroundImage: NetworkImage(
-              //         'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80',
-              //       ),
-              //       radius: 19,
-              //     ),
-              //     onPressed: () {},
-              //   ),
-              //   title: Text('CamBuzz'),
-              //   centerTitle: true,
-              //   actions: [
-              //     IconButton(
-              //       icon: Icon(Icons.near_me),
-              //       onPressed: () {},
-              //     )
-              //   ],
-              // ),
               resizeToAvoidBottomInset: false,
               floatingActionButtonLocation:
                   FloatingActionButtonLocation.centerDocked,
@@ -243,7 +225,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       BottomNavigationBarItem(
                           icon: Icon(Icons.home), label: 'Feed'),
                       BottomNavigationBarItem(
-                          icon: Icon(Icons.account_circle), label: 'Account'),
+                          icon: Icon(Icons.search), label: 'Search'),
                       BottomNavigationBarItem(
                           icon: Icon(Icons.trending_up), label: 'Trending'),
                       BottomNavigationBarItem(

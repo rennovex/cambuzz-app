@@ -1,14 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/event.dart';
 
 class EventScreen extends StatefulWidget {
-  // const Event({ Key? key }) : super(key: key);
+  final user;
+  EventScreen(this.user,{ Key key }) : super(key: key);
   Future<List<Event>> events;
 
   //EventScreen(this.events);
@@ -250,7 +254,9 @@ class _EventScreenState extends State<EventScreen>
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: PreferredSize(child: CustomAppBar(widget.user),preferredSize: kAppBarPreferredSize,),
         body: SingleChildScrollView(
+        
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

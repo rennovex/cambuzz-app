@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/profile_info_screen.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
@@ -56,7 +57,7 @@ class _userProfileState extends State<UserProfileScreen>
             );
           } else {
             user = snapshot.data;
-            isMe = user.isMyProfile;
+            isMe = user.uid == Provider.of<Myself>(context).myself.uid;
             return ChangeNotifierProvider.value(
               value: user,
               child: SingleChildScrollView(

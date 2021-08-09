@@ -79,6 +79,7 @@ class Post with ChangeNotifier {
     likes,
     comment,
     isLiked,
+    likeCount,
   ) {
     return Post(
         id: postId,
@@ -89,6 +90,7 @@ class Post with ChangeNotifier {
         time: time,
         likes: likes,
         comments: comments,
+        likeCount: likeCount,
         isLiked: isLiked);
   }
 
@@ -103,6 +105,7 @@ class Post with ChangeNotifier {
     likes,
     comments,
     isLiked,
+    likeCount,
   ) {
     return Post(
         id: postId,
@@ -114,6 +117,7 @@ class Post with ChangeNotifier {
         user: user,
         likes: likes,
         comments: comments,
+        likeCount: likeCount,
         isLiked: isLiked);
   }
 
@@ -134,7 +138,8 @@ class Post with ChangeNotifier {
           DateTime.parse(json['time']),
           json['likes'],
           json['comments'],
-          json['isLiked']);
+          json['isLiked'],
+          json['likeCount']);
     } else {
       return Post().communityPost(
           json['_id'],
@@ -146,7 +151,8 @@ class Post with ChangeNotifier {
           DateTime.parse(json['time']),
           json['likes'],
           json['comments'],
-          json['isLiked']);
+          json['isLiked'],
+          json['likeCount']);
     }
   }
 

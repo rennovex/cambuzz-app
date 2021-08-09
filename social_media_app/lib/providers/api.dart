@@ -267,7 +267,7 @@ class Api {
     final List<Post> posts = [];
 
     json.forEach((post) {
-      print(post);
+      // print(post);
       return posts.add(Post.fromJson(post));
     });
 
@@ -465,5 +465,43 @@ class Api {
     print('Fetched Search results from Api');
 
     return searchResults;
+  }
+
+  static Future getFollowers(String id) async {
+    final response = await HttpHelper.get('/users/$id/followers');
+
+    if (response.statusCode != 200) {
+      throw 'Events not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List followers = [];
+
+    json.forEach((user) {
+      followers.add(User.fromJsonAbstract(user));
+    });
+    print('Fetched followers from API');
+
+    return followers;
+  }
+
+  static Future getFollowing(String id) async {
+    final response = await HttpHelper.get('/users/$id/following');
+
+    if (response.statusCode != 200) {
+      throw 'Events not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List following = [];
+
+    json.forEach((user) {
+      following.add(User.fromJsonAbstract(user));
+    });
+    print('Fetched followers from API');
+
+    return following;
   }
 }

@@ -9,8 +9,6 @@ import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/search_results.dart';
 
 import '../dummy_data.dart';
-import 'Profiles/community_profile_screen.dart';
-import 'Profiles/user_profile_screen.dart';
 
 enum FilterType {
   All,
@@ -242,7 +240,7 @@ class CustomSearchDelegate extends SearchDelegate {
             BoxConstraints(minHeight: MediaQuery.of(context).size.height),
         child: ListView.builder(
           itemCount: searchResult.length,
-          itemBuilder: (_, ind) => buildSearchItem(searchResult[ind], context),
+          itemBuilder: (_, ind) => buildSearchItem(searchResult[ind]),
         ),
       ),
     );
@@ -313,6 +311,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       ),
                       child: ListTile(
                         onTap: () {
+                          // setFilter(FilterType.Selected, ind);
                           print('pop');
                           return Navigator.of(context).pop();
                         },
@@ -333,8 +332,9 @@ class CustomSearchDelegate extends SearchDelegate {
                     itemCount: snapshot.data.length,
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, ind) =>
-                        buildSearchItem(snapshot.data[ind], context),
+                    itemBuilder: (_, ind) => buildSearchItem(
+                      snapshot.data[ind],
+                    ),
                   ),
                 ],
               ),
@@ -346,25 +346,7 @@ class CustomSearchDelegate extends SearchDelegate {
   }
 }
 
-void showUser(context, id) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => UserProfileScreen(userId: id),
-    ),
-  );
-}
-
-void showCommunity(context, id) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => CommunityProfileScreen(uid: id),
-    ),
-  );
-}
-
-Widget buildSearchItem(SearchItem searchResult, BuildContext context) => Card(
+Widget buildSearchItem(SearchItem searchResult) => Card(
       margin: EdgeInsets.symmetric(
         vertical: 5,
         horizontal: 15,
@@ -374,11 +356,7 @@ Widget buildSearchItem(SearchItem searchResult, BuildContext context) => Card(
         borderRadius: BorderRadius.circular(30),
       ),
       child: ListTile(
-        onTap: () {
-          searchResult.isUser()
-              ? showUser(context, searchResult.user.uid)
-              : showCommunity(context, searchResult.community.uid);
-        },
+        onTap: () {},
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         leading: CircleAvatar(
           radius: 28,

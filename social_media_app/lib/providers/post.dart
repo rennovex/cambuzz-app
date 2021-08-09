@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:social_media_app/Global/globals.dart';
@@ -119,7 +120,9 @@ class Post with ChangeNotifier {
   factory Post.fromJson(json) {
     // if(json.containsKey)
     // if (json['user'] == null) return Post();
+    print('trying building post');
     var user = User.fromJsonAbstract(json['user']);
+    print('user completed');
 
     if (json['postType'] == 'userPost') {
       return Post().userPost(

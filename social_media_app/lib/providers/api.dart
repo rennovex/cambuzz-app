@@ -255,7 +255,7 @@ class Api {
 
   //Get user Trending post from Api
   static Future<List<Post>> getTrendingUserPosts() async {
-    final response = await HttpHelper.get('/trending/user-posts/all');
+     final response = await HttpHelper.get('/trending/community-posts/all');
 
     if (response.statusCode != 200) {
       print('error');
@@ -267,7 +267,6 @@ class Api {
     final List<Post> posts = [];
 
     json.forEach((post) {
-      print(post);
       return posts.add(Post.fromJson(post));
     });
 

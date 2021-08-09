@@ -29,6 +29,8 @@ void main() async {
   await Firebase.initializeApp();
   Global.apiToken = await SecureStorage.readApiToken() ?? '';
   Global.uid = await SecureStorage.readUid() ?? '';
+  print(Global.uid);
+  print(Global.apiToken);
 
   runApp(MyApp());
 }
@@ -40,7 +42,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        Provider(create: (ctx) => User),
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -110,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
   bool registrationJustCompleted = false;
   var user;
 
-  void initializePages(){
+  void initializePages() {
     _pages = [
       FeedScreen(user),
       SearchScreen(),

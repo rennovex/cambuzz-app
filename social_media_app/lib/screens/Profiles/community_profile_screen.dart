@@ -64,7 +64,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
             } else {
               community = snapshot.data;
               isOwner = community.owner.uid == Global.uid ? true : false;
-              print(community.owner.uid + '  ' + Global.uid);
+              print(community.owner.uid + '  ' + Global?.uid);
               print(isOwner);
               return ChangeNotifierProvider.value(
                 value: community,

@@ -73,7 +73,9 @@ class GoogleSignInProvider with ChangeNotifier {
           SecureStorage.setApiToken(response.headers['x-auth-token']);
           SecureStorage.setUid(responseDecoded['_id']);
           Global.apiToken = response.headers['x-auth-token'];
-          Global.uid = response.headers['_id'];
+          Global.uid = responseDecoded['_id'];
+          print(Global.uid);
+          print(Global.apiToken);
         }
       }
     } on PlatformException catch (err) {

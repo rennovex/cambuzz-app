@@ -111,9 +111,11 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                 Icons.wallet_membership_outlined,
                                 color: Colors.red,
                               ),
-                              Text(
-                                '${community.membersCount ?? 0} Members',
-                                style: kProfileLabel,
+                              Consumer<Community>(
+                                builder: (_, community, __) => Text(
+                                  '${community.membersCount ?? 0} Members',
+                                  style: kProfileLabel,
+                                ),
                               ),
                             ],
                           ),

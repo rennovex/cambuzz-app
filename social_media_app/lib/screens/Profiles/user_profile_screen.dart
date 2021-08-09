@@ -95,17 +95,22 @@ class _userProfileState extends State<UserProfileScreen>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.person,
-                              color: Colors.blue,
-                            ),
-                            Text(
-                              '${user.followersCount ?? 0} Followers',
-                              style: kProfileLabel,
-                            ),
-                          ],
+                        GestureDetector(
+                          onTap: () {},
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.person,
+                                color: Colors.blue,
+                              ),
+                              Consumer<User>(
+                                builder: (_, user, __) => (Text(
+                                  '${user.followersCount ?? 0} Followers',
+                                  style: kProfileLabel,
+                                )),
+                              ),
+                            ],
+                          ),
                         ),
                         Row(
                           children: [

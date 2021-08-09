@@ -10,6 +10,7 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
         Provider(create: (ctx) => User.User),
+        ChangeNotifierProvider.value(value: Myself())
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -81,7 +83,7 @@ class MyApp extends StatelessWidget {
             if (provider.isSigningIn) {
               return buildLoading();
             } else if (snapshot.hasData) {
-              return MyHomePage();
+              return SplashScreen();
             } else {
               return RegistrationScreen(false);
             }
@@ -100,6 +102,31 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class SplashScreen extends StatelessWidget {
+  SplashScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (Provider.of<Myself>(context).myself == null) {
+      Api.getUser().then((user) {
+        if(user==null) return RegistrationScreen(true, email: '',
+                onRegistrationComplete: () {
+                  //TODO: add registration logic here
+              // setState(() {
+              //   registrationJustCompleted = true;
+              // });
+            });
+        Provider.of<Myself>(context, listen: false).setMyself(user);
+      });
+
+      return SpinKitChasingDots(
+        color: kPrimaryColor,
+      );
+    }
+    return MyHomePage();
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -114,10 +141,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initializePages() {
     _pages = [
-      FeedScreen(user),
+      FeedScreen(),
       SearchScreen(),
-      TrendingScreen(user),
-      EventScreen(user),
+      TrendingScreen(),
+      EventScreen(),
     ];
   }
 
@@ -128,6 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
     _selectedPageIndex = 0;
 
     initializePages();
+    print(_pages);
 
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
@@ -146,25 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: Api.getUser(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData)
-            return Container(
-              child: SpinKitCircle(
-                color: kPrimaryColor,
-              ),
-            );
-          if (snapshot.data == null && !registrationJustCompleted)
-            return RegistrationScreen(true, email: '',
-                onRegistrationComplete: () {
-              setState(() {
-                registrationJustCompleted = true;
-              });
-            });
-          user = snapshot.data;
-          initializePages();
-          return SafeArea(
+    return SafeArea(
             child: Scaffold(
               resizeToAvoidBottomInset: false,
               floatingActionButtonLocation:
@@ -239,6 +249,5 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           );
-        });
   }
 }

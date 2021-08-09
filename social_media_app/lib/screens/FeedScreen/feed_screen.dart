@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/paged_feed_list_view.dart';
@@ -11,8 +12,7 @@ import 'package:social_media_app/widgets/post_item.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FeedScreen extends StatefulWidget {
-  final user;
-  const FeedScreen(this.user,{ Key key }) : super(key: key);
+  const FeedScreen({ Key key }) : super(key: key);
 
   @override
   _FeedScreenState createState() => _FeedScreenState();
@@ -21,10 +21,12 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen>
     with AutomaticKeepAliveClientMixin<FeedScreen> {
   Future feed;
+  var user;
 
   @override
   void initState() {
     super.initState();
+    user = Provider.of<Myself>(context, listen: false).myself;
   }
 
   @override
@@ -32,7 +34,7 @@ class _FeedScreenState extends State<FeedScreen>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(child: CustomAppBar(widget.user), preferredSize: kAppBarPreferredSize ,),
+        appBar: PreferredSize(child: CustomAppBar(user), preferredSize: kAppBarPreferredSize ,),
         // appBar: AppBar(
         //   leading: IconButton(
         //     icon: Icon(Icons.search),

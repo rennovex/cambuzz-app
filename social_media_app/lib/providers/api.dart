@@ -255,7 +255,7 @@ class Api {
 
   //Get user Trending post from Api
   static Future<List<Post>> getTrendingUserPosts() async {
-     final response = await HttpHelper.get('/trending/community-posts/all');
+    final response = await HttpHelper.get('/trending/community-posts/all');
 
     if (response.statusCode != 200) {
       print('error');
@@ -471,7 +471,7 @@ class Api {
     final response = await HttpHelper.get('/users/$id/followers');
 
     if (response.statusCode != 200) {
-      throw 'Events not fetched' + response.body;
+      throw 'followers not fetched' + response.body;
     }
 
     final json = jsonDecode(response.body) as List;
@@ -490,7 +490,7 @@ class Api {
     final response = await HttpHelper.get('/users/$id/following');
 
     if (response.statusCode != 200) {
-      throw 'Events not fetched' + response.body;
+      throw 'following not fetched' + response.body;
     }
 
     final json = jsonDecode(response.body) as List;

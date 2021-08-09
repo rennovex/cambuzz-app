@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/profile_info_screen.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import 'user_settings.dart';
@@ -96,7 +97,15 @@ class _userProfileState extends State<UserProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: () {},
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileInfoScreen(
+                                title: 'Followers',
+                                id: user.uid,
+                              ),
+                            ),
+                          ),
                           child: Row(
                             children: [
                               Icon(
@@ -124,17 +133,28 @@ class _userProfileState extends State<UserProfileScreen>
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            Icon(
-                              MdiIcons.medal,
-                              color: Colors.purpleAccent,
+                        GestureDetector(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileInfoScreen(
+                                title: 'Following',
+                                id: user.uid,
+                              ),
                             ),
-                            Text(
-                              '${user.followingCount ?? 0} Following',
-                              style: kProfileLabel,
-                            ),
-                          ],
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                MdiIcons.medal,
+                                color: Colors.purpleAccent,
+                              ),
+                              Text(
+                                '${user.followingCount ?? 0} Following',
+                                style: kProfileLabel,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),

@@ -22,7 +22,7 @@ import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
-import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/models/user.dart' as User;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        Provider(create: (ctx) => User),
+        Provider(create: (ctx) => User.User),
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(

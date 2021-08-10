@@ -32,6 +32,32 @@ class Api {
     return ListPage(itemList: posts);
   }
 
+  static Future postCommunity(String communityName, XFile image) async {
+    final response = await HttpHelper.post(uri: '/communities', body: {
+      'name': communityName,
+      'fileType': '.jpg'
+    });
+    if (response.statusCode == 201) {
+      if (image != null) {
+        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
+
+        final awsResponse =
+            await HttpHelper.put(uri: '$awsUploadLink', body: image);
+
+        if (awsResponse.statusCode != 200) {
+          throw 'Community could not be created due to image upload error  ' +
+              awsResponse.body;
+        }
+        print('Community is created' + awsResponse.body);
+      }
+
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
   static Future postUser(User user, XFile image) async {
     final response = await HttpHelper.post(uri: '/users', body: {
       'name': user.name,
@@ -76,6 +102,17 @@ class Api {
     } else {
       throw 'error could not get skills';
     }
+  }
+  
+  static Future isCommunityNameAvailable(String name) async {
+    final response =
+        await HttpHelper.get('/communities/name-available/' + name);
+    if (response.statusCode == 409) {
+      return false;
+    } else if (response.statusCode == 200) {
+      return true;
+    } else
+      throw 'error username availability cannot be checked';
   }
 
   static Future isUsernameAvailable(String userName) async {

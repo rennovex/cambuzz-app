@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/registration_widget_element.dart';
+import 'package:social_media_app/widgets/Registration/image_selection_buttons.dart';
 import 'package:social_media_app/widgets/Registration/registration_screen_skeleton.dart';
 import 'package:social_media_app/widgets/Registration/registration_step_top.dart';
 
@@ -47,39 +48,8 @@ class step2 extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  TextButton(
-                    onPressed: () {
-                      onSelectImageButtonPressed();
-                    },
-                    child: Text(
-                      'Select an image',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Poppins',
-                          fontSize: 14),
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(
-                        Color(0xff00BF2A),
-                      ),
-                    ),
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        onRemoveImageButtonPressed();
-                      },
-                      child: Text(
-                        'Remove selected',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                            fontSize: 14),
-                      ),
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(
-                          Color(0xffFF4444),
-                        ),
-                      ))
+                  SelectImageButton(onSelectImageButtonPressed: onSelectImageButtonPressed),
+                  RemoveImageButton(onRemoveImageButtonPressed: onRemoveImageButtonPressed)
                 ],
               ),
             )

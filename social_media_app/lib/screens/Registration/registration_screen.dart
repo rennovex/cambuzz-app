@@ -112,7 +112,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         onUsernameChange: (value) async {
           isUsernameAvailable = await Api.isUsernameAvailable(value);
-          print(isUsernameAvailable);
           setState(()  {
             user.userName = value;
           });

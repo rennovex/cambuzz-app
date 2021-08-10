@@ -19,10 +19,9 @@ class Post with ChangeNotifier {
   final String postImg;
   final String postText;
   bool isLiked;
-  final List likes;
   num likeCount;
-  List comments;
   num commentCount;
+  List comments;
 
   Post({
     this.id,
@@ -32,14 +31,10 @@ class Post with ChangeNotifier {
     this.postImg,
     this.postText,
     this.time,
-    this.comments,
     this.commentCount,
-    this.likes,
     this.likeCount,
     this.isLiked,
   }) {
-    this.likeCount = likes?.length ?? 0;
-    this.commentCount = comments?.length ?? 0;
   }
 
   String get howLongAgo {
@@ -55,10 +50,6 @@ class Post with ChangeNotifier {
       return duration.inSeconds.toString() + ' seconds ago';
     }
     return 'error';
-  }
-
-  bool get liked {
-    return likes?.contains(Global.uid);
   }
 
   bool isUserPost() {
@@ -79,6 +70,8 @@ class Post with ChangeNotifier {
     likes,
     comment,
     isLiked,
+    likeCount,
+    commentCount,
   ) {
     return Post(
         id: postId,
@@ -87,8 +80,8 @@ class Post with ChangeNotifier {
         postImg: postImg,
         postText: postText,
         time: time,
-        likes: likes,
-        comments: comments,
+        commentCount: commentCount,
+        likeCount: likeCount,
         isLiked: isLiked);
   }
 
@@ -103,6 +96,8 @@ class Post with ChangeNotifier {
     likes,
     comments,
     isLiked,
+    likeCount,
+    commentCount,
   ) {
     return Post(
         id: postId,
@@ -112,9 +107,9 @@ class Post with ChangeNotifier {
         postText: postText,
         time: time,
         user: user,
-        likes: likes,
-        comments: comments,
-        isLiked: isLiked);
+        commentCount: commentCount,
+        likeCount: likeCount,
+        isLiked: isLiked,);
   }
 
   factory Post.fromJson(json) {
@@ -134,7 +129,9 @@ class Post with ChangeNotifier {
           DateTime.parse(json['time']),
           json['likes'],
           json['comments'],
-          json['isLiked']);
+          json['isLiked'],
+          json['likeCount'],
+          json['commentCount']);
     } else {
       return Post().communityPost(
           json['_id'],
@@ -146,7 +143,9 @@ class Post with ChangeNotifier {
           DateTime.parse(json['time']),
           json['likes'],
           json['comments'],
-          json['isLiked']);
+          json['isLiked'],
+          json['likeCount'],
+          json['commentCount']);
     }
   }
 

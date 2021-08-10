@@ -212,7 +212,9 @@ class _userProfileState extends State<UserProfileScreen>
                             child: OutlinedButton(
                               onPressed: () => showModalBottomSheet<dynamic>(
                                 context: context,
-                                builder: (context) => UserSettings(),
+                                builder: (context) => UserSettings(onLogout: (){
+                                  Navigator.of(context).pop();
+                                },),
                               ),
                               child: Text(
                                 'Settings',

@@ -5,6 +5,8 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
@@ -105,19 +107,27 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.wallet_membership_outlined,
-                                color: Colors.red,
-                              ),
-                              Consumer<Community>(
-                                builder: (_, community, __) => Text(
-                                  '${community.membersCount ?? 0} Members',
-                                  style: kProfileLabel,
+                          GestureDetector(
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              ProfileInfoScreen.routeName,
+                              arguments: ProfileInfoArguments(
+                                  id: community.uid, title: 'Members'),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.wallet_membership_outlined,
+                                  color: Colors.red,
                                 ),
-                              ),
-                            ],
+                                Consumer<Community>(
+                                  builder: (_, community, __) => Text(
+                                    '${community.membersCount ?? 0} Members',
+                                    style: kProfileLabel,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
                             children: [

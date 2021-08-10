@@ -18,6 +18,7 @@ class _PostViewScreenState extends State<PostViewScreen> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    post = Provider.of<Post>(context, listen: false);
     Provider.of<Post>(context, listen: false).getComments();
   }
 
@@ -105,8 +106,7 @@ class _NewCommentState extends State<NewComment> {
 
   void postComment() {
     print(textEditingController.value.text);
-    widget.post.postcomment(
-        id: widget.post.id, comment: textEditingController.value.text.trim());
+    widget.post.postcomment(comment: textEditingController.value.text.trim());
     textEditingController.clear();
     focusNode.unfocus();
   }

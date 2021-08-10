@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/widgets/info_tile.dart';
 
 class ProfileInfoScreen extends StatefulWidget {
@@ -14,20 +15,27 @@ class ProfileInfoScreen extends StatefulWidget {
 
 class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
   Future future;
+  ProfileInfoArguments args;
 
   @override
-  void initState() {
-    super.initState();
-    future = widget.title == 'Followers'
-        ? Api.getFollowers(widget.id)
-        : Api.getFollowing(widget.id);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    args = ModalRoute.of(context).settings.arguments as ProfileInfoArguments;
+
+    future = args.title == 'Followers'
+        ? Api.getFollowers(args.id)
+        : args.title == 'Following'
+            ? Api.getFollowing(args.id)
+            : Api.getFollowing(args.id);
+
+    // Api.getMembers(args.id);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text(args.title),
       ),
       body: FutureBuilder(
           future: future,
@@ -44,7 +52,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                       ));
             } else
               return Center(
-                child: Text('No + ${widget.title}'),
+                child: Text('No + ${args.title}'),
               );
           }),
     );

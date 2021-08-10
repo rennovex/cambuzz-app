@@ -18,7 +18,7 @@ import 'package:social_media_app/screens/auth_screen.dart';
 import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
-import 'package:social_media_app/screens/profile_info_screen.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        Provider(create: (ctx) => User.User),
         ChangeNotifierProvider.value(value: Myself())
         // ChangeNotifierProvider.value(value: Api()),
       ],
@@ -61,11 +60,38 @@ class MyApp extends StatelessWidget {
           //   body2: BodySecondaryTextStyle,
           // )
         ),
+
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            final provider = Provider.of<GoogleSignInProvider>(
+              context,
+            );
+
+            // if (snapshot.connectionState == ConnectionState.active) {
+            //   if (snapshot.hasData) return SplashScreen();
+
+            //   return RegistrationScreen(false);
+            // } else
+            //   return Center(
+            //     child: Text('some error'),
+            //   );
+
+            if (provider.isSigningIn) {
+              return buildLoading();
+            } else if (snapshot.hasData) {
+              return SplashScreen();
+            } else {
+              return RegistrationScreen(false);
+            }
+          },
+        ),
         // home:RegistrationScreen()
-        // initialRoute: '/',
+        // initialRoute: home,
         routes: {
-          // '/': (ctx) => PasswordOverview(),
+          // '/': (ctx) => MyApp(),
           CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
+          UserProfileScreen.routeName: (ctx) => UserProfileScreen(),
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
@@ -77,20 +103,6 @@ class MyApp extends StatelessWidget {
           //       userId: id,
           //     ),
         },
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            final provider = Provider.of<GoogleSignInProvider>(context);
-
-            if (provider.isSigningIn) {
-              return buildLoading();
-            } else if (snapshot.hasData) {
-              return SplashScreen();
-            } else {
-              return RegistrationScreen(false);
-            }
-          },
-        ),
       ),
     );
   }
@@ -110,25 +122,16 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (Provider.of<Myself>(context).myself == null) {
-      SecureStorage.readUser()
-          .then((value) {
-            print('user found locally');
-            Provider.of<Myself>(context, listen: false).setMyself(value);
-          })
-          .catchError((error) {
-        print('User not found. Loading from server. error = '+error);
-        Api.getUser().then((user) {
-          if (user == null)
-            return RegistrationScreen(true, email: '',
-                onRegistrationComplete: () {
-              //TODO: add registration logic here
-              // setState(() {
-              //   registrationJustCompleted = true;
-              // });
-            });
-          Provider.of<Myself>(context, listen: false).setMyself(user);
-          SecureStorage.setUser(user);
-        });
+      Api.getUser().then((user) {
+        if (user == null)
+          return RegistrationScreen(true, email: '',
+              onRegistrationComplete: () {
+            //TODO: add registration logic here
+            // setState(() {
+            //   registrationJustCompleted = true;
+            // });
+          });
+        Provider.of<Myself>(context, listen: false).setMyself(user);
       });
 
       return SpinKitChasingDots(

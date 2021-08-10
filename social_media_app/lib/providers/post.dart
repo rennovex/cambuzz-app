@@ -173,9 +173,9 @@ class Post with ChangeNotifier {
     }
   }
 
-  void postcomment({String id, String comment}) async {
+  void postcomment({String comment}) async {
     final response = await HttpHelper.post(
-        uri: '/posts/comments/$id', body: {"commentText": "$comment"});
+        uri: '/posts/comments/${this.id}', body: {"commentText": "$comment"});
 
     if (response.statusCode != 200) {
       throw 'Not Commented ' + response.body;

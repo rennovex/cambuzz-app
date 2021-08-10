@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
 
 class InfoTile extends StatelessWidget {
   final User info;
@@ -17,11 +18,11 @@ class InfoTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(30),
       ),
       child: ListTile(
-        onTap: () {
-          // searchResult.isUser()
-          //     ? showUser(context, searchResult.user.uid)
-          //     : showCommunity(context, searchResult.community.uid);
-        },
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => UserProfileScreen(userId: info.uid),
+          ),
+        ),
         contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
         leading: CircleAvatar(
           radius: 28,

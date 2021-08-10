@@ -11,7 +11,8 @@ import 'package:social_media_app/widgets/feed_post_action.dart';
 
 class PostItem extends StatelessWidget {
   final bool disableComments;
-  // final Post post;
+  // final post = Provider.of<Post>(context);
+  //  Post post =
 
   PostItem({
     this.disableComments = false,
@@ -39,7 +40,7 @@ class PostItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final post = Provider.of<Post>(context);
+    final post = Provider.of<Post>(context, listen: false);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
@@ -178,44 +179,48 @@ class PostItem extends StatelessWidget {
               children: [
                 GestureDetector(
                   onTap: () => post.toggleLike(),
-                  child: Container(
-                    padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: post.isLiked
-                          ? Colors.red
-                          : Color.fromRGBO(235, 237, 236, 1),
-                    ),
-                    child: Row(
-                      children: [
-                        IconButton(
-                            padding: EdgeInsets.all(0),
-                            constraints: BoxConstraints(),
-                            icon: post.isLiked
-                                ? Icon(
-                                    Icons.favorite,
-                                    color: Colors.white,
-                                  )
-                                : Icon(
-                                    Icons.favorite,
-                                    color: Colors.black,
-                                  ),
-                            onPressed: () => post.toggleLike()),
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 5, top: 5, bottom: 5),
-                          child: SizedBox(
-                            width: 35,
-                            child: Text(
-                              '${post.likeCount}',
-                              style: TextStyle(
-                                color:
-                                    post.isLiked ? Colors.white : Colors.black,
+                  child: Consumer<Post>(
+                    builder: (_, post, __) => Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: post.isLiked
+                            ? Colors.red
+                            : Color.fromRGBO(235, 237, 236, 1),
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                              padding: EdgeInsets.all(0),
+                              constraints: BoxConstraints(),
+                              icon: post.isLiked
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.white,
+                                    )
+                                  : Icon(
+                                      Icons.favorite,
+                                      color: Colors.black,
+                                    ),
+                              onPressed: () => post.toggleLike()),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 5, bottom: 5),
+                            child: SizedBox(
+                              width: 35,
+                              child: Text(
+                                '${post.likeCount}',
+                                style: TextStyle(
+                                  color: post.isLiked
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),

@@ -96,6 +96,8 @@ class GoogleSignInProvider with ChangeNotifier {
     try {
       await googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
+      print('logout successful');
+      print(FirebaseAuth.instance.currentUser);
       await SecureStorage.deleteAll();
     } catch (err) {
       print(err);

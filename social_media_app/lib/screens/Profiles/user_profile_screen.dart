@@ -5,7 +5,8 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
-import 'package:social_media_app/screens/profile_info_screen.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import 'user_settings.dart';
@@ -98,14 +99,11 @@ class _userProfileState extends State<UserProfileScreen>
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         GestureDetector(
-                          onTap: () => Navigator.push(
+                          onTap: () => Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileInfoScreen(
-                                title: 'Followers',
-                                id: user.uid,
-                              ),
-                            ),
+                            ProfileInfoScreen.routeName,
+                            arguments: ProfileInfoArguments(
+                                id: user.uid, title: 'Followers'),
                           ),
                           child: Row(
                             children: [
@@ -135,14 +133,11 @@ class _userProfileState extends State<UserProfileScreen>
                           ],
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.push(
+                          onTap: () => Navigator.pushNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => ProfileInfoScreen(
-                                title: 'Following',
-                                id: user.uid,
-                              ),
-                            ),
+                            ProfileInfoScreen.routeName,
+                            arguments: ProfileInfoArguments(
+                                id: user.uid, title: 'Following'),
                           ),
                           child: Row(
                             children: [

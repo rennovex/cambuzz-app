@@ -537,7 +537,7 @@ class Api {
     json.forEach((user) {
       following.add(User.fromJsonAbstract(user));
     });
-    print('Fetched followers from API');
+    print('Fetched following from API');
 
     return following;
   }

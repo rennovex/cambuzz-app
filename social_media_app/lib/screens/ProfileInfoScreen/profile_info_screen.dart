@@ -52,7 +52,7 @@ class _ProfileInfoScreenState extends State<ProfileInfoScreen> {
                       ));
             } else
               return Center(
-                child: Text('No + ${args.title}'),
+                child: Text('No ${args.title}'),
               );
           }),
     );

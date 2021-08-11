@@ -85,23 +85,24 @@ class PostItem extends StatelessWidget {
                             ),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              SizedBox(
-                                width: 100,
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                ),
                                 child: Text(
                                   post.user.userName,
                                   overflow: TextOverflow.ellipsis,
                                   style: kPostSubHeaderTextStyle,
-                                  // maxLines: 1,
-                                  // softWrap: true,
                                 ),
                               ),
+                              SizedBox(width: 10),
                               Row(
                                 children: [
                                   Icon(
                                     Icons.access_time_sharp,
-                                    size: 18,
+                                    size: 14,
                                   ),
                                   Text(post.howLongAgo,
                                       softWrap: true,

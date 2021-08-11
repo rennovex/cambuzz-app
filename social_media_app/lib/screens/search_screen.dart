@@ -262,34 +262,46 @@ class CustomSearchDelegate extends SearchDelegate {
               ? Api.getSearch(key: query)
               : Api.getSearchWithFilter(skillId: filterType.id, key: query),
           builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             if (!snapshot.hasData) {
               // return SearchScreen();
               if (filterType != null)
-                return Card(
-                  margin: EdgeInsets.symmetric(
-                    vertical: 5,
-                    horizontal: 15,
-                  ),
-                  color: filters[selectedIndex]['color'],
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13),
-                  ),
-                  child: ListTile(
-                    onTap: () {
-                      // setFilter(FilterType.Selected, ind);
-                      Navigator.of(context).pop();
-                    },
-                    contentPadding:
-                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    leading: Text(
-                      '${filters[selectedIndex]['name']}',
-                      style: kSearchFilterText,
-                    ),
-                    trailing: Icon(
-                      Icons.filter_alt,
-                      color: Colors.white,
-                      size: 30,
-                    ),
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 75,
+                        decoration: BoxDecoration(
+                          color: filters[selectedIndex]['color'],
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 15,
+                        ),
+                        // color: filters[selectedIndex]['color'],
+                        child: ListTile(
+                          onTap: () {
+                            // setFilter(FilterType.Selected, ind);
+                            Navigator.of(context).pop();
+                          },
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          leading: Text(
+                            '${filterType.name}',
+                            style: kSearchFilterText,
+                          ),
+                          trailing: Icon(
+                            Icons.filter_alt,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 );
               if (filterType == null)
@@ -320,7 +332,7 @@ class CustomSearchDelegate extends SearchDelegate {
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         leading: Text(
-                          '${filters[selectedIndex]['name']}',
+                          '${filterType.name}',
                           style: kSearchFilterText,
                         ),
                         trailing: Icon(

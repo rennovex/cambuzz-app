@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/constants.dart';
 
@@ -375,10 +377,37 @@ class _ImagePickerState extends State<ImagePickerHelper> {
 
   void _pickImage() async {
     XFile selectedImage = await _picker.pickImage(source: ImageSource.gallery);
+    var croppedFile = await ImageCropper.cropImage(
+        sourcePath: selectedImage.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          // CropAspectRatioPreset.ratio3x2,
+          // CropAspectRatioPreset.original,
+          // CropAspectRatioPreset.ratio4x3,
+          // CropAspectRatioPreset.ratio16x9
+        ],
+        androidUiSettings: AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Theme.of(context).primaryColor,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: true),
+        iosUiSettings: IOSUiSettings(
+          minimumAspectRatio: 1.0,
+        ));
+    File compressedFile = await FlutterImageCompress.compressAndGetFile(
+      croppedFile.path,
+      '${Directory.systemTemp.path}/compressed.jpg',
+      quality: 70,
+    );
+
+    // XFile(result.path);
 
     setState(() {
-      if (selectedImage != null) _pickedImage = selectedImage;
+      if (compressedFile != null) _pickedImage = XFile(compressedFile.path);
       widget.setImage(_pickedImage);
+      selectedImage.length().then((value) => print(value));
+      print(compressedFile.lengthSync());
     });
   }
 

@@ -42,6 +42,8 @@ dependencies:
   flutter_svg: ^0.22.0
   infinite_scroll_pagination: ^3.1.0
   intl: ^0.17.0
+  image_cropper: ^1.4.1
+  flutter_image_compress: ^1.1.0
 
 dev_dependencies:
   flutter_test:

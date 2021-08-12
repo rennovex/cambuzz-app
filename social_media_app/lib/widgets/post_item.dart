@@ -175,13 +175,13 @@ class PostItem extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onTap: () => post.toggleLike(),
-                  child: Consumer<Post>(
-                    builder: (_, post, __) => Container(
+            Consumer<Post>(
+              builder: (_, post, __) => Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => post.toggleLike(),
+                    child: Container(
                       padding:
                           EdgeInsets.symmetric(vertical: 7, horizontal: 15),
                       decoration: BoxDecoration(
@@ -224,65 +224,66 @@ class PostItem extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 20,
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.all(0),
-                      constraints: BoxConstraints(),
-                      icon: Icon(
-                        MdiIcons.comment,
+
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.all(0),
+                        constraints: BoxConstraints(),
+                        icon: Icon(
+                          MdiIcons.comment,
+                        ),
+                        onPressed: disableComments
+                            ? null
+                            : () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangeNotifierProvider.value(
+                                              value: post,
+                                              child: PostViewScreen())),
+                                ),
                       ),
-                      onPressed: disableComments
-                          ? null
-                          : () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        ChangeNotifierProvider.value(
-                                            value: post,
-                                            child: PostViewScreen())),
-                              ),
-                    ),
-                    SizedBox(
-                      width: 4,
-                    ),
-                    Text(
-                      '${post.commentCount}',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
-                // Row(
-                //   children: [
-                //     IconButton(
-                //         padding: EdgeInsets.all(0),
-                //         constraints: BoxConstraints(),
-                //         icon: Icon(MdiIcons.trophyOutline),
-                //         onPressed: () {}),
-                //     Text(
-                //       '3',
-                //       style: kPostBottomMetricTextStyle,
-                //     ),
-                //   ],
-                // ),
-                // Row(
-                //   children: [
-                //     IconButton(
-                //         padding: EdgeInsets.all(0),
-                //         constraints: BoxConstraints(),
-                //         icon: Icon(MdiIcons.shareAllOutline),
-                //         onPressed: () {}),
-                //     Text(
-                //       '3',
-                //       style: kPostBottomMetricTextStyle,
-                //     ),
-                //   ],
-                // ),
-              ],
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        '${post.commentCount}',
+                        style: kPostBottomMetricTextStyle,
+                      ),
+                    ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //         padding: EdgeInsets.all(0),
+                  //         constraints: BoxConstraints(),
+                  //         icon: Icon(MdiIcons.trophyOutline),
+                  //         onPressed: () {}),
+                  //     Text(
+                  //       '3',
+                  //       style: kPostBottomMetricTextStyle,
+                  //     ),
+                  //   ],
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //         padding: EdgeInsets.all(0),
+                  //         constraints: BoxConstraints(),
+                  //         icon: Icon(MdiIcons.shareAllOutline),
+                  //         onPressed: () {}),
+                  //     Text(
+                  //       '3',
+                  //       style: kPostBottomMetricTextStyle,
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
             ),
             // SizedBox(
             //   height: 10,

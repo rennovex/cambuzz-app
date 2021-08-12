@@ -7,24 +7,21 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
-class PostViewScreen extends StatefulWidget {
-  @override
-  _PostViewScreenState createState() => _PostViewScreenState();
-}
-
-class _PostViewScreenState extends State<PostViewScreen> {
+class PostViewScreen extends StatelessWidget {
   Post post;
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    post = Provider.of<Post>(context, listen: false);
-    Provider.of<Post>(context, listen: false).getComments();
-  }
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   post = Provider.of<Post>(context, listen: false);
+  //   Provider.of<Post>(context, listen: false).getComments();
+  // }
 
   @override
   Widget build(BuildContext context) {
-    // final future = post.getComments(post.id);
+    Post post = Provider.of<Post>(context, listen: false);
+
+    final future = post.getComments();
 
     return SafeArea(
       child: GestureDetector(
@@ -37,24 +34,34 @@ class _PostViewScreenState extends State<PostViewScreen> {
                   child: Column(
                     children: [
                       Consumer<Post>(
-                        builder: (_, post, __) => ChangeNotifierProvider.value(
-                          value: post,
-                          child: PostItem(
-                            disableComments: true,
-                          ),
+                        builder: (_, post, __) => PostItem(
+                          disableComments: true,
                         ),
                       ),
                       Text('Comments'),
 
                       Consumer<Post>(
-                        builder: (_, post, __) => ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: post.comments?.length ?? 0,
-                          itemBuilder: (ctx, ind) => CommentItem(
-                            Comment.fromJson(post.comments[ind]),
-                          ),
-                        ),
+                        builder: (_, post, __) => FutureBuilder(
+                            future: future,
+                            builder: (_, snapshot) {
+                              print(snapshot.connectionState);
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              else if (snapshot.hasData) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: post.comments?.length ?? 0,
+                                  itemBuilder: (ctx, ind) => CommentItem(
+                                    Comment.fromJson(post.comments[ind]),
+                                  ),
+                                );
+                              } else
+                                return Spacer();
+                            }),
                       ),
 
                       // else{

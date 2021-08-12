@@ -65,6 +65,10 @@ class _AddPostState extends State<AddPost> {
         Fluttertoast.showToast(msg: 'No Image Selected');
         return;
       }
+      if (titleController.value.text.trim().isEmpty) {
+        Fluttertoast.showToast(msg: 'Please enter title');
+        return;
+      }
       chosenCommunity != null
           ? Api.postCommunityImagePost(
               id: chosenCommunity['_id'],

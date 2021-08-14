@@ -47,6 +47,7 @@ class step3 extends StatelessWidget {
                     inputType: TextInputType.multiline,
                     maxLines: 5,
                     onChanged: onBioChanged,
+                    value: bioValue,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

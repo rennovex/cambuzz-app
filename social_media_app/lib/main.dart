@@ -126,9 +126,22 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  var user;
+
+   void setUserProvider(var user){
+              Provider.of<Myself>(context, listen: false).setMyself(user);
+    }
+
+  @override
+  void initState() {
+    user = Provider.of<Myself>(context, listen: false).myself;
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (Provider.of<Myself>(context).myself == null) {
+    if (user == null) {
       print('Myself is null');
       return FutureBuilder(
           future: Api.getUser(),
@@ -154,9 +167,9 @@ class _SplashScreenState extends State<SplashScreen> {
               );
             } else {
               print('got data from server');
-              print(snapshot.data.name);  
-              Provider.of<Myself>(context, listen: false).setMyself(snapshot.data);
-              
+              print(snapshot.data.name);
+
+              setUserProvider(snapshot.data);
               return MyHomePage();
             }
           });

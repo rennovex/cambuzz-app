@@ -6,7 +6,7 @@ class Myself with ChangeNotifier{
 
   void setMyself(User user){
     myself = user;
-    notifyListeners();
+    //notifyListeners();
   }
 
 }

@@ -16,7 +16,11 @@ class RegistrationScreen extends StatefulWidget {
   Function onRegistrationComplete;
   User user;
   Function onRegistrationError;
-  RegistrationScreen(bool isGoogleRegistered, {this.user,String email='',this.onRegistrationError, @required this.onRegistrationComplete}){
+  RegistrationScreen(bool isGoogleRegistered,
+      {this.user,
+      String email = '',
+      this.onRegistrationError,
+      @required this.onRegistrationComplete}) {
     this.isGoogleRegistered = isGoogleRegistered;
     this.emailValue = email;
   }
@@ -25,8 +29,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  
-  var user = User(userName: '', name: '', email: '',skills: []);
+  var user = User(userName: '', name: '', email: '', skills: []);
 
   var isNameValid = true;
   var isUsernameValid = true;
@@ -42,10 +45,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void initState() {
-    page = (widget.isGoogleRegistered)?1:0;
+    page = (widget.isGoogleRegistered) ? 1 : 0;
     user.email = widget.emailValue;
     super.initState();
-    if(widget.user!=null){
+    if (widget.user != null) {
       user = widget.user;
     }
 
@@ -118,23 +121,25 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         onUsernameChange: (value) async {
           isUsernameAvailable = await Api.isUsernameAvailable(value);
-          setState(()  {
+          setState(() {
             user.userName = value;
           });
         },
       ),
       step2(
-        image:pickedImage,
-        onRemoveImageButtonPressed: (){
+        networkImage: user.image,
+        image: pickedImage,
+        onRemoveImageButtonPressed: () {
           setState(() {
             pickedImage = null;
           });
         },
         onSelectImageButtonPressed: () async {
-          XFile selectedImage = await picker.pickImage(source: ImageSource.gallery);
+          XFile selectedImage =
+              await picker.pickImage(source: ImageSource.gallery);
 
           setState(() {
-            if(selectedImage != null) pickedImage = selectedImage;
+            if (selectedImage != null) pickedImage = selectedImage;
           });
         },
         onBackButonPressed: () {
@@ -149,19 +154,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
       ),
       step3(
-        onSkillAdded: (skill){
+        onSkillAdded: (skill) {
           setState(() {
             user.skills.add(skill);
           });
         },
-        onSkillRemoved: (skill){
+        onSkillRemoved: (skill) {
           setState(() {
             user.skills.remove(skill);
           });
         },
-        onBioChanged: (value){
+        onBioChanged: (value) {
           setState(() {
-            if(value.length<100){
+            if (value.length < 100) {
               user.bio = value;
             }
           });
@@ -169,19 +174,21 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         bioMax: 100,
         bioValue: user.bio,
         primaryButtonOnPressed: () async {
-          print([user.name, user.email, user.image]);
-           var completed = await Api.postUser(user, pickedImage);
-          if(completed){
-             setState(() {
-            page++;
-          });
-            print('completee');
+          if (widget.user == null) {
+            var completed = await Api.postUser(user, pickedImage);
+            if (completed) {
+              setState(() {
+                page++;
+              });
+              print('completee');
+            } else {
+              widget.onRegistrationError();
+              print('error');
+            }
+          } else {
+            //Put user logic goes here
           }
-          else{
-            widget.onRegistrationError();
-            print('error');
-          }
-         
+
         },
         onBackButonPressed: () {
           setState(() {
@@ -198,7 +205,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     return Scaffold(
       key: Key('registration_Screen'),
-      
       body: pages[page],
     );
   }

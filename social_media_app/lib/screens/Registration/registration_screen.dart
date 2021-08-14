@@ -14,7 +14,9 @@ class RegistrationScreen extends StatefulWidget {
   bool isGoogleRegistered;
   String emailValue;
   Function onRegistrationComplete;
-  RegistrationScreen(bool isGoogleRegistered, {String email='', @required this.onRegistrationComplete}){
+  User user;
+  Function onRegistrationError;
+  RegistrationScreen(bool isGoogleRegistered, {this.user,String email='',this.onRegistrationError, @required this.onRegistrationComplete}){
     this.isGoogleRegistered = isGoogleRegistered;
     this.emailValue = email;
   }
@@ -23,6 +25,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  
   var user = User(userName: '', name: '', email: '',skills: []);
 
   var isNameValid = true;
@@ -42,6 +45,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     page = (widget.isGoogleRegistered)?1:0;
     user.email = widget.emailValue;
     super.initState();
+    if(widget.user!=null){
+      user = widget.user;
+    }
 
     picker = ImagePicker();
   }
@@ -163,16 +169,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         bioMax: 100,
         bioValue: user.bio,
         primaryButtonOnPressed: () async {
+          print([user.name, user.email, user.image]);
            var completed = await Api.postUser(user, pickedImage);
           if(completed){
+             setState(() {
+            page++;
+          });
             print('completee');
           }
           else{
+            widget.onRegistrationError();
             print('error');
           }
-          setState(() {
-            page++;
-          });
+         
         },
         onBackButonPressed: () {
           setState(() {

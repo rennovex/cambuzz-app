@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
@@ -31,8 +32,8 @@ void main() async {
   await Firebase.initializeApp();
   Global.apiToken = await SecureStorage.readApiToken() ?? '';
   Global.uid = await SecureStorage.readUid() ?? '';
-  print(Global.uid);
-  print(Global.apiToken);
+  print('uid = ' + Global.uid);
+  print('token = ' + Global.apiToken);
 
   runApp(MyApp());
 }
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
             if (provider.isSigningIn) {
               return buildLoading();
             } else if (snapshot.hasData) {
+              print(snapshot.data);
               return SplashScreen();
             } else {
               return RegistrationScreen(false);
@@ -116,29 +118,79 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
 
   @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
   Widget build(BuildContext context) {
     if (Provider.of<Myself>(context).myself == null) {
-      Api.getUser().then((user) {
-        if (user == null)
-          return RegistrationScreen(true, email: '',
-              onRegistrationComplete: () {
-            //TODO: add registration logic here
-            // setState(() {
-            //   registrationJustCompleted = true;
-            // });
-          });
-        Provider.of<Myself>(context, listen: false).setMyself(user);
-      });
+      print('Myself is null');
+      return FutureBuilder(
+          future: Api.getUser(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              if (snapshot.error.toString() == '401') {
+                return RegistrationScreen(true, email: '',
+                onRegistrationError: (){
+                  //TODO: app restart
+                },
+                    onRegistrationComplete: () {
+                    setState(() {
+                      
+                    });
+                });
+              }
 
-      return SpinKitChasingDots(
-        color: kPrimaryColor,
-      );
+            }
+            if (!snapshot.hasData) {
+              print('waiting for user data from server');
+              return SpinKitChasingDots(
+                color: kPrimaryColor,
+              );
+            } else {
+              print('got data from server');
+              print(snapshot.data.name);  
+              Provider.of<Myself>(context, listen: false).setMyself(snapshot.data);
+              
+              return MyHomePage();
+            }
+          });
+    } else {
+      print('myself is not null');
+      return MyHomePage();
     }
-    return MyHomePage();
+
+    // Widget returnWidget;
+    // if (Provider.of<Myself>(context).myself == null) {
+    //   Api.getUser().then((user) {
+    //     print('user = ' + user.toString());
+    //     Provider.of<Myself>(context, listen: false).setMyself(user);
+    //     returnWidget = MyHomePage();
+    //   }).catchError((error) {
+    //     if (error.toString() == '401') {
+    //       print('profile not created');
+    //       returnWidget =
+    //           RegistrationScreen(true, email: '', onRegistrationComplete: () {
+    //         //TODO: add registration logic here
+    //         // setState(() {
+    //         //   registrationJustCompleted = true;
+    //         // });
+    //       });
+    //     } else if (error.toString() == '404') {
+    //       print('user not found');
+    //     } else {}
+    //   });
+    // }
+    // print(returnWidget);
+
+    // return returnWidget == null
+    //     ?
+    //     : returnWidget;
   }
 }
 
@@ -151,7 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedPageIndex;
   PageController _pageController;
   List<Widget> _pages;
-  bool registrationJustCompleted = false;
+  //bool registrationJustCompleted = false;
   var user;
 
   void initializePages() {

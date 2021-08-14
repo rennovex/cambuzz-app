@@ -18,37 +18,38 @@ class SecureStorage {
   // }
 
   static Future setUser(User user) async {
-    
     await _storage.write(key: 'my_userName', value: user.userName);
-    await _storage.write(key:'my_name', value:user.name);
+    await _storage.write(key: 'my_name', value: user.name);
     await _storage.write(key: 'my_uid', value: user.uid);
     await _storage.write(key: 'my_bio', value: user.bio);
-    await _storage.write(key:'my_followersCount', value: user.followersCount.toString());
-    await _storage.write(key:'my_followingCount', value: user.followingCount.toString());
-    await _storage.write(key:'my_likeCount', value: user.likeCount.toString());
+    await _storage.write(
+        key: 'my_followersCount', value: user.followersCount.toString());
+    await _storage.write(
+        key: 'my_followingCount', value: user.followingCount.toString());
+    await _storage.write(key: 'my_likeCount', value: user.likeCount.toString());
     await _storage.write(key: 'my_image', value: user.image);
     await _storage.write(key: 'my_coverImage', value: user.coverImage);
   }
 
   static Future<User> readUser() async {
-    try{
+    try {
       User user = new User();
       user.userName = await _storage.read(key: 'my_userName');
-      user.name = await _storage.read(key:'my_name');
+      user.name = await _storage.read(key: 'my_name');
       user.uid = await _storage.read(key: 'my_uid');
       user.bio = await _storage.read(key: 'my_bio');
-      user.followersCount = int.parse( await _storage.read(key:'my_followersCount'));
-      user.followingCount = int.parse( await _storage.read(key:'my_followingCount'));
-      user.likeCount = int.parse( await _storage.read(key:'my_likeCount'));
+      user.followersCount =
+          int.parse(await _storage.read(key: 'my_followersCount'));
+      user.followingCount =
+          int.parse(await _storage.read(key: 'my_followingCount'));
+      user.likeCount = int.parse(await _storage.read(key: 'my_likeCount'));
       user.image = await _storage.read(key: 'my_image');
       user.coverImage = await _storage.read(key: 'my_coverImage');
 
       return user;
+    } catch (ex) {
+      throw 'user not found' + ex.toString();
     }
-    catch(ex){
-      throw 'user not found'+ex.toString();
-    }
-
   }
 
   static Future setApiToken(String apiToken) async =>
@@ -57,7 +58,10 @@ class SecureStorage {
   static Future setUid(String uid) async =>
       await _storage.write(key: 'uid', value: '$uid');
 
-  static Future<String> readUid() async => await _storage.read(key: 'uid');
+  static Future<String> readUid() async {
+    return await _storage.read(key: 'uid');
+
+  }
 
   static Future<String> readApiToken() async =>
       await _storage.read(key: 'apiToken');

@@ -7,6 +7,7 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import 'user_settings.dart';
@@ -164,7 +165,12 @@ class _userProfileState extends State<UserProfileScreen>
                           Expanded(
                             child: OutlinedButton(
                               onPressed: () {
-                                //print(user.likes);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return RegistrationScreen(true, onRegistrationComplete: (){
+                                    //completed
+                                  }, user:Provider.of<Myself>(context).myself);
+                                }));
                               },
                               child: Text(
                                 'Edit Profile',
@@ -212,9 +218,11 @@ class _userProfileState extends State<UserProfileScreen>
                             child: OutlinedButton(
                               onPressed: () => showModalBottomSheet<dynamic>(
                                 context: context,
-                                builder: (context) => UserSettings(onLogout: (){
-                                  Navigator.of(context).pop();
-                                },),
+                                builder: (context) => UserSettings(
+                                  onLogout: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
                               ),
                               child: Text(
                                 'Settings',

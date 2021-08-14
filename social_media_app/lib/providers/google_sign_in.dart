@@ -63,7 +63,7 @@ class GoogleSignInProvider with ChangeNotifier {
           SecureStorage.setApiToken(response.headers['x-auth-token']);
           SecureStorage.setUid(responseDecoded['_id']);
           Global.apiToken = response.headers['x-auth-token'];
-          Global.uid = response.headers['_id'];
+          Global.uid = responseDecoded['_id'];
         } else {
           final response = await HttpHelper.post(uri: '/auth/login', body: {
             'email': '${currentUser.email}',

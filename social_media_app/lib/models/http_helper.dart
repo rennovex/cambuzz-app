@@ -51,6 +51,7 @@ class HttpHelper {
 
   static Future<http.Response> get(String uri) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
+    print('get http token'+Global.apiToken);
     var url = Uri.parse(serverUrl + '$uri');
     return await http.get(
       url,

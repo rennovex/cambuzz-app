@@ -33,10 +33,8 @@ class Api {
   }
 
   static Future postCommunity(String communityName, XFile image) async {
-    final response = await HttpHelper.post(uri: '/communities', body: {
-      'name': communityName,
-      'fileType': '.jpg'
-    });
+    final response = await HttpHelper.post(
+        uri: '/communities', body: {'name': communityName, 'fileType': '.jpg'});
     if (response.statusCode == 201) {
       if (image != null) {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
@@ -83,7 +81,7 @@ class Api {
 
       return true;
     } else {
-      print(response.body);
+      print('user is not created due to'+ response.body);
       return false;
     }
   }
@@ -103,7 +101,7 @@ class Api {
       throw 'error could not get skills';
     }
   }
-  
+
   static Future isCommunityNameAvailable(String name) async {
     final response =
         await HttpHelper.get('/communities/name-available/' + name);
@@ -148,15 +146,23 @@ class Api {
 
   //Get User from Api
   static Future<User> getUser() async {
+    print('tring to get user');
     final response = await HttpHelper.get('/users');
+    print('response');
+    print('response from get user'+response.body+response.statusCode.toString());
 
-    if (response.statusCode != 200) {
-      throw response.body;
+    if (response.statusCode == 401) {
+      print('402 error');
+      throw '401';
+    } else if (response.statusCode == 404) {
+      throw '404';
+    } else if (response.statusCode != 200) {
+      throw '-1';
+    } else {
+      final json = jsonDecode(response.body);
+      User user = User.fromJsonMyProfile(json);
+      return user;
     }
-
-    final json = jsonDecode(response.body);
-    User user = User.fromJsonMyProfile(json);
-    return user;
   }
 
   static Future<User> getUserWithId(String userId) async {

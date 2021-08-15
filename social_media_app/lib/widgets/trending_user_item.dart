@@ -94,8 +94,9 @@ class TrendingUserItem extends StatelessWidget {
                     Text(
                       post.user.userName,
                       style: kTitleTextStyle.copyWith(
+                        fontSize: 14,
                         color: Colors.white,
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w500,
                         shadows: <Shadow>[
                           Shadow(
                             blurRadius: 5.0,

@@ -30,7 +30,8 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>
+    with AutomaticKeepAliveClientMixin {
   Future _future;
   Skill _filterType;
   int _selectedIndex;
@@ -135,9 +136,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  // Widget buildFilters() {
-  //     return
-  // }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 // Widget buildFilter(int ind, setFilter) => Card(

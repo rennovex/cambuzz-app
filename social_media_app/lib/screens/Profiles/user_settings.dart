@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/blocked_screen.dart';
 
 class UserSettings extends StatelessWidget {
   Function onLogout;
-  UserSettings ({ Key key,this.onLogout, }) : super(key: key);
+  UserSettings({
+    Key key,
+    this.onLogout,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +63,7 @@ class UserSettings extends StatelessWidget {
               onLogout();
               Provider.of<GoogleSignInProvider>(context, listen: false)
                   .logout();
+              Provider.of<Myself>(context, listen: false).setMyself(null);
             },
           ),
           // Container(

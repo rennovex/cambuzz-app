@@ -401,7 +401,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
         ));
     File compressedFile = await FlutterImageCompress.compressAndGetFile(
       croppedFile.path,
-      '${Directory.systemTemp.path}/compressed.jpg',
+      '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
       quality: 70,
     );
 
@@ -410,7 +410,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
     setState(() {
       if (compressedFile != null) _pickedImage = XFile(compressedFile.path);
       widget.setImage(_pickedImage);
-      selectedImage.length().then((value) => print(value));
+      compressedFile.length().then((value) => print(value));
       print(compressedFile.lengthSync());
     });
   }

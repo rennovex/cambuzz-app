@@ -30,7 +30,11 @@ class _BlockedScreenState extends State<BlockedScreen> {
       body: FutureBuilder(
         future: future,
         builder: (BuildContext context, AsyncSnapshot<List<User>> snapshot) {
-          if (!snapshot.hasData) {
+          if (snapshot.connectionState == ConnectionState.waiting)
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          else if (!snapshot.hasData) {
             return Center(
               child: Text('No accounts blocked'),
             );

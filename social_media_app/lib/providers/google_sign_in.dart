@@ -4,17 +4,21 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/secureStorage.dart';
+import 'package:social_media_app/providers/myself.dart';
 
 class GoogleSignInProvider with ChangeNotifier {
+  final BuildContext context;
+
   final googleSignIn = GoogleSignIn();
   bool _isSigningIn;
 
   // var _apiToken;
 
-  GoogleSignInProvider() {
+  GoogleSignInProvider({this.context}) {
     _isSigningIn = false;
     // _apiToken = '';
   }
@@ -98,6 +102,9 @@ class GoogleSignInProvider with ChangeNotifier {
       await FirebaseAuth.instance.signOut();
       print('logout successful');
       print(FirebaseAuth.instance.currentUser);
+      Global.uid = '';
+      Global.apiToken = '';
+      Provider.of<Myself>(context, listen: false).setMyself(null);
       await SecureStorage.deleteAll();
     } catch (err) {
       print(err);

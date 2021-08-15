@@ -7,14 +7,12 @@ import 'package:social_media_app/constants.dart';
 
 class CommunityTrending extends StatelessWidget {
   // const CommunityTrending({ Key? key }) : super(key: key);
-  Future<List<Post>> trendingPosts;
+  final Future<List<Post>> trendingPosts = Api.getTrendingCommunityPosts();
 
   CommunityTrending();
 
   @override
   Widget build(BuildContext context) {
-    trendingPosts = Api.getTrendingCommunityPosts();
-
     return Container(
       child: Card(
         elevation: 5,

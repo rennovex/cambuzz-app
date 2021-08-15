@@ -62,7 +62,6 @@ class User with ChangeNotifier {
       userName: json['userName'],
       name: json['name'],
       image: json['image'],
-      email: json['email'],
       coverImage: json['coverImage'],
       bio: json['bio'],
       followingCount: json['followingCount'],

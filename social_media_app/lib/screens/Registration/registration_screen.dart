@@ -1,8 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -20,11 +16,7 @@ class RegistrationScreen extends StatefulWidget {
   Function onRegistrationComplete;
   User user;
   Function onRegistrationError;
-  RegistrationScreen(bool isGoogleRegistered,
-      {this.user,
-      String email = '',
-      this.onRegistrationError,
-      @required this.onRegistrationComplete}) {
+  RegistrationScreen(bool isGoogleRegistered, {this.user,String email='',this.onRegistrationError, @required this.onRegistrationComplete}){
     this.isGoogleRegistered = isGoogleRegistered;
     this.emailValue = email;
   }
@@ -33,7 +25,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  var user = User(userName: '', name: '', email: '', skills: []);
+  
+  var user = User(userName: '', name: '', email: '',skills: []);
 
   var isNameValid = true;
   var isUsernameValid = true;
@@ -49,10 +42,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void initState() {
-    page = (widget.isGoogleRegistered) ? 1 : 0;
+    page = (widget.isGoogleRegistered)?1:0;
     user.email = widget.emailValue;
     super.initState();
-    if (widget.user != null) {
+    if(widget.user!=null){
       user = widget.user;
     }
 
@@ -78,19 +71,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         emailValue: user.email,
         usernameValue: user.userName,
         primaryButtonOnPressed: () {
-          if (isEmailValid &&
-              isNameValid &&
-              isUsernameValid &&
-              user.name?.length > 0 &&
-              user.email?.length > 0 &&
-              user.userName?.length > 0) {
-            setState(() {
-              page++;
-            });
-          } else {
-            print('error');
-            //TODO: Show dialog
-          }
+          setState(() {
+            page++;
+          });
+          // if (isEmailValid && isNameValid && isUsernameValid && user.name?.length>0 && user.email?.length>0  && user.userName?.length>0) {
+          //   setState(() {
+          //     page++;
+          //   });
+          // }else{
+          //   print('error');
+          //   //TODO: Show dialog
+          // }
         },
         onBackButonPressed: () {
           setState(() {
@@ -127,53 +118,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
         onUsernameChange: (value) async {
           isUsernameAvailable = await Api.isUsernameAvailable(value);
-          setState(() {
+          setState(()  {
             user.userName = value;
           });
         },
       ),
       step2(
-        networkImage: user.image,
-        image: pickedImage,
-        onRemoveImageButtonPressed: () {
+        image:pickedImage,
+        onRemoveImageButtonPressed: (){
           setState(() {
             pickedImage = null;
           });
         },
         onSelectImageButtonPressed: () async {
-          XFile selectedImage =
-              await picker.pickImage(source: ImageSource.gallery);
-          var croppedFile = await ImageCropper.cropImage(
-              sourcePath: selectedImage.path,
-              aspectRatioPresets: [
-                CropAspectRatioPreset.square,
-                // CropAspectRatioPreset.ratio3x2,
-                // CropAspectRatioPreset.original,
-                // CropAspectRatioPreset.ratio4x3,
-                // CropAspectRatioPreset.ratio16x9
-              ],
-              androidUiSettings: AndroidUiSettings(
-                  toolbarTitle: 'Cropper',
-                  toolbarColor: Theme.of(context).primaryColor,
-                  toolbarWidgetColor: Colors.white,
-                  initAspectRatio: CropAspectRatioPreset.original,
-                  lockAspectRatio: true),
-              iosUiSettings: IOSUiSettings(
-                minimumAspectRatio: 1.0,
-              ));
-          File compressedFile = await FlutterImageCompress.compressAndGetFile(
-            croppedFile.path,
-            '${Directory.systemTemp.path}/compressed.jpg',
-            quality: 70,
-          );
-
-          // XFile(result.path);
+          XFile selectedImage = await picker.pickImage(source: ImageSource.gallery);
 
           setState(() {
-            if (compressedFile != null)
-              pickedImage = XFile(compressedFile.path);
-            selectedImage.length().then((value) => print(value));
-            print(compressedFile.lengthSync());
+            if(selectedImage != null) pickedImage = selectedImage;
           });
         },
         onBackButonPressed: () {
@@ -188,19 +149,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         },
       ),
       step3(
-        onSkillAdded: (skill) {
+        onSkillAdded: (skill){
           setState(() {
             user.skills.add(skill);
           });
         },
-        onSkillRemoved: (skill) {
+        onSkillRemoved: (skill){
           setState(() {
             user.skills.remove(skill);
           });
         },
-        onBioChanged: (value) {
+        onBioChanged: (value){
           setState(() {
-            if (value.length < 100) {
+            if(value.length<100){
               user.bio = value;
             }
           });
@@ -208,29 +169,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         bioMax: 100,
         bioValue: user.bio,
         primaryButtonOnPressed: () async {
-          if (widget.user == null) {
-            var completed = await Api.postUser(user, pickedImage);
-            if (completed) {
-              setState(() {
-                page++;
-              });
-              print('completee');
-            } else {
-              widget.onRegistrationError();
-              print('error');
-            }
-          } else {
-            var completed = await Api.putUser(user, pickedImage);
-            if (completed) {
-              setState(() {
-                page++;
-              });
-              print('completee');
-            } else {
-              //widget.onRegistrationError();
-              print('error');
-            }
+          print([user.name, user.email, user.image]);
+           var completed = await Api.postUser(user, pickedImage);
+          if(completed){
+             setState(() {
+            page++;
+          });
+            print('completee');
           }
+          else{
+            widget.onRegistrationError();
+            print('error');
+          }
+         
         },
         onBackButonPressed: () {
           setState(() {
@@ -247,6 +198,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
     return Scaffold(
       key: Key('registration_Screen'),
+      
       body: pages[page],
     );
   }

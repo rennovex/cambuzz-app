@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/dummy_data.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/community_trending.dart';
 import 'package:social_media_app/widgets/user_trending.dart';
@@ -21,7 +21,7 @@ class _TrendingScreenState extends State<TrendingScreen>
       @override
   void initState() {
     // TODO: implement initState
-    user = Global.myself;
+    user = Provider.of<Myself>(context, listen:false).myself;
   }
 
   @override

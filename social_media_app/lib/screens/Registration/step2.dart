@@ -14,21 +14,18 @@ class step2 extends StatelessWidget {
   final Function onSelectImageButtonPressed;
   final Function onRemoveImageButtonPressed;
   final XFile image;
-  String networkImage;
 
-  step2({
+  const step2({
     Key key,
     @required this.image,
     @required this.onBackButonPressed,
     @required this.primaryButtonOnPressed,
     @required this.onRemoveImageButtonPressed,
-    @required this.onSelectImageButtonPressed,
-    this.networkImage
+    @required this.onSelectImageButtonPressed
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print(networkImage);
     return RegistrationScreenSkeleton(
       registrationElement: RegistrationElement(
         topElementStackBottomPositioning: 50,
@@ -43,7 +40,7 @@ class step2 extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 100,
-              backgroundImage:(networkImage!=null && networkImage!='')?NetworkImage(networkImage):(image!=null)?FileImage(File(image.path)):AssetImage('images/no_profile_image.png'),
+              backgroundImage:(image==null)?NetworkImage('https://picsum.photos/200'):FileImage(File(image.path)),
             ),
             SizedBox(height: 30),
             Container(

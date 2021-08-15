@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/paged_feed_list_view.dart';
@@ -26,7 +26,7 @@ class _FeedScreenState extends State<FeedScreen>
   @override
   void initState() {
     super.initState();
-    user = Global.myself;
+    user = Provider.of<Myself>(context, listen: false).myself;
   }
 
   @override

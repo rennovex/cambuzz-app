@@ -40,7 +40,7 @@ class Api {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
 
         final awsResponse =
-            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+            await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
           throw 'Community could not be created due to image upload error  ' +
@@ -70,7 +70,7 @@ class Api {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
 
         final awsResponse =
-            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+            await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
           throw 'User could not be created due to image upload error  ' +
@@ -81,7 +81,7 @@ class Api {
 
       return true;
     } else {
-      print('user is not created due to'+ response.body);
+      print('user is not created due to' + response.body);
       return false;
     }
   }
@@ -149,7 +149,9 @@ class Api {
     print('tring to get user');
     final response = await HttpHelper.get('/users');
     print('response');
-    print('response from get user'+response.body+response.statusCode.toString());
+    print('response from get user' +
+        response.body +
+        response.statusCode.toString());
 
     if (response.statusCode == 401) {
       print('402 error');
@@ -165,35 +167,6 @@ class Api {
     }
   }
 
-  static Future<bool> putUser(User user, XFile image) async {
-    final response = await HttpHelper.put(uri: '/users', body: {
-      'name': user.name,
-      'email': user.email,
-      'userName': user.userName,
-      'bio': user.bio ?? '',
-      'skills': user.skills ?? [],
-      'fileType': '.jpg'
-    });
-    if (response.statusCode == 200) {
-      if (image != null) {
-        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
-
-        final awsResponse =
-            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
-
-        if (awsResponse.statusCode != 200) {
-          throw 'User could not be created due to image upload error  ' +
-              awsResponse.body;
-        }
-        print('User is created' + awsResponse.body);
-      }
-      return true;
-    } else {
-      print('user is not created due to'+ response.body);
-      return false;
-    }
-  }
-
   static Future<User> getUserWithId(String userId) async {
     final response = await HttpHelper.get('/users/$userId');
 
@@ -204,6 +177,25 @@ class Api {
     final json = jsonDecode(response.body);
     User user = User.fromJson(json);
     return user;
+  }
+
+  static Future getUserSearch({String key}) async {
+    final response = await HttpHelper.get('/users/search/$key');
+    if (response.statusCode != 200) {
+      throw 'Could not search users ' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List searchResults = [];
+
+    json.forEach((result) {
+      return searchResults.add(result);
+    });
+
+    print('Fetched Search results from Api');
+
+    return searchResults;
   }
 
   //Get community from Api
@@ -294,7 +286,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -401,7 +393,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -423,7 +415,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+        await HttpHelper.put(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -575,5 +567,49 @@ class Api {
     print('Fetched following from API');
 
     return following;
+  }
+
+  static Future<List<User>> getManagers() async {
+    final response = await HttpHelper.get('/communities/managers');
+
+    if (response.statusCode != 200) {
+      throw 'Managers not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<User> managers = [];
+
+    json.forEach((e) {
+      managers.add(User.fromJsonAbstract(e));
+    });
+    print('Fetched managers from API');
+    print(managers);
+
+    return managers;
+  }
+
+  static Future removeManager(String id) async {
+    final response = await HttpHelper.delete(
+      uri: '/communities/managers/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t remove manager !');
+      throw 'Could not remove manager' + response.body;
+    }
+  }
+
+  static Future addManager(String id) async {
+    final response = await HttpHelper.post(
+      uri: '/communities/managers/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t add manager !');
+      throw 'Could not add manager' + response.body;
+    }
   }
 }

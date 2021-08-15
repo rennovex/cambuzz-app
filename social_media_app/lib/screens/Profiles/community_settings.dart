@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 
+import '../managers_screen.dart';
+
 class CommunitySettings extends StatelessWidget {
   // const ({ Key key }) : super(key: key);
 
@@ -22,6 +24,8 @@ class CommunitySettings extends StatelessWidget {
           ),
 
           ListTile(
+            onTap: () =>
+                Navigator.of(context).pushNamed(ManagersScreen.routeName),
             leading: Icon(Icons.group),
             title: Text('Managers'),
             trailing: Icon(Icons.arrow_forward_ios_rounded),

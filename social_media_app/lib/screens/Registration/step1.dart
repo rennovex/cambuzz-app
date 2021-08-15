@@ -66,7 +66,6 @@ class step1 extends StatelessWidget {
                     ],
                   ),
                   LabelledTextField(
-                    isDisabled: true,
                     labelText: 'Email',
                     value: emailValue,
                     onChanged: onEmailChange,

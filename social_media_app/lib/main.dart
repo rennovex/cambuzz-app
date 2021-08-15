@@ -11,6 +11,7 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
@@ -19,6 +20,7 @@ import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
+import 'package:social_media_app/screens/managers_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
+        ChangeNotifierProvider.value(value: Myself())
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -79,10 +82,14 @@ class MyApp extends StatelessWidget {
             if (provider.isSigningIn) {
               return buildLoading();
             } else if (snapshot.hasData) {
-              Global.firebaseUser = snapshot.data;
+              print(snapshot.data);
+              print(Global.uid);
+              print(Global.apiToken);
+              // return MyHomePage();
               return SplashScreen();
             } else {
-              return RegistrationScreen(false);
+              return AuthScreen();
+              // return RegistrationScreen(false);
             }
           },
         ),
@@ -93,6 +100,7 @@ class MyApp extends StatelessWidget {
           CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
           UserProfileScreen.routeName: (ctx) => UserProfileScreen(),
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
+          ManagersScreen.routeName: (ctx) => ManagersScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
           ProfileInfoScreen.routeName: (ctx) => ProfileInfoScreen(),
@@ -126,28 +134,18 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
-    if (Global.myself == null) {
-      SecureStorage.readUser().then((value) {
-        if(value.name!=null){
-          print('user found locally');
-        Global.myself = value;
-        setState(() {});
-        }
-      });
-
+    if (Provider.of<Myself>(context, listen: false).myself == null) {
       print('Myself is null');
       return FutureBuilder(
           future: Api.getUser(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (snapshot.error.toString() == '401') {
-                return RegistrationScreen(true, email: Global.firebaseUser.email,
+                return RegistrationScreen(true, email: '',
                     onRegistrationError: () {
                   //TODO: app restart
                 }, onRegistrationComplete: () {
-                  setState(() {
-                    //rebuilds app here
-                  });
+                  setState(() {});
                 });
               }
             }
@@ -159,8 +157,9 @@ class _SplashScreenState extends State<SplashScreen> {
             } else {
               print('got data from server');
               print(snapshot.data.name);
-              Global.myself = snapshot.data;
-              SecureStorage.setUser(Global.myself);
+              Provider.of<Myself>(context, listen: false)
+                  .setMyself(snapshot.data);
+
               return MyHomePage();
             }
           });

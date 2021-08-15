@@ -35,7 +35,10 @@ class CustomAppBar extends StatelessWidget {
           }));
         },
       ),
-      title: Text('CamBuzz'),
+      title: Text(
+        'CamBuzz',
+        style: kAppBarTitleStyle,
+      ),
       centerTitle: true,
       actions: [
         IconButton(

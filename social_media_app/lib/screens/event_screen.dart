@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -47,7 +47,7 @@ class _EventScreenState extends State<EventScreen>
   void initState() {
     super.initState();
 
-    user = Global.myself;
+    user = Provider.of<Myself>(context, listen: false).myself;
   }
 
 

@@ -98,6 +98,12 @@ flutter:
         - asset: fonts/Lato/Lato-Regular.ttf
         - asset: fonts/Lato/Lato-Bold.ttf
         - asset: fonts/Lato/Lato-Light.ttf
+        - asset: fonts/Lato/Lato-Black.ttf
+
+    - family: Billabong
+      fonts:
+        - asset: fonts/Billabong/Billabong.ttf
+        
 
 
   #         style: italic

@@ -25,7 +25,8 @@ class CustomAppBar extends StatelessWidget {
       leading: IconButton(
         icon: CircleAvatar(
           backgroundImage: NetworkImage(
-            user.image,
+            //TODO: COmplete this
+            user?.image??'',
           ),
           radius: 19,
         ),

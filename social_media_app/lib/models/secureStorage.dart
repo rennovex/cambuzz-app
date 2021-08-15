@@ -22,6 +22,7 @@ class SecureStorage {
     await _storage.write(key: 'my_name', value: user.name);
     await _storage.write(key: 'my_uid', value: user.uid);
     await _storage.write(key: 'my_bio', value: user.bio);
+    await _storage.write(key: 'my_email', value: user.email);
     await _storage.write(
         key: 'my_followersCount', value: user.followersCount.toString());
     await _storage.write(
@@ -38,6 +39,7 @@ class SecureStorage {
       user.name = await _storage.read(key: 'my_name');
       user.uid = await _storage.read(key: 'my_uid');
       user.bio = await _storage.read(key: 'my_bio');
+      user.email = await _storage.read(key: 'my_email');
       user.followersCount =
           int.parse(await _storage.read(key: 'my_followersCount'));
       user.followingCount =
@@ -66,10 +68,15 @@ class SecureStorage {
   static Future<String> readApiToken() async =>
       await _storage.read(key: 'apiToken');
 
-  static Future deleteAll() async => await _storage.deleteAll();
+  static Future deleteAll() async { 
+    await _storage.deleteAll(); 
+    print(await _storage.read(key: 'uid'));
+    print(await _storage.read(key: 'uid'));
+    }
 
   static String getApiToken() {
     readApiToken().then((value) {
+      
       _apiToken = value;
     });
     return _apiToken;

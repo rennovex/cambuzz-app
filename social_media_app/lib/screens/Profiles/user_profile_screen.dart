@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
-import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
@@ -59,7 +58,7 @@ class _userProfileState extends State<UserProfileScreen>
             );
           } else {
             user = snapshot.data;
-            isMe = user.uid == Provider.of<Myself>(context).myself.uid;
+            isMe = user.uid == Global.myself.uid;
             return ChangeNotifierProvider.value(
               value: user,
               child: SingleChildScrollView(
@@ -169,7 +168,7 @@ class _userProfileState extends State<UserProfileScreen>
                                     MaterialPageRoute(builder: (context) {
                                   return RegistrationScreen(true, onRegistrationComplete: (){
                                     //completed
-                                  }, user:Provider.of<Myself>(context).myself);
+                                  }, user:Global.myself);
                                 }));
                               },
                               child: Text(

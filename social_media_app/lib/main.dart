@@ -11,7 +11,6 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
-import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
@@ -45,7 +44,6 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        ChangeNotifierProvider.value(value: Myself())
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -81,7 +79,7 @@ class MyApp extends StatelessWidget {
             if (provider.isSigningIn) {
               return buildLoading();
             } else if (snapshot.hasData) {
-              print(snapshot.data);
+              Global.firebaseUser = snapshot.data;
               return SplashScreen();
             } else {
               return RegistrationScreen(false);
@@ -126,39 +124,32 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  var user;
-
-   void setUserProvider(var user){
-              Provider.of<Myself>(context, listen: false).setMyself(user);
-    }
-
-  @override
-  void initState() {
-    user = Provider.of<Myself>(context, listen: false).myself;
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (user == null) {
+    if (Global.myself == null) {
+      SecureStorage.readUser().then((value) {
+        if(value.name!=null){
+          print('user found locally');
+        Global.myself = value;
+        setState(() {});
+        }
+      });
+
       print('Myself is null');
       return FutureBuilder(
           future: Api.getUser(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               if (snapshot.error.toString() == '401') {
-                return RegistrationScreen(true, email: '',
-                onRegistrationError: (){
+                return RegistrationScreen(true, email: Global.firebaseUser.email,
+                    onRegistrationError: () {
                   //TODO: app restart
-                },
-                    onRegistrationComplete: () {
-                    setState(() {
-                      
-                    });
+                }, onRegistrationComplete: () {
+                  setState(() {
+                    //rebuilds app here
+                  });
                 });
               }
-
             }
             if (!snapshot.hasData) {
               print('waiting for user data from server');
@@ -168,8 +159,8 @@ class _SplashScreenState extends State<SplashScreen> {
             } else {
               print('got data from server');
               print(snapshot.data.name);
-
-              setUserProvider(snapshot.data);
+              Global.myself = snapshot.data;
+              SecureStorage.setUser(Global.myself);
               return MyHomePage();
             }
           });

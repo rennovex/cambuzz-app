@@ -40,7 +40,7 @@ class Api {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
 
         final awsResponse =
-            await HttpHelper.put(uri: '$awsUploadLink', body: image);
+            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
           throw 'Community could not be created due to image upload error  ' +
@@ -70,7 +70,7 @@ class Api {
         final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
 
         final awsResponse =
-            await HttpHelper.put(uri: '$awsUploadLink', body: image);
+            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
 
         if (awsResponse.statusCode != 200) {
           throw 'User could not be created due to image upload error  ' +
@@ -162,6 +162,35 @@ class Api {
       final json = jsonDecode(response.body);
       User user = User.fromJsonMyProfile(json);
       return user;
+    }
+  }
+
+  static Future<bool> putUser(User user, XFile image) async {
+    final response = await HttpHelper.put(uri: '/users', body: {
+      'name': user.name,
+      'email': user.email,
+      'userName': user.userName,
+      'bio': user.bio ?? '',
+      'skills': user.skills ?? [],
+      'fileType': '.jpg'
+    });
+    if (response.statusCode == 200) {
+      if (image != null) {
+        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
+
+        final awsResponse =
+            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+
+        if (awsResponse.statusCode != 200) {
+          throw 'User could not be created due to image upload error  ' +
+              awsResponse.body;
+        }
+        print('User is created' + awsResponse.body);
+      }
+      return true;
+    } else {
+      print('user is not created due to'+ response.body);
+      return false;
     }
   }
 
@@ -265,7 +294,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -372,7 +401,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;
@@ -394,7 +423,7 @@ class Api {
     final awsUploadLink = jsonDecode(apiResponse.body)['imageUploadUrl'];
 
     final awsResponse =
-        await HttpHelper.put(uri: '$awsUploadLink', body: image);
+        await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
 
     if (awsResponse.statusCode != 200) {
       throw 'Not posted ' + awsResponse.body;

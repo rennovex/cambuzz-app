@@ -43,7 +43,7 @@ class step2 extends StatelessWidget {
             ),
             CircleAvatar(
               radius: 100,
-              backgroundImage:(networkImage!=null && networkImage!='')?NetworkImage(networkImage):FileImage(File(image.path)),
+              backgroundImage:(networkImage!=null && networkImage!='')?NetworkImage(networkImage):(image!=null)?FileImage(File(image.path)):AssetImage('images/no_profile_image.png'),
             ),
             SizedBox(height: 30),
             Container(

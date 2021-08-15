@@ -1,4 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -74,17 +78,19 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         emailValue: user.email,
         usernameValue: user.userName,
         primaryButtonOnPressed: () {
-          setState(() {
-            page++;
-          });
-          // if (isEmailValid && isNameValid && isUsernameValid && user.name?.length>0 && user.email?.length>0  && user.userName?.length>0) {
-          //   setState(() {
-          //     page++;
-          //   });
-          // }else{
-          //   print('error');
-          //   //TODO: Show dialog
-          // }
+          if (isEmailValid &&
+              isNameValid &&
+              isUsernameValid &&
+              user.name?.length > 0 &&
+              user.email?.length > 0 &&
+              user.userName?.length > 0) {
+            setState(() {
+              page++;
+            });
+          } else {
+            print('error');
+            //TODO: Show dialog
+          }
         },
         onBackButonPressed: () {
           setState(() {
@@ -137,9 +143,37 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         onSelectImageButtonPressed: () async {
           XFile selectedImage =
               await picker.pickImage(source: ImageSource.gallery);
+          var croppedFile = await ImageCropper.cropImage(
+              sourcePath: selectedImage.path,
+              aspectRatioPresets: [
+                CropAspectRatioPreset.square,
+                // CropAspectRatioPreset.ratio3x2,
+                // CropAspectRatioPreset.original,
+                // CropAspectRatioPreset.ratio4x3,
+                // CropAspectRatioPreset.ratio16x9
+              ],
+              androidUiSettings: AndroidUiSettings(
+                  toolbarTitle: 'Cropper',
+                  toolbarColor: Theme.of(context).primaryColor,
+                  toolbarWidgetColor: Colors.white,
+                  initAspectRatio: CropAspectRatioPreset.original,
+                  lockAspectRatio: true),
+              iosUiSettings: IOSUiSettings(
+                minimumAspectRatio: 1.0,
+              ));
+          File compressedFile = await FlutterImageCompress.compressAndGetFile(
+            croppedFile.path,
+            '${Directory.systemTemp.path}/compressed.jpg',
+            quality: 70,
+          );
+
+          // XFile(result.path);
 
           setState(() {
-            if (selectedImage != null) pickedImage = selectedImage;
+            if (compressedFile != null)
+              pickedImage = XFile(compressedFile.path);
+            selectedImage.length().then((value) => print(value));
+            print(compressedFile.lengthSync());
           });
         },
         onBackButonPressed: () {
@@ -186,9 +220,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
               print('error');
             }
           } else {
-            //Put user logic goes here
+            var completed = await Api.putUser(user, pickedImage);
+            if (completed) {
+              setState(() {
+                page++;
+              });
+              print('completee');
+            } else {
+              //widget.onRegistrationError();
+              print('error');
+            }
           }
-
         },
         onBackButonPressed: () {
           setState(() {

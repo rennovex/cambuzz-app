@@ -47,36 +47,22 @@ class GoogleSignInProvider with ChangeNotifier {
         final authResult =
             await FirebaseAuth.instance.signInWithCredential(credential);
         final currentUser = FirebaseAuth.instance.currentUser;
-
-        if (authResult.additionalUserInfo.isNewUser) {
-          final response = await HttpHelper.post(uri: '/auth/register', body: {
-            'email': '${currentUser.email}',
-            'uid': '${currentUser.uid}',
-          });
-          if (response.statusCode >= 400) {
-            logout();
-            currentUser.delete();
-            throw 'something bad happened + ${response.body}';
-          }
-
-          final responseDecoded = jsonDecode(response.body);
-          SecureStorage.setApiToken(response.headers['x-auth-token']);
-          SecureStorage.setUid(responseDecoded['_id']);
-          Global.apiToken = response.headers['x-auth-token'];
-          Global.uid = responseDecoded['_id'];
-        } else {
-          final response = await HttpHelper.post(uri: '/auth/login', body: {
-            'email': '${currentUser.email}',
-            'uid': '${currentUser.uid}',
-          });
-          final responseDecoded = jsonDecode(response.body);
-          SecureStorage.setApiToken(response.headers['x-auth-token']);
-          SecureStorage.setUid(responseDecoded['_id']);
-          Global.apiToken = response.headers['x-auth-token'];
-          Global.uid = responseDecoded['_id'];
-          print(Global.uid);
-          print(Global.apiToken);
-        }
+        return {"email":currentUser.email, "uid":currentUser.uid};
+        // if (authResult.additionalUserInfo.isNewUser) {
+        //   //
+        // } else {
+        //   final response = await HttpHelper.post(uri: '/auth/login', body: {
+        //     'email': '${currentUser.email}',
+        //     'uid': '${currentUser.uid}',
+        //   });
+        //   final responseDecoded = jsonDecode(response.body);
+        //   SecureStorage.setApiToken(response.headers['x-auth-token']);
+        //   SecureStorage.setUid(responseDecoded['_id']);
+        //   Global.apiToken = response.headers['x-auth-token'];
+        //   Global.uid = responseDecoded['_id'];
+        //   print(Global.uid);
+        //   print(Global.apiToken);
+        // }
       }
     } on PlatformException catch (err) {
       var message = 'An error has occured';
@@ -102,5 +88,10 @@ class GoogleSignInProvider with ChangeNotifier {
     } catch (err) {
       print(err);
     }
+  }
+
+  void deleteUser() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    currentUser.delete();
   }
 }

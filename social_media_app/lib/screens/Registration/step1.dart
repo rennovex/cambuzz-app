@@ -1,112 +1,123 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:social_media_app/models/registration_widget_element.dart';
-import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
-import 'package:social_media_app/widgets/Registration/pill_toggle_button.dart';
-import 'package:social_media_app/widgets/Registration/registration_screen_skeleton.dart';
 import 'package:social_media_app/widgets/Registration/registration_step_top.dart';
 
-class step1 extends StatelessWidget {
-  final Function primaryButtonOnPressed;
-  final Function onBackButonPressed;
-  final Function(String) onEmailChange;
-  final Function(String) onNameChange;
-  final Function(String) onUsernameChange;
-  String emailValue;
-  String nameValue;
-  String usernameValue;
-  bool emailIsValid;
-  bool nameIsValid;
-  bool usernameIsValid;
-  bool isUsernameAvailable = false;
+class Step1 extends StatefulWidget {
+  Function onUsernameChange;
+  String username;
+  String email;
+  Function onEmailChange;
+  Function onNameChange;
+  String name;
+  Function onPrimaryButtonPressed;
 
-  step1(
-      {Key key,
-      @required this.onBackButonPressed,
-      @required this.primaryButtonOnPressed,
-      @required this.onEmailChange,
-      @required this.onNameChange,
-      @required this.onUsernameChange,
-      this.emailValue,
-      this.emailIsValid,
-      this.nameIsValid,
-      this.nameValue,
-      this.usernameIsValid,
-      this.isUsernameAvailable,
-      this.usernameValue})
-      : super(key: key);
+  Step1(
+      {this.email = '',
+      this.username = '',
+      this.name = '',
+      this.onUsernameChange,
+      this.onEmailChange,
+      this.onPrimaryButtonPressed,
+      this.onNameChange});
+
+  @override
+  _Step1State createState() => _Step1State();
+}
+
+class _Step1State extends State<Step1> {
+  bool isUsernameAvailable = true;
+
+  bool emailIsValid = true;
+
+  bool nameIsValid = true;
 
   @override
   Widget build(BuildContext context) {
-    return RegistrationScreenSkeleton(
-      registrationElement: RegistrationElement(
-          topElementStackBottomPositioning: 50,
-          topElement: RegistrationStepTop(
-            header: "Let’s get you set up and running!",
-            step: 1,
-          ),
-          bottomElement: Container(
-            child: SingleChildScrollView(
-              child: Column(
+    return RegistrationScreen(
+      primaryButtonOnPressed: () {
+        widget.onPrimaryButtonPressed!=null?widget.onPrimaryButtonPressed():'';
+        Navigator.of(context).pop({'name':widget.name, 'email':widget.email, 'username':widget.username});
+      },
+      primaryActionButtonText: "Let's set your dp >",
+      screenMetaData: RegistrationStepTop(
+        header: "Let’s get you set up and running!",
+        step: 1,
+      ),
+      screenForm: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              LabelledTextField(
+                labelText: 'Username',
+                onChanged: (value) async {
+                  (widget.onUsernameChange!=null)?widget.onUsernameChange(value):'';
+                  isUsernameAvailable = await Api.isUsernameAvailable(value);
+                  setState(() {
+                    widget.username=value;
+                  });
+                },
+                value: widget.username,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  LabelledTextField(
-                    labelText: 'Username',
-                    onChanged: onUsernameChange,
-                    value: usernameValue,
+                  Text((isUsernameAvailable) ? 'available' : 'taken',
+                      style: TextStyle(
+                          color: (isUsernameAvailable)
+                              ? Colors.green
+                              : Colors.red)),
+                  Icon(
+                    (isUsernameAvailable) ? Icons.done : Icons.error,
+                    color: (isUsernameAvailable) ? Colors.green : Colors.red,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text((isUsernameAvailable)?'available':'taken', style: TextStyle(color: (isUsernameAvailable)?Colors.green:Colors.red)),
-                      Icon(
-                        (isUsernameAvailable)?Icons.done:Icons.error,
-                        color: (isUsernameAvailable)?Colors.green:Colors.red,
-                      ),
-                    ],
-                  ),
-                  LabelledTextField(
-                    isDisabled: true,
-                    labelText: 'Email',
-                    value: emailValue,
-                    onChanged: onEmailChange,
-                    inputType: TextInputType.emailAddress,
-                  ),
-                  (!emailIsValid)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'email not valid',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ],
-                        )
-                      : Container(),
-                  LabelledTextField(
-                    labelText: 'Name',
-                    onChanged: onNameChange,
-                    value: nameValue,
-                  ),
-                  (!nameIsValid)
-                      ? Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              'name not valid',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ],
-                        )
-                      : Container(),
                 ],
               ),
-            ),
+              LabelledTextField(
+                isDisabled: true,
+                labelText: 'Email',
+                value: widget.email,
+                onChanged: widget.onEmailChange,
+                inputType: TextInputType.emailAddress,
+              ),
+              (!emailIsValid)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'email not valid',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    )
+                  : Container(),
+              LabelledTextField(
+                labelText: 'Name',
+                onChanged: (value){
+                  widget.onNameChange!=null?widget.onNameChange(value):'';
+                  setState(() {
+                    widget.name = value;
+                  });
+                },
+                
+                value: widget.name,
+              ),
+              (!nameIsValid)
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'name not valid',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ],
+                    )
+                  : Container(),
+            ],
           ),
-          primaryButtonText: "Let's set your dp >",
-          primaryButtonOnPressed: primaryButtonOnPressed,
-          onBackButonPressed: onBackButonPressed,
-          hasBackButton: true),
+        ),
+      ),
     );
   }
 }

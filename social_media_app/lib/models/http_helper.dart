@@ -6,7 +6,7 @@ import 'package:social_media_app/Global/globals.dart';
 
 class HttpHelper {
   static const serverUrl =
-      'http://192.168.18.51:3000/api';
+      'http://192.168.132.220:3000/api';
 
   // var _apiToken;
 
@@ -66,7 +66,6 @@ class HttpHelper {
 
   static Future<http.Response> get(String uri) async {
     // await SecureStorage.readApiToken().then((value) => _apiToken = value);
-    print('get http token'+Global.apiToken);
     var url = Uri.parse(serverUrl + '$uri');
     return await http.get(
       url,

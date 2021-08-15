@@ -166,10 +166,11 @@ class _userProfileState extends State<UserProfileScreen>
                               onPressed: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return RegistrationScreen(true, onRegistrationComplete: (){
-                                    //completed
-                                  }, user:Global.myself);
-                                }));
+                                      return Container();
+                                //   return RegistrationScreen(true, onRegistrationComplete: (){
+                                //     //completed
+                                //   }, user:Global.myself);
+                                 }));
                               },
                               child: Text(
                                 'Edit Profile',

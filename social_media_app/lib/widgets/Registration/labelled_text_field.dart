@@ -9,6 +9,7 @@ class LabelledTextField extends StatefulWidget {
   Function(String) onSubmitted;
   final String value;
   final bool isDisabled;
+  int maxLength;
 
   LabelledTextField({
     Key key,
@@ -19,7 +20,8 @@ class LabelledTextField extends StatefulWidget {
     this.maxLines = 1,
     this.inputType = TextInputType.text,
     this.value='',
-    this.isDisabled = false
+    this.isDisabled = false,
+    this.maxLength,
   }) : super(key: key);
 
   @override
@@ -56,6 +58,7 @@ class _LabelledTextFieldState extends State<LabelledTextField> {
           ),
           Container(
             child: TextField(
+              maxLength: widget.maxLength,
               readOnly: widget.isDisabled,
               controller: valueContoller,
               onEditingComplete: widget.onEditingComplete,

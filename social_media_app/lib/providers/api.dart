@@ -56,12 +56,24 @@ class Api {
     }
   }
 
-  static Future postUser(User user, XFile image) async {
-    final response = await HttpHelper.post(uri: '/users', body: {
+  static Future isUserRegistered(String email) async {
+    final response = await HttpHelper.get('/auth/is-user-registered/'+email);
+    if(response.statusCode==200){
+      return true;
+    } else if(response.statusCode==404) {
+      return false;
+    } else {
+      throw "User registered cannot be retrieved from server";
+    }
+  }
+
+  static Future postUser(User user,String firebaseUid, XFile image) async {
+    final response = await HttpHelper.post(uri: '/auth/register', body: {
       'name': user.name,
       'email': user.email,
       'userName': user.userName,
       'bio': user.bio ?? '',
+      'uid':firebaseUid,
       'skills': user.skills ?? [],
       'fileType': '.jpg'
     });
@@ -79,7 +91,7 @@ class Api {
         print('User is created' + awsResponse.body);
       }
 
-      return true;
+      return {'status':true, 'uid':firebaseUid, 'token':response.headers['x-auth-token']};
     } else {
       print('user is not created due to'+ response.body);
       return false;
@@ -113,7 +125,7 @@ class Api {
       throw 'error username availability cannot be checked';
   }
 
-  static Future isUsernameAvailable(String userName) async {
+  static Future<bool> isUsernameAvailable(String userName) async {
     final response =
         await HttpHelper.get('/users/username-available/' + userName);
     if (response.statusCode == 409) {
@@ -144,19 +156,40 @@ class Api {
     return posts;
   }
 
+  static Future login(String email, String uid) async {
+    final response = await HttpHelper.post(uri:'/auth/login', body: {
+      'email':email,
+      'uid':uid,
+    });
+
+    print(response.body+ response.statusCode.toString()+email+uid);
+
+
+    if(response.statusCode == 200){
+      User user = User.fromJsonAbstract(jsonDecode(response.body));
+      return {'status':true, 'token':response.headers['x-auth-token'], 'user':user};
+    }
+    else{
+      return {'status':false };
+    }
+
+  }
+
   //Get User from Api
   static Future<User> getUser() async {
     print('tring to get user');
     final response = await HttpHelper.get('/users');
     print('response');
     print('response from get user'+response.body+response.statusCode.toString());
-
+  
     if (response.statusCode == 401) {
-      print('402 error');
+      print('401 error');
       throw '401';
     } else if (response.statusCode == 404) {
+      print('404 error');
       throw '404';
     } else if (response.statusCode != 200) {
+      print('some error with user');
       throw '-1';
     } else {
       final json = jsonDecode(response.body);

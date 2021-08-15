@@ -489,15 +489,29 @@ class CustomCommunitySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: searchResult.length,
-      itemBuilder: (_, ind) => ListTile(
-        title: Text(searchResult[ind]['name']),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(searchResult[ind]['image']),
-        ),
-        onTap: () => close(context, searchResult[ind]),
-      ),
+    return FutureBuilder(
+      future: Api.getCommunitySearch(key: query),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        else if (!snapshot.hasData)
+          return Center(child: Text('Choose a community'));
+        else {
+          searchResult = snapshot.data;
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (_, ind) => ListTile(
+              title: Text(snapshot.data[ind]['name']),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(snapshot.data[ind]['image']),
+              ),
+              onTap: () => close(context, snapshot.data[ind]),
+            ),
+          );
+        }
+      },
     );
   }
 

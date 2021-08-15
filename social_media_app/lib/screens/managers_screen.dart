@@ -112,15 +112,42 @@ class CustomManagerSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: searchResult.length,
-      itemBuilder: (_, ind) => ListTile(
-        title: Text(searchResult[ind]['name']),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(searchResult[ind]['image'] ?? ''),
-        ),
-        onTap: () => close(context, searchResult[ind]),
-      ),
+    return FutureBuilder(
+      future: Api.getUserSearch(key: query),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        else if (!snapshot.hasData)
+          return Center(child: Text('Add managers'));
+        else {
+          searchResult = snapshot.data;
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (_, ind) => ListTile(
+              title: Text(snapshot.data[ind]['name']),
+              leading: CircleAvatar(
+                backgroundImage:
+                    NetworkImage(snapshot.data[ind]['image'] ?? ''),
+              ),
+              // onTap: () => close(context, snapshot.data[ind]),
+              trailing: TextButton(
+                child: Text(
+                  'add',
+                  style: TextStyle(color: Colors.green),
+                ),
+                onPressed: () async {
+                  Fluttertoast.showToast(msg: 'Adding manager ...');
+                  await Api.addManager(snapshot.data[ind]['_id']);
+
+                  close(context, true);
+                },
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 

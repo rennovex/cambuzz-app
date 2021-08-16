@@ -59,7 +59,6 @@ class _Step3State extends State<Step3> {
                 },
                 value: widget.bioValue,
               ),
-              
               FutureBuilder(
                   future: Api.getSkills(),
                   builder: (context, snapshot) {
@@ -107,7 +106,9 @@ class _Step3State extends State<Step3> {
       ),
       primaryActionButtonText: "Finish",
       primaryButtonOnPressed: () {
-        widget.primaryButtonOnPressed!=null? widget.primaryButtonOnPressed():'';
+        widget.primaryButtonOnPressed != null
+            ? widget.primaryButtonOnPressed()
+            : '';
         Navigator.of(context).pop({'bio':widget.bioValue, 'skills':skills});
       },
       topElementStackBottomPositioning: 50,

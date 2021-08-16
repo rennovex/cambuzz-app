@@ -43,8 +43,13 @@ void main() async {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -68,76 +73,145 @@ class MyApp extends StatelessWidget {
 
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
+          builder: (context, firebaseSnapshot) {
             final provider = Provider.of<GoogleSignInProvider>(
               context,
             );
             if (provider.isSigningIn) {
               return buildLoading();
-            } else if (snapshot.hasData) {
-              Global.firebaseUser = snapshot.data;
-              return SplashScreen(
-                firebaseUser: snapshot.data,
+            } else if (firebaseSnapshot.connectionState ==
+                ConnectionState.waiting) {
+              return SpinKitChasingDots(
+                color: kPrimaryColor,
               );
-            } else {
-              print('not firebase logged in');
-              return Intro(primaryButtonOnPressed: () async {
-                String name, userName, email, bio, firebaseUid;
-                XFile image;
-                List<String> skills;
+            } else if (firebaseSnapshot.hasData) {
+              Global.firebaseUser = firebaseSnapshot.data;
+              print('fireabse user email = ' + firebaseSnapshot.data.email);
+              return FutureBuilder(
+                  future: Api.isUserRegistered(firebaseSnapshot.data.email),
+                  builder: (context, isRegisteredSnapshot) {
+                    if (isRegisteredSnapshot.hasData) {
+                      if (isRegisteredSnapshot.data) {
+                        print('getting uid');
+                        //if uid available go to home
+                        return FutureBuilder(
+                            future: Api.login(firebaseSnapshot.data.email,
+                                firebaseSnapshot.data.uid),
+                            builder: (context, loginSnapshot) {
+                              if (loginSnapshot.hasData) {
+                                if (loginSnapshot.data['status']) {
+                                  print('getting user');
+                                  Global.apiToken = loginSnapshot.data['token'];
+                                  print('tokan = ' + Global.apiToken);
+                                  return FutureBuilder(
+                                      future: Api.getUser(),
+                                      builder: (context, getUserSnapshot) {
+                                        if (getUserSnapshot.hasData) {
+                                          print('returning my home page');
+                                          return MyHomePage(
+                                              getUserSnapshot.data);
+                                        }
+                                        return SpinKitChasingDots(
+                                          color: kPrimaryColor,
+                                        );
+                                      });
+                                } else {
+                                  print('invalid credentials' +
+                                      loginSnapshot.data['status'].toString());
+                                  //TODO invalid credentials
+                                }
+                              }
+                              return SpinKitChasingDots(
+                                color: kPrimaryColor,
+                              );
+                            });
+                      } else {
+                        print('user is not registered');
 
-                var firebaseData = await provider.login();
-                email = firebaseData['email'];
-                firebaseUid = firebaseData['uid'];
+                        print('connection done');
+                        Future.delayed(Duration(milliseconds: 1000), (() async {
+                          print('pushing registration');
+                          String name, userName, email, bio, firebaseUid;
+                          XFile image;
+                          List<String> skills;
+                          email = firebaseSnapshot.data.email;
+                          firebaseUid = firebaseSnapshot.data.uid;
 
-                print('vaiting for user registration');
+                          var userData = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => Step1(
+                                        onPrimaryButtonPressed: () {},
+                                        email: email,
+                                      )));
+                          name = userData['name'];
+                          userName = userData['username'];
+                          email = userData['email'];
 
-                var userData =
-                    await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Step1(
-                              onPrimaryButtonPressed: () {},
+                          var imageData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step2()));
+                          image = imageData['image'];
+
+                          var bioData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step3()));
+
+                          bio = bioData['bio'];
+                          skills = bioData['skills'];
+
+                          User.User user = User.User(
+                              name: name,
                               email: email,
-                            )));
-                name = userData['name'];
-                userName = userData['username'];
-                email = userData['email'];
+                              userName: userName,
+                              bio: bio,
+                              skills: skills);
 
-                var imageData = await Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Step2()));
-                image = imageData['image'];
+                          var status =
+                              await Api.postUser(user, firebaseUid, image);
 
-                var bioData = await Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => Step3()));
+                          if (status['status']) {
+                            print('success');
+                            Global.uid = status['uid'];
+                            Global.apiToken = status['token'];
+                            user.uid = status['_id'];
+                            Global.myself = user;
+                            //TODO: if user does not select image, show default dp
+                            await Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => End(
+                                      primaryButtonOnPressed: () {
+                                        Navigator.pop(context);
+                                        setState(() {});
+                                        //
+                                        // Navigator.of(context).pushReplacement(
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             MyHomePage(user)));
+                                      },
+                                    )));
+                          } else {
+                            //TODO: SHow error
+                          }
+                        }));
 
-                bio = bioData['bio'];
-                skills = bioData['skills'];
+                        print('adding spinkitdots');
+                        return SpinKitChasingDots(
+                          color: kPrimaryColor,
+                        );
+                      }
+                    }
+                    return SpinKitChasingDots(
+                      color: kPrimaryColor,
+                    );
+                  });
+            } else {
+              print('firebase login attempt');
+              return Intro(
+                primaryButtonOnPressed: () async {
+                  var firebaseData = await provider.login();
+                  setState(() {});
+                },
+              );
+              // return Intro(primaryButtonOnPressed: () async {
 
-                User.User user = User.User(
-                    name: name,
-                    email: email,
-                    userName: userName,
-                    bio: bio,
-                    skills: skills);
-
-                var status = await Api.postUser(user, firebaseUid, image);
-
-                if (status['status']) {
-                  print('success');
-                  Global.uid = status['uid'];
-                  Global.apiToken = status['token'];
-                  Global.myself = user;
-                  //TODO: if user does not select image, show default dp
-                }
-
-                await Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => End(
-                          primaryButtonOnPressed: () {
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) => MyHomePage()));
-                          },
-                        )));
-              });
+              // });
             }
           },
         ),
@@ -171,142 +245,12 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class SplashScreen extends StatefulWidget {
-  final firebaseUser;
-  SplashScreen({@required this.firebaseUser});
-
-  @override
-  _SplashScreenState createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  var googleProvider;
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    googleProvider = Provider.of<GoogleSignInProvider>(context, listen: false);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // if (Global.myself == null) {
-    //   SecureStorage.readUser().then((value) {
-    //     if (value.name != null) {
-    //       print('user found locally');
-    //       Global.myself = value;
-    //       setState(() {});
-    //     }
-    //   });
-
-    print('Starting splash screen');
-    return FutureBuilder(
-        future: Api.getUser(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            if (snapshot.error.toString() == '401') {
-              print('we got a 401 error');
-              Api.isUserRegistered(widget.firebaseUser.email).then((value) {
-                print('we got a response for isuserregistered');
-                if (value) {
-                  print('trying login');
-                  Api.login(widget.firebaseUser.email, widget.firebaseUser.uid)
-                      .then((value) {
-                    if (value['status']) {
-                      print('login successful');
-                      Global.uid = widget.firebaseUser.uid;
-                      Global.apiToken = value['token'];
-                      Global.myself = value['user'];
-                      print(
-                          'User has been set up with token ${Global.apiToken}, username ${Global.myself.userName}');
-                      setState(() {});
-                    } else {
-                      //TODO: credentials invalid
-                      print('invalid credentials');
-                      googleProvider.logout();
-
-                      // FirebaseAuth.instance.currentUser.delete();
-                      //   FirebaseAuth.instance.currentUser.delete();
-                    }
-                  });
-                } else {
-                  print('user is not registered');
-                  googleProvider.logout();
-                  // FirebaseAuth.instance.currentUser.delete();
-                  // FirebaseAuth.instance.currentUser.delete();
-                }
-              });
-            }
-          } else {
-            if (Global.myself == null)
-              return SpinKitCircle(
-                color: kPrimaryColor,
-              );
-            return MyHomePage();
-          }
-
-          return SpinKitCircle(
-            color: kPrimaryColor,
-          );
-
-          // if (snapshot.hasError) {
-          //   if (snapshot.error.toString() == '401') {
-          //     // return RegistrationScreen(true, email: Global.firebaseUser.email,
-          //     //     onRegistrationError: () {
-          //     //   //TODO: app restart
-          //     // }, onRegistrationComplete: () {
-          //     //   setState(() {
-          //     //     //rebuilds app here
-          //     //   });
-          //     // });
-          //   }
-          // }
-          // if (!snapshot.hasData) {
-          //   print('waiting for user data from server');
-          //   return SpinKitChasingDots(
-          //     color: kPrimaryColor,
-          //   );
-          // } else {
-          //   print('got data from server');
-          //   print(snapshot.data.name);
-          //   Global.myself = snapshot.data;
-          //   SecureStorage.setUser(Global.myself);
-          //   return MyHomePage();
-          // }
-        });
-  }
-
-  // Widget returnWidget;
-  // if (Provider.of<Myself>(context).myself == null) {
-  //   Api.getUser().then((user) {
-  //     print('user = ' + user.toString());
-  //     Provider.of<Myself>(context, listen: false).setMyself(user);
-  //     returnWidget = MyHomePage();
-  //   }).catchError((error) {
-  //     if (error.toString() == '401') {
-  //       print('profile not created');
-  //       returnWidget =
-  //           RegistrationScreen(true, email: '', onRegistrationComplete: () {
-  //         //TODO: add registration logic here
-  //         // setState(() {
-  //         //   registrationJustCompleted = true;
-  //         // });
-  //       });
-  //     } else if (error.toString() == '404') {
-  //       print('user not found');
-  //     } else {}
-  //   });
-  // }
-  // print(returnWidget);
-
-  // return returnWidget == null
-  //     ?
-  //     : returnWidget;
-
-}
-
 class MyHomePage extends StatefulWidget {
+  User.User myself;
+  MyHomePage(User.User myself) {
+    this.myself = myself;
+    Global.myself = myself;
+  }
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }

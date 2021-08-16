@@ -91,7 +91,7 @@ class Api {
         print('User is created' + awsResponse.body);
       }
 
-      return {'status':true, 'uid':firebaseUid, 'token':response.headers['x-auth-token']};
+      return {'status':true, 'uid':firebaseUid, '_id':jsonDecode(response.body)['_id'] ,'token':response.headers['x-auth-token']};
     } else {
       print('user is not created due to'+ response.body);
       return false;
@@ -189,7 +189,7 @@ class Api {
       print('404 error');
       throw '404';
     } else if (response.statusCode != 200) {
-      print('some error with user');
+      print('some error with user'+response.statusCode.toString()+response.body);
       throw '-1';
     } else {
       final json = jsonDecode(response.body);

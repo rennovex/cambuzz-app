@@ -6,7 +6,7 @@ import 'package:social_media_app/Global/globals.dart';
 
 class HttpHelper {
   static const serverUrl =
-      'http://192.168.132.220:3000/api';
+      'http://cambuzz-rennovex.herokuapp.com/api';
 
   // var _apiToken;
 

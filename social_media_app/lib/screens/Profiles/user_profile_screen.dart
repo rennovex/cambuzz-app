@@ -59,6 +59,8 @@ class _userProfileState extends State<UserProfileScreen>
           } else {
             user = snapshot.data;
             isMe = user.uid == Global.myself.uid;
+            print('is me'+isMe.toString());
+            print(Global.myself.email);
             return ChangeNotifierProvider.value(
               value: user,
               child: SingleChildScrollView(

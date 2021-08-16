@@ -13,21 +13,24 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/event.dart';
 
 class EventScreen extends StatefulWidget {
-  EventScreen({ Key key }) : super(key: key);
-  Future<List<Event>> events;
+  EventScreen({Key key}) : super(key: key);
+  // Future<List<Event>> events;
 
   //EventScreen(this.events);
 
   @override
   _EventScreenState createState() {
-    this.events = Api.getEvents();
+    // this.events = Api.getEvents();
     return _EventScreenState();
   }
 }
 
 class _EventScreenState extends State<EventScreen>
     with AutomaticKeepAliveClientMixin<EventScreen> {
-      var user;
+  Future<List> events;
+  Future<List> eventTypes;
+
+  var user;
   List months = [
     'jan',
     'feb',
@@ -43,13 +46,88 @@ class _EventScreenState extends State<EventScreen>
     'dec'
   ];
 
-@override
+  @override
   void initState() {
     super.initState();
+
+    events = Api.getEvents();
+    eventTypes = Api.getEventTypes();
 
     user = Provider.of<Myself>(context, listen: false).myself;
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: CustomAppBar(user),
+          preferredSize: kAppBarPreferredSize,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                child: Text(
+                  'Filter events',
+                  style: kTitleTextStyle,
+                ),
+              ),
+              SizedBox(
+                height: 136,
+                child: FutureBuilder(
+                  future: eventTypes,
+                  builder: (_, snapshot) => ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: snapshot.data?.length,
+                    shrinkWrap: true,
+                    itemBuilder: (_, ind) => Padding(
+                      padding: const EdgeInsets.only(left: 12),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(13),
+                        child: Image.network(
+                          snapshot.data[ind]?.image ?? '',
+                          height: 136,
+                          width: 112,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: events,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (ctx, ind) => GestureDetector(
+                        onTap: () => expandEvent(
+                          context: context,
+                          event: snapshot.data[ind],
+                        ),
+                        child: EventItem(snapshot.data[ind]),
+                      ),
+                    );
+                  } else {
+                    return SpinKitWave(
+                      color: kPrimaryColor,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   expandEvent({context, Event event}) {
     return showDialog(
@@ -254,74 +332,6 @@ class _EventScreenState extends State<EventScreen>
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(child: CustomAppBar(user),preferredSize: kAppBarPreferredSize,),
-        body: SingleChildScrollView(
-        
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
-                child: Text(
-                  'Filter events',
-                  style: kTitleTextStyle,
-                ),
-              ),
-              SizedBox(
-                height: 136,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  itemBuilder: (_, ind) => Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(13),
-                      child: Image.network(
-                        'https://picsum.photos/536/354',
-                        height: 136,
-                        width: 112,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              FutureBuilder(
-                future: widget.events,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (ctx, ind) => GestureDetector(
-                        onTap: () => expandEvent(
-                          context: context,
-                          event: snapshot.data[ind],
-                        ),
-                        child: EventItem(snapshot.data[ind]),
-                      ),
-                    );
-                  } else {
-                    return SpinKitWave(
-                      color: kPrimaryColor,
-                    );
-                  }
-                },
-              ),
-            ],
           ),
         ),
       ),

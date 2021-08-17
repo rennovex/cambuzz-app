@@ -68,13 +68,26 @@ class _EventScreenState extends State<EventScreen>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
-                child: Text(
-                  'Filter events',
-                  style: kTitleTextStyle,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 14),
+                    child: Text(
+                      'Filter events',
+                      style: kTitleTextStyle,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      return setState(() {
+                        selectedEventType = null;
+                      });
+                    },
+                    child: Text('View All'),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 136,
@@ -96,29 +109,29 @@ class _EventScreenState extends State<EventScreen>
                               selectedEventType = snapshot.data[ind];
                             });
                           },
-                          child: Stack(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.only(left: 12),
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: Container(
+                              padding: selectedEventType == snapshot.data[ind]
+                                  ? EdgeInsets.all(8)
+                                  : EdgeInsets.all(0),
+                              decoration: BoxDecoration(
+                                color: Colors.greenAccent,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 0),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(13),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        border: Border.all(width: 10)),
-                                    child: SvgPicture.network(
-                                      snapshot.data[ind]?.image,
-                                      height: 136,
-                                      width: 112,
-                                      fit: BoxFit.cover,
-                                    ),
+                                  child: Image.network(
+                                    snapshot.data[ind]?.image,
+                                    // height: 136,
+                                    // width: 112,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
-                              Positioned(
-                                  left: 60,
-                                  bottom: 30,
-                                  child: Text(snapshot.data[ind].name)),
-                            ],
+                            ),
                           ),
                         ),
                       );

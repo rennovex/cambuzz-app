@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
 class PostViewScreen extends StatelessWidget {
@@ -16,7 +16,7 @@ class PostViewScreen extends StatelessWidget {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              PostItem(
+              /*PostItem(
                 postImg:
                     'https://i.pinimg.com/236x/0c/17/ca/0c17ca0e82e873d6b0bd5a44790c7813.jpg',
                 profileImg:
@@ -27,7 +27,7 @@ class PostViewScreen extends StatelessWidget {
                 userName: 'BadKarma',
                 time: '',
                 postType: PostType.ImagePost,
-              ),
+              ),*/
               Text('Comments'),
               ListView.builder(
                 shrinkWrap: true,

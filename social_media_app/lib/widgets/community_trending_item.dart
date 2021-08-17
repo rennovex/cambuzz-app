@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 
 import '../constants.dart';
 
@@ -11,7 +11,6 @@ class CommunityTrendingItem extends StatelessWidget {
   final String image;
   final String text;
   final num likeCount;
-  final PostType postType;
 
   // final flag = false;
 
@@ -22,7 +21,6 @@ class CommunityTrendingItem extends StatelessWidget {
     this.title,
     this.likeCount,
     this.text,
-    this.postType,
   });
 
   @override
@@ -35,6 +33,7 @@ class CommunityTrendingItem extends StatelessWidget {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
+            /*
             postType == PostType.ImagePost
                 ? SizedBox(
                     width: 10,
@@ -61,7 +60,7 @@ class CommunityTrendingItem extends StatelessWidget {
                 : PostBody(text),
             SizedBox(
               width: 10,
-            ),
+            ),*/
           ],
         ),
       ),
@@ -74,6 +73,9 @@ class PostView extends StatelessWidget {
   final String userName;
   final String title;
   final num likeCount;
+
+  Post post;
+
 
   PostView({
     @required this.communityName,

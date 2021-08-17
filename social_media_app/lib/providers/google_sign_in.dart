@@ -27,11 +27,6 @@ class GoogleSignInProvider with ChangeNotifier {
 
   // String get apiToken => _apiToken;
 
-  set apiToken(String apiToken) {
-    // _apiToken = _apiToken;
-    notifyListeners();
-  }
-
   Future login() async {
     isSigningIn = true;
     // AuthResult authResult;
@@ -74,7 +69,9 @@ class GoogleSignInProvider with ChangeNotifier {
             'email': '${currentUser.email}',
             'uid': '${currentUser.uid}',
           });
+          final responseDecoded = jsonDecode(response.body);
           SecureStorage.setApiToken(response.headers['x-auth-token']);
+          SecureStorage.setUid(responseDecoded['_id']);
         }
       }
       // isSigningIn = false;
@@ -98,7 +95,7 @@ class GoogleSignInProvider with ChangeNotifier {
     try {
       await googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
-      await SecureStorage.deleteApiToken();
+      await SecureStorage.deleteAll();
     } catch (err) {
       print(err);
     }

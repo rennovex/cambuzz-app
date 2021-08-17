@@ -2,23 +2,35 @@ import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
+import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
-import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/models/secureStorage.dart';
+import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 class ProfileScreen extends StatelessWidget {
-  final Profile profile;
+  User user;
+  Community community;
 
-  ProfileScreen({this.profile}) {
-    // print(SecureStorage.readApiToken());
+  bool isUserProfile;
+
+  ProfileScreen.user() {
+    Api.getUser().then((value) => user = value);
+    isUserProfile = true;
+  }
+
+  ProfileScreen.community(Community community) {
+    this.community = community;
+    isUserProfile = false;
   }
   // const ProfileScreen({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print(user.bio);
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
@@ -26,8 +38,9 @@ class ProfileScreen extends StatelessWidget {
           // crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ProfileHeader(
-              coverImg: profile.profileCoverImg,
-              profileImg: profile.profileImg,
+              coverImg:
+                  isUserProfile ? user?.coverImage : community?.coverImage,
+              profileImg: isUserProfile ? user?.image : community?.image,
             ),
             SizedBox(
               height: 50,
@@ -36,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
               // crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  '${profile.profileName}',
+                  '${isUserProfile ? user?.name : community?.name}',
                   style: kProfileName,
                 ),
                 SizedBox(
@@ -45,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   width: 200,
                   child: Text(
-                    '${profile.profileBio}',
+                    '${isUserProfile ? user?.bio : ''}',
                     maxLines: 2,
                     textAlign: TextAlign.center,
                   ),
@@ -65,55 +78,56 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.blue,
                     ),
                     Text(
-                      '${profile.followers} Followers',
+                      '${isUserProfile ? user?.followers : community?.followers} Followers' ??
+                          0,
                       style: kProfileLabel,
                     ),
                   ],
                 ),
                 Row(
                   children: [
-                    if (profile.profileType == ProfileType.CommunityProfile)
+                    if (!isUserProfile)
                       Icon(
                         Icons.wallet_membership_outlined,
                         color: Colors.red,
                       ),
-                    if (profile.profileType == ProfileType.UserProfile)
+                    if (isUserProfile)
                       Icon(
                         Icons.favorite,
                         color: Colors.red,
                       ),
-                    if (profile.profileType == ProfileType.CommunityProfile)
+                    if (!isUserProfile)
                       Text(
-                        '${profile.members} Members',
+                        '${community?.members} Members' ?? 0,
                         style: kProfileLabel,
                       ),
-                    if (profile.profileType == ProfileType.UserProfile)
+                    if (isUserProfile)
                       Text(
-                        '${profile.likes} Likes',
+                        '${user?.likes} Likes' ?? 0,
                         style: kProfileLabel,
                       ),
                   ],
                 ),
                 Row(
                   children: [
-                    if (profile.profileType == ProfileType.CommunityProfile)
+                    if (!isUserProfile)
                       Icon(
                         MdiIcons.medal,
                         color: Colors.purpleAccent,
                       ),
-                    if (profile.profileType == ProfileType.UserProfile)
+                    if (isUserProfile)
                       Icon(
                         MdiIcons.medal,
                         color: Colors.purpleAccent,
                       ),
-                    if (profile.profileType == ProfileType.CommunityProfile)
+                    if (!isUserProfile)
                       Text(
-                        '${profile.events} Events',
+                        '${community?.events} Events' ?? 0,
                         style: kProfileLabel,
                       ),
-                    if (profile.profileType == ProfileType.UserProfile)
+                    if (isUserProfile)
                       Text(
-                        '${profile.achievements} Achievements',
+                        '${user?.achievements} Achievements' ?? 0,
                         style: kProfileLabel,
                       ),
                   ],
@@ -139,9 +153,7 @@ class ProfileScreen extends StatelessWidget {
                             .then((value) => print(value));
                       },
                       child: Text(
-                        profile.profileType == ProfileType.CommunityProfile
-                            ? '+Join'
-                            : 'Follow',
+                        !isUserProfile ? '+Join' : 'Follow',
                         textAlign: TextAlign.center,
                         style: kProfileButtonText,
                       ),
@@ -154,11 +166,11 @@ class ProfileScreen extends StatelessWidget {
                 SizedBox(width: 5),
                 Expanded(
                   child: OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      SecureStorage.readUid().then((value) => print(value));
+                    },
                     child: Text(
-                      profile.profileType == ProfileType.CommunityProfile
-                          ? 'Contact Head'
-                          : 'Send a message',
+                      !isUserProfile ? 'Contact Head' : 'Send a message',
                       textAlign: TextAlign.center,
                       style: kProfileButtonText,
                     ),
@@ -183,9 +195,7 @@ class ProfileScreen extends StatelessWidget {
                       provider.logout();
                     },
                     child: Text(
-                      profile.profileType == ProfileType.CommunityProfile
-                          ? 'Edit Community'
-                          : 'Edit Profile',
+                      !isUserProfile ? 'Edit Community' : 'Edit Profile',
                       textAlign: TextAlign.center,
                       style: kProfileButtonText,
                     ),

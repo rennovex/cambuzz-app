@@ -1,22 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/models/profile.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PostItem extends StatelessWidget {
   //final Profile user;
 
-  final String profileImg;
-  final String profileName;
-  final String userName;
-
-  final String time;
-  final String title;
-  final String postImg;
-  final String postText;
-  final PostType postType;
+  // final Post post;
 
   // PostItem(
   //     {this.imgsrc =
@@ -24,19 +18,12 @@ class PostItem extends StatelessWidget {
   //     this.proimgsrc =
   //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
 
-  PostItem({
-    this.profileImg,
-    this.postImg,
-    this.profileName,
-    this.time,
-    this.title,
-    this.userName,
-    this.postType,
-    this.postText,
-  });
+  // PostItem({@required this.post});
 
   @override
   Widget build(BuildContext context) {
+    final post = Provider.of<Post>(context);
+    print(post.isLiked);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
@@ -45,6 +32,7 @@ class PostItem extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         child: Column(
           // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
             Row(
@@ -52,7 +40,9 @@ class PostItem extends StatelessWidget {
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CircleAvatar(
-                  backgroundImage: NetworkImage(profileImg),
+                  backgroundImage: CachedNetworkImageProvider(
+                    post.user.image,
+                  ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -64,7 +54,9 @@ class PostItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '\$$profileName',
+                            post.isUserPost()
+                                ? post.user.name
+                                : '\$' + post.community.name,
                             style: kPostHeaderTextStyle,
                             // textAlign: TextAlign.start,
                           ),
@@ -74,7 +66,7 @@ class PostItem extends StatelessWidget {
                           SizedBox(
                             width: 150,
                             child: Text(
-                              '$userName',
+                              post.user.userName,
                               overflow: TextOverflow.ellipsis,
                               style: kPostSubHeaderTextStyle,
                               // maxLines: 1,
@@ -93,7 +85,7 @@ class PostItem extends StatelessWidget {
                                 Icons.access_time_sharp,
                                 size: 18,
                               ),
-                              Text('7 min ago',
+                              Text(post.howLongAgo,
                                   softWrap: true, style: kPostTimeTextStyle),
                             ],
                           ),
@@ -118,27 +110,30 @@ class PostItem extends StatelessWidget {
             Container(
               // width: 300,
               child: Text(
-                '$title',
+                post.title,
                 overflow: TextOverflow.ellipsis,
                 style: kPostTitleTextStyle,
                 // softWrap: true,
                 maxLines: 2,
+                textAlign: TextAlign.start,
               ),
             ),
             SizedBox(height: 7),
-            if (postType == PostType.ImagePost)
+            if (post.isImagePost())
               ClipRRect(
                 borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: Image.network(
-                  postImg,
+                child: CachedNetworkImage(
+                  imageUrl: post.postImg,
+                  placeholder: (context, url) =>
+                      Center(child: CircularProgressIndicator()),
                   width: double.infinity,
                   height: 350,
                   fit: BoxFit.cover,
                 ),
               ),
-            if (postType == PostType.TextPost)
+            if (!post.isImagePost())
               Container(
-                child: Text(postText),
+                child: Text(post.postText),
               ),
             SizedBox(
               height: 10,
@@ -151,9 +146,15 @@ class PostItem extends StatelessWidget {
                     IconButton(
                         padding: EdgeInsets.all(0),
                         constraints: BoxConstraints(),
-                        icon: Icon(Icons.favorite_border),
-                        onPressed: () {}),
-                    Text('102', style: kPostBottomMetricTextStyle),
+                        icon: post.isLiked
+                            ? Icon(
+                                Icons.favorite,
+                                color: Colors.red,
+                              )
+                            : Icon(Icons.favorite_border),
+                        onPressed: () => post.toggleLike(post.id)),
+                    Text('${post.likeCount}',
+                        style: kPostBottomMetricTextStyle),
                   ],
                 ),
                 Row(
@@ -169,7 +170,7 @@ class PostItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '46',
+                      '${post.comments.length}',
                       style: kPostBottomMetricTextStyle,
                     ),
                   ],

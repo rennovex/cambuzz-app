@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 
@@ -13,6 +14,7 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Stack(
       // overflow: Overflow.visible,
       clipBehavior: Clip.none,
@@ -23,17 +25,17 @@ class ProfileHeader extends StatelessWidget {
               const EdgeInsets.only(top: 5, right: 11, left: 11, bottom: 10),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(33),
-            child: Image.network(
-              '$coverImg',
+            child: CachedNetworkImage(
+              imageUrl: '$coverImg',
               fit: BoxFit.cover,
               width: double.infinity,
-              height: 167,
+              height: size.height * 0.25,
             ),
-          ),
+          ), 
         ),
         Positioned(
           // left: 150,
-          top: 145,
+          top: size.height * 0.2,
           child: Container(
             decoration: BoxDecoration(
               gradient: kLinearGradient,
@@ -47,7 +49,9 @@ class ProfileHeader extends StatelessWidget {
                 radius: kProfilePicRadius + 4,
                 child: CircleAvatar(
                   radius: kProfilePicRadius,
-                  backgroundImage: NetworkImage('$profileImg'),
+                  backgroundImage: CachedNetworkImageProvider(
+                    '$profileImg',
+                  ),
                 ),
               ),
             ),

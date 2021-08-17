@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 
 class TrendingPost {
   // final String postId;
@@ -12,7 +12,6 @@ class TrendingPost {
   final String text;
   final num likeCount;
   //  final num position;
-  final PostType postType;
 
   TrendingPost({
     this.communityName,
@@ -21,6 +20,5 @@ class TrendingPost {
     @required this.userName,
     @required this.likeCount,
     @required this.title,
-    @required this.postType,
   });
 }

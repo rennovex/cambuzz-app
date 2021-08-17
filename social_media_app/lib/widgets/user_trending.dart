@@ -9,12 +9,11 @@ import 'package:social_media_app/constants.dart';
 
 class UserTrending extends StatelessWidget {
   // const UserTrending({ Key? key }) : super(key: key);
-  Future<List<Post>> trendingUserPosts;
+  final Future<List<Post>> trendingUserPosts = Api.getTrendingUserPosts();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    trendingUserPosts = Api.getTrendingUserPosts();
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
       // height: 300,
@@ -23,7 +22,7 @@ class UserTrending extends StatelessWidget {
         child: FutureBuilder(
           future: trendingUserPosts,
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
                 child: Container(
                   child: SpinKitWave(
@@ -34,7 +33,7 @@ class UserTrending extends StatelessWidget {
               );
             }
             // print(snapshot.data);
-            else
+            else if (snapshot.hasData)
               return Column(
                 children: [
                   Padding(
@@ -80,6 +79,10 @@ class UserTrending extends StatelessWidget {
                     height: 10,
                   ),
                 ],
+              );
+            else
+              return Center(
+                child: Text('No data'),
               );
           },
         ),

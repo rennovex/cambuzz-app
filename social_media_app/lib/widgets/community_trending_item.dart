@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/providers/post.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 
 import '../constants.dart';
 
@@ -97,7 +98,7 @@ class PostView extends StatelessWidget {
                   width: 2,
                 ),
                 Text(
-                  '${this.post.likeCount}',
+                  '${this.post?.likeCount ?? 0}',
                   style: kTrendingCommunityLikes,
                 ),
               ],
@@ -113,7 +114,7 @@ class PostView extends StatelessWidget {
                 borderRadius: BorderRadius.circular(5),
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => showCommunity(context, post.community.uid),
                 child: Text(
                   '+Join Community',
                   textAlign: TextAlign.center,

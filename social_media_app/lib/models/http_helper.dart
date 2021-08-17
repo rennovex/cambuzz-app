@@ -1,41 +1,27 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:social_media_app/models/secureStorage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:social_media_app/Global/globals.dart';
 
 class HttpHelper {
-  static const serverUrl = 'https://cambuzz-rennovex.herokuapp.com/api';
+  static const serverUrl =
+      'http://cambuzz-rennovex-env.eba-fges6uxq.ap-south-1.elasticbeanstalk.com/api';
 
-  var _apiToken = SecureStorage.getApiToken();
+  // var _apiToken;
 
-  HttpHelper() {
-    // _apiToken = SecureStorage.getApiToken();
+  static Future<http.Response> putImage({String uri, XFile body}) async {
+    // await SecureStorage.readApiToken().then((value) => _apiToken = value);
+    var url = Uri.parse('$uri');
+    return http.put(
+      url,
+      body: await body.readAsBytes(),
+    );
   }
 
-  // Future getApiToken() async {
-  //   // String apiToken;
-  //   await SecureStorage.readApiToken().then(
-  //     (value) => _apiToken = value,
-  //     // print(apiToken);
-  //   );
-  //   // print(_apiToken);
-  //   // return apiToken;
-  // }
-
-  // String getToken() {
-  //   getApiToken();
-  //   // print(_apiToken);
-  //   return _apiToken;
-  // }
-
-  // HttpHelper() {
-  //   SecureStorage.readApiToken().then((value) {
-  //     _apiToken = value;
-  //     print(_apiToken);
-  //   });
-  // }
-
-  Future<http.Response> post({String uri, Map<String, dynamic> body}) async {
+  static Future<http.Response> post(
+      {String uri, Map<String, dynamic> body}) async {
+    // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse(serverUrl + '$uri');
     return http.post(
       url,
@@ -43,20 +29,50 @@ class HttpHelper {
       headers: {
         "accept": "application/json",
         "content-type": "application/json",
-        "x-auth-token": _apiToken,
+        "x-auth-token": "${Global.apiToken}",
       },
     );
   }
 
-  Future<http.Response> getApi(String uri) async {
+  static Future<http.Response> put(
+      {String uri, Map<String, dynamic> body}) async {
+    // await SecureStorage.readApiToken().then((value) => _apiToken = value);
     var url = Uri.parse(serverUrl + '$uri');
-    // print(_apiToken);
-    return http.get(
+    return http.put(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "x-auth-token": "${Global.apiToken}",
+      },
+    );
+  }
+
+  static Future<http.Response> delete(
+      {String uri, Map<String, dynamic> body}) async {
+    // await SecureStorage.readApiToken().then((value) => _apiToken = value);
+    var url = Uri.parse(serverUrl + '$uri');
+    return http.delete(
+      url,
+      body: jsonEncode(body),
+      headers: {
+        "accept": "application/json",
+        "content-type": "application/json",
+        "x-auth-token": "${Global.apiToken}",
+      },
+    );
+  }
+
+  static Future<http.Response> get(String uri) async {
+    // await SecureStorage.readApiToken().then((value) => _apiToken = value);
+    var url = Uri.parse(serverUrl + '$uri');
+    return await http.get(
       url,
       headers: {
         "accept": "application/json",
         "content-type": "application/json",
-        "x-auth-token": "${_apiToken}",
+        "x-auth-token": "${Global.apiToken}",
       },
     );
   }

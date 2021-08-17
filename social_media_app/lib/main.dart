@@ -1,40 +1,66 @@
+import 'dart:ui';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/http_helper.dart';
+import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
+import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
+import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
+import 'package:social_media_app/screens/Registration/end.dart';
+import 'package:social_media_app/screens/Registration/intro.dart';
+import 'package:social_media_app/screens/Registration/step1.dart';
+import 'package:social_media_app/screens/Registration/step2.dart';
+import 'package:social_media_app/screens/Registration/step3.dart';
 import 'package:social_media_app/screens/auth_screen.dart';
+import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
-import 'package:social_media_app/screens/feed_screen.dart';
+import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
+import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/screens/trending_screen.dart';
-import 'package:social_media_app/widgets/app_bar.dart';
-
-import 'dummy_data.dart';
+import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
+import 'package:social_media_app/models/user.dart' as User;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Global.apiToken = await SecureStorage.readApiToken() ?? '';
+  Global.uid = await SecureStorage.readUid() ?? '';
+  print('uid = ' + Global.uid);
+  print('token = ' + Global.apiToken);
 
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   // This widget is the root of your application.
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
-        ChangeNotifierProvider.value(value: Api()),
+        // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
-          primarySwatch: Colors.blue,
+          primaryColor: Color.fromRGBO(141, 38, 221, 1),
           backgroundColor: Color.fromRGBO(229, 229, 229, 1),
 
           // textTheme: TextTheme(
@@ -44,20 +70,179 @@ class MyApp extends StatelessWidget {
           //   body2: BodySecondaryTextStyle,
           // )
         ),
+
         home: StreamBuilder(
           stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            final provider = Provider.of<GoogleSignInProvider>(context);
-
+          builder: (context, firebaseSnapshot) {
+            final provider = Provider.of<GoogleSignInProvider>(
+              context,
+            );
             if (provider.isSigningIn) {
               return buildLoading();
-            } else if (snapshot.hasData) {
-              return MyHomePage();
+            } else if (firebaseSnapshot.connectionState ==
+                ConnectionState.waiting) {
+              return SpinKitChasingDots(
+                color: kPrimaryColor,
+              );
+            } else if (firebaseSnapshot.hasData) {
+              Global.firebaseUser = firebaseSnapshot.data;
+              print('fireabse user email = ' + firebaseSnapshot.data.email);
+              return FutureBuilder(
+                  future: Api.isUserRegistered(firebaseSnapshot.data.email),
+                  builder: (context, isRegisteredSnapshot) {
+                    if (isRegisteredSnapshot.hasData) {
+                      if (isRegisteredSnapshot.data) {
+                        print('getting uid');
+                        //if uid available go to home
+                        return FutureBuilder(
+                            future: Api.login(firebaseSnapshot.data.email,
+                                firebaseSnapshot.data.uid),
+                            builder: (context, loginSnapshot) {
+                              if (loginSnapshot.hasData) {
+                                if (loginSnapshot.data['status']) {
+                                  print('getting user');
+                                  Global.apiToken = loginSnapshot.data['token'];
+                                  print('tokan = ' + Global.apiToken);
+                                  return FutureBuilder(
+                                      future: Api.getUser(),
+                                      builder: (context, getUserSnapshot) {
+                                        if (getUserSnapshot.hasData) {
+                                          print('returning my home page');
+                                          return MyHomePage(
+                                              getUserSnapshot.data);
+                                        }
+                                        return SpinKitChasingDots(
+                                          color: kPrimaryColor,
+                                        );
+                                      });
+                                } else {
+                                  print('invalid credentials' +
+                                      loginSnapshot.data['status'].toString());
+                                  //TODO invalid credentials
+                                }
+                              }
+                              return SpinKitChasingDots(
+                                color: kPrimaryColor,
+                              );
+                            });
+                      } else {
+                        print('user is not registered');
+
+                        print('connection done');
+                        //TODO: do not render before spinkit
+                        Future.delayed(Duration(milliseconds: 1000), (() async {
+                          print('pushing registration');
+                          String name, userName, email, bio, firebaseUid;
+                          XFile image;
+                          List<String> skills;
+                          email = firebaseSnapshot.data.email;
+                          firebaseUid = firebaseSnapshot.data.uid;
+
+                          var userData = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => Step1(
+                                        onPrimaryButtonPressed: () {},
+                                        email: email,
+                                      )));
+                          if(userData==null) return setState(() {
+                            
+                          });
+                          name = userData['name'];
+                          userName = userData['username'];
+                          email = userData['email'];
+
+                          var imageData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step2()));
+
+                          if(imageData==null) return setState(() {
+                            
+                          });
+                          image = imageData['image'];
+
+                          var bioData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step3()));
+                          if(bioData==null) return setState(() {
+                            
+                          });
+
+                          bio = bioData['bio'];
+                          skills = bioData['skills'];
+
+                          User.User user = User.User(
+                              name: name,
+                              email: email,
+                              userName: userName,
+                              bio: bio,
+                              skills: skills);
+
+                          var status =
+                              await Api.postUser(user, firebaseUid, image);
+
+                          if (status['status']) {
+                            print('success');
+                            Global.uid = status['uid'];
+                            Global.apiToken = status['token'];
+                            user.uid = status['_id'];
+                            Global.myself = user;
+                            //TODO: if user does not select image, show default dp
+                            await Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => End(
+                                      primaryButtonOnPressed: () {
+                                        Navigator.pop(context);
+                                        setState(() {});
+                                        //
+                                        // Navigator.of(context).pushReplacement(
+                                        //     MaterialPageRoute(
+                                        //         builder: (context) =>
+                                        //             MyHomePage(user)));
+                                      },
+                                    )));
+                          } else {
+                            //TODO: SHow error
+                          }
+                        }));
+
+                        print('adding spinkitdots');
+                        return SpinKitChasingDots(
+                          color: kPrimaryColor,
+                        );
+                      }
+                    }
+                    return SpinKitChasingDots(
+                      color: kPrimaryColor,
+                    );
+                  });
             } else {
-              return AuthScreen();
+              print('firebase login attempt');
+              return Intro(
+                primaryButtonOnPressed: () async {
+                  var firebaseData = await provider.login();
+                  setState(() {});
+                },
+              );
+              // return Intro(primaryButtonOnPressed: () async {
+
+              // });
             }
           },
         ),
+        // home:RegistrationScreen()
+        // initialRoute: home,
+        routes: {
+          //'/': (ctx) => MyHomePage(),
+          CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
+          UserProfileScreen.routeName: (ctx) => UserProfileScreen(),
+          BlockedScreen.routeName: (ctx) => BlockedScreen(),
+          AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
+          SearchScreen.routeName: (ctx) => SearchScreen(),
+          ProfileInfoScreen.routeName: (ctx) => ProfileInfoScreen(),
+          // UserProfileScreen.routeName: (
+          //   ctx,
+          // ) =>
+          //     UserProfileScreen(
+          //       userId: id,
+          //     ),
+        },
       ),
     );
   }
@@ -72,101 +257,124 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  User.User myself;
+  MyHomePage(User.User myself) {
+    this.myself = myself;
+    Global.myself = myself;
+  }
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _currentIndex = 0;
-  final List<Widget> _childern = [
-    ProfileScreen(
-      profile: profiles[1],
-    ),
-    FeedScreen(),
-    TrendingScreen(),
-    EventScreen(events),
-  ];
+  int _selectedPageIndex;
+  PageController _pageController;
+  List<Widget> _pages;
+  //bool registrationJustCompleted = false;
+  var user;
+
+  void initializePages() {
+    _pages = [
+      FeedScreen(),
+      SearchScreen(),
+      TrendingScreen(),
+      EventScreen(),
+    ];
+  }
 
   @override
   void initState() {
-    // TODO: implement initState
-    HttpHelper();
     super.initState();
+
+    _selectedPageIndex = 0;
+
+    initializePages();
+    print(_pages);
+
+    _pageController = PageController(initialPage: _selectedPageIndex);
+  }
+
+  // Future init() async {
+  //   final uid = await SecureStorage.readUid();
+  //   Global.uid = uid;
+  //   print(Global().uid);
+  // }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Color.fromRGBO(28, 28, 28, 1),
-      //   foregroundColor: Colors.white,
-      //   brightness: Brightness.dark,
-      //   shape: RoundedRectangleBorder(
-      //     borderRadius: BorderRadius.only(
-      //       bottomLeft: Radius.circular(18),
-      //       bottomRight: Radius.circular(18),
-      //     ),
-      //   ),
-      //   leading: IconButton(
-      //     icon: Icon(Icons.search),
-      //     onPressed: () {},
-      //   ),
-      //   actions: [],
-      // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Increment',
-        child: Container(
-          child: Icon(
-            Icons.add,
-            size: 30,
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () => showModalBottomSheet<dynamic>(
+            isScrollControlled: true,
+            context: context,
+            builder: (context) => AddPost(context),
           ),
-          width: 60,
-          height: 60,
-          decoration:
-              BoxDecoration(shape: BoxShape.circle, gradient: kLinearGradient),
-        ),
-        elevation: 2.0,
-      ),
-      body: _childern.elementAt(_currentIndex),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(30), topLeft: Radius.circular(30)),
-          color: Colors.transparent,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black38,
-              spreadRadius: 0,
-              blurRadius: 1,
+          tooltip: 'Increment',
+          child: Container(
+            child: Icon(
+              Icons.add,
+              size: 30,
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(30),
-            topLeft: Radius.circular(30),
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, gradient: kLinearGradient),
           ),
-          child: BottomNavigationBar(
-            backgroundColor: Colors.white,
-            type: BottomNavigationBarType.fixed,
-            currentIndex: _currentIndex,
-            onTap: (index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-            selectedItemColor: kPrimaryColor,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle), label: 'Account'),
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.trending_up), label: 'Trending'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
+          elevation: 2.0,
+        ),
+        body: PageView(
+          controller: _pageController,
+          children: _pages,
+          physics: NeverScrollableScrollPhysics(),
+        ),
+        bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topRight: Radius.circular(30), topLeft: Radius.circular(30)),
+            color: Colors.transparent,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black38,
+                spreadRadius: 0,
+                blurRadius: 1,
+              ),
             ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(
+              topRight: Radius.circular(30),
+              topLeft: Radius.circular(30),
+            ),
+            child: BottomNavigationBar(
+              backgroundColor: Colors.white,
+              type: BottomNavigationBarType.fixed,
+              currentIndex: _selectedPageIndex,
+              onTap: (index) {
+                setState(() {
+                  _selectedPageIndex = index;
+                  _pageController.jumpToPage(index);
+                });
+              },
+              selectedItemColor: kPrimaryColor,
+              items: [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.search), label: 'Search'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.trending_up), label: 'Trending'),
+                BottomNavigationBarItem(
+                    icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
+              ],
+            ),
           ),
         ),
       ),

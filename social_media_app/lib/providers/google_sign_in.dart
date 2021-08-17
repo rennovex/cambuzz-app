@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 
@@ -27,15 +28,8 @@ class GoogleSignInProvider with ChangeNotifier {
 
   // String get apiToken => _apiToken;
 
-  set apiToken(String apiToken) {
-    // _apiToken = _apiToken;
-    notifyListeners();
-  }
-
   Future login() async {
     isSigningIn = true;
-    // AuthResult authResult;
-    // final httpHelper = new HttpHelper(context);
 
     try {
       final user = await googleSignIn.signIn();
@@ -53,33 +47,24 @@ class GoogleSignInProvider with ChangeNotifier {
         final authResult =
             await FirebaseAuth.instance.signInWithCredential(credential);
         final currentUser = FirebaseAuth.instance.currentUser;
-
-        if (authResult.additionalUserInfo.isNewUser) {
-          final response =
-              await HttpHelper().post(uri: '/auth/register', body: {
-            'email': '${currentUser.email}',
-            'uid': '${currentUser.uid}',
-          });
-          if (response.statusCode >= 400) {
-            logout();
-            currentUser.delete();
-            throw 'something bad happened + ${response.body}';
-            // return;
-          }
-          // print(response.headers['x-auth-token']);
-          SecureStorage.setApiToken(response.headers['x-auth-token']);
-          // apiToken = response.headers['x-auth-token'];
-        } else {
-          final response = await HttpHelper().post(uri: '/auth/login', body: {
-            'email': '${currentUser.email}',
-            'uid': '${currentUser.uid}',
-          });
-          SecureStorage.setApiToken(response.headers['x-auth-token']);
-        }
+        return {"email":currentUser.email, "uid":currentUser.uid};
+        // if (authResult.additionalUserInfo.isNewUser) {
+        //   //
+        // } else {
+        //   final response = await HttpHelper.post(uri: '/auth/login', body: {
+        //     'email': '${currentUser.email}',
+        //     'uid': '${currentUser.uid}',
+        //   });
+        //   final responseDecoded = jsonDecode(response.body);
+        //   SecureStorage.setApiToken(response.headers['x-auth-token']);
+        //   SecureStorage.setUid(responseDecoded['_id']);
+        //   Global.apiToken = response.headers['x-auth-token'];
+        //   Global.uid = responseDecoded['_id'];
+        //   print(Global.uid);
+        //   print(Global.apiToken);
+        // }
       }
-      // isSigningIn = false;
     } on PlatformException catch (err) {
-      // isSigningIn = false;
       var message = 'An error has occured';
 
       if (err.message != null) {
@@ -87,7 +72,6 @@ class GoogleSignInProvider with ChangeNotifier {
       }
       print(message);
     } catch (err) {
-      // isSigningIn = false;
       print(err);
     } finally {
       isSigningIn = false;
@@ -98,9 +82,16 @@ class GoogleSignInProvider with ChangeNotifier {
     try {
       await googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
-      await SecureStorage.deleteApiToken();
+      print('logout successful');
+      print(FirebaseAuth.instance.currentUser);
+      await SecureStorage.deleteAll();
     } catch (err) {
       print(err);
     }
+  }
+
+  void deleteUser() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    currentUser.delete();
   }
 }

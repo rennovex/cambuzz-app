@@ -1,58 +1,66 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/post.dart';
-import 'package:social_media_app/models/profile.dart';
+import 'package:social_media_app/providers/post.dart';
+import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
+import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
 import 'package:social_media_app/screens/post_view_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:social_media_app/widgets/feed_post_action.dart';
 
 class PostItem extends StatelessWidget {
-  //final Profile user;
-
-  final String profileImg;
-  final String profileName;
-  final String userName;
-
-  final String time;
-  final String title;
-  final String postImg;
-  final String postText;
-  final PostType postType;
-
-  // PostItem(
-  //     {this.imgsrc =
-  //         'https://ahseeit.com//king-include/uploads/2021/01/122370488_2409620752667825_9215636083039238392_n-4472762206.jpg',
-  //     this.proimgsrc =
-  //         'https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80'});
+  final bool disableComments;
+  // final post = Provider.of<Post>(context);
+  //  Post post =
 
   PostItem({
-    this.profileImg,
-    this.postImg,
-    this.profileName,
-    this.time,
-    this.title,
-    this.userName,
-    this.postType,
-    this.postText,
-  });
+    this.disableComments = false,
+    // @required this.post,
+    Key key,
+  }) : super(key: key);
+
+  void showUser(context, id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => UserProfileScreen(userId: id),
+      ),
+    );
+  }
+
+  void showCommunity(context, id) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CommunityProfileScreen(uid: id),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final post = Provider.of<Post>(context, listen: false);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
       elevation: 5,
       margin: EdgeInsets.all(15),
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.min,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CircleAvatar(
-                  backgroundImage: NetworkImage(profileImg),
+                GestureDetector(
+                  onTap: () => showUser(context, post.user.uid),
+                  child: CircleAvatar(
+                    radius: 21,
+                    backgroundImage: CachedNetworkImageProvider(
+                      post.user?.image ?? '',
+                    ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 Expanded(
@@ -60,148 +68,250 @@ class PostItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            '\$$profileName',
-                            style: kPostHeaderTextStyle,
-                            // textAlign: TextAlign.start,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          SizedBox(
-                            width: 150,
+                          GestureDetector(
+                            onTap: () {
+                              post.isUserPost()
+                                  ? showUser(context, post.user.uid)
+                                  : showCommunity(context, post.community.uid);
+                            },
                             child: Text(
-                              '$userName',
-                              overflow: TextOverflow.ellipsis,
-                              style: kPostSubHeaderTextStyle,
-                              // maxLines: 1,
-                              // softWrap: true,
+                              post.isUserPost()
+                                  ? post.user.name
+                                  : '\$' + post.community.name,
+                              style: kPostHeaderTextStyle,
+                              // textAlign: TextAlign.start,
                             ),
                           ),
-                        ],
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(height: 22),
                           Row(
                             children: [
-                              Icon(
-                                Icons.access_time_sharp,
-                                size: 18,
+                              ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth:
+                                      MediaQuery.of(context).size.width * 0.35,
+                                ),
+                                child: Text(
+                                  post.user.userName,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: kPostSubHeaderTextStyle,
+                                ),
                               ),
-                              Text('7 min ago',
-                                  softWrap: true, style: kPostTimeTextStyle),
+                              SizedBox(width: 10),
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.access_time_sharp,
+                                    size: 14,
+                                  ),
+                                  Text(post.howLongAgo,
+                                      softWrap: true,
+                                      style: kPostTimeTextStyle),
+                                ],
+                              ),
                             ],
-                          ),
+                          )
                         ],
+                      ),
+                      IconButton(
+                        padding: EdgeInsets.only(right: 15),
+                        constraints: BoxConstraints(),
+                        icon: Icon(
+                          Icons.more_vert,
+                          color: Color.fromRGBO(97, 97, 97, 1),
+                          size: 36,
+                        ),
+                        // splashRadius: 1,
+                        onPressed: () => showModalBottomSheet(
+                          context: context,
+                          builder: (context) => FeedPostAction(
+                            post,
+                          ),
+                        ),
                       ),
                     ],
                   ),
                 ),
+
+                //
                 // SizedBox(width: 10),
-                IconButton(
-                    padding: EdgeInsets.all(0),
-                    constraints: BoxConstraints(),
-                    icon: Icon(
-                      Icons.more_vert,
-                      size: 36,
-                    ),
-                    // splashRadius: 1,
-                    onPressed: () {}),
               ],
             ),
             SizedBox(height: 15),
             Container(
               // width: 300,
               child: Text(
-                '$title',
+                post.title,
                 overflow: TextOverflow.ellipsis,
                 style: kPostTitleTextStyle,
                 // softWrap: true,
                 maxLines: 2,
+                textAlign: TextAlign.start,
               ),
             ),
             SizedBox(height: 7),
-            if (postType == PostType.ImagePost)
-              ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(15)),
-                child: Image.network(
-                  postImg,
-                  width: double.infinity,
-                  height: 350,
-                  fit: BoxFit.cover,
+            if (post.isImagePost())
+              GestureDetector(
+                onDoubleTap: () => post.toggleLike(),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  child: CachedNetworkImage(
+                    imageUrl: post.postImg,
+                    // placeholder: (context, url) =>
+                    //     Center(child: CircularProgressIndicator()),
+                    width: double.infinity,
+                    height: 350,
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            if (postType == PostType.TextPost)
-              Container(
-                child: Text(postText),
+            if (!post.isImagePost())
+              GestureDetector(
+                onDoubleTap: () => post.toggleLike(),
+                child: Container(
+                  child: Text(post.postText),
+                ),
               ),
             SizedBox(
               height: 10,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Row(
-                  children: [
-                    IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(Icons.favorite_border),
-                        onPressed: () {}),
-                    Text('102', style: kPostBottomMetricTextStyle),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      padding: EdgeInsets.all(0),
-                      constraints: BoxConstraints(),
-                      icon: Icon(MdiIcons.commentTextMultipleOutline),
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PostViewScreen()),
+            Consumer<Post>(
+              builder: (_, post, __) => Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  GestureDetector(
+                    onTap: () => post.toggleLike(),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: post.isLiked
+                            ? Colors.red
+                            : Color.fromRGBO(235, 237, 236, 1),
+                      ),
+                      child: Row(
+                        children: [
+                          IconButton(
+                              padding: EdgeInsets.all(0),
+                              constraints: BoxConstraints(),
+                              icon: post.isLiked
+                                  ? Icon(
+                                      Icons.favorite,
+                                      color: Colors.white,
+                                    )
+                                  : Icon(
+                                      Icons.favorite,
+                                      color: Colors.black,
+                                    ),
+                              onPressed: () => post.toggleLike()),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 5, top: 5, bottom: 5),
+                            child: SizedBox(
+                              width: 35,
+                              child: Text(
+                                '${post.likeCount}',
+                                style: TextStyle(
+                                  color: post.isLiked
+                                      ? Colors.white
+                                      : Colors.black,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Text(
-                      '46',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
+                  ),
+
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
                         padding: EdgeInsets.all(0),
                         constraints: BoxConstraints(),
-                        icon: Icon(MdiIcons.trophyOutline),
-                        onPressed: () {}),
-                    Text(
-                      '3',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(MdiIcons.shareAllOutline),
-                        onPressed: () {}),
-                    Text(
-                      '3',
-                      style: kPostBottomMetricTextStyle,
-                    ),
-                  ],
-                ),
-              ],
+                        icon: Icon(
+                          MdiIcons.comment,
+                        ),
+                        onPressed: disableComments
+                            ? null
+                            : () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ChangeNotifierProvider.value(
+                                              value: post,
+                                              child: PostViewScreen())),
+                                ),
+                      ),
+                      SizedBox(
+                        width: 4,
+                      ),
+                      Text(
+                        '${post.commentCount}',
+                        style: kPostBottomMetricTextStyle,
+                      ),
+                    ],
+                  ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //         padding: EdgeInsets.all(0),
+                  //         constraints: BoxConstraints(),
+                  //         icon: Icon(MdiIcons.trophyOutline),
+                  //         onPressed: () {}),
+                  //     Text(
+                  //       '3',
+                  //       style: kPostBottomMetricTextStyle,
+                  //     ),
+                  //   ],
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     IconButton(
+                  //         padding: EdgeInsets.all(0),
+                  //         constraints: BoxConstraints(),
+                  //         icon: Icon(MdiIcons.shareAllOutline),
+                  //         onPressed: () {}),
+                  //     Text(
+                  //       '3',
+                  //       style: kPostBottomMetricTextStyle,
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
             ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(left: 8.0),
+            //       child: SizedBox(
+            //         width: 300,
+            //         child: Text(
+            //           post.title,
+            //           overflow: TextOverflow.ellipsis,
+            //           style: kPostTitleTextStyle,
+            //           // softWrap: true,
+            //           maxLines: 2,
+            //           textAlign: TextAlign.start,
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.grey,
+            //         shape: BoxShape.rectangle,
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //       child: Text('More'),
+            //     ),
           ],
         ),
       ),

@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "943003306086-n08mmv79e969vik8aqcmcv7r7k508tdo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rennovex.cambuzz",
+            "certificate_hash": "aa6ae1f063409590f790e77d8f5f83b34959315d"
+          }
+        },
+        {
+          "client_id": "943003306086-vno55cflepok8c8v2q4anc2nhqf94stp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rennovex.cambuzz",
+            "certificate_hash": "46b6cb8201a972203d9f262a47c195113d4b5677"
+          }
+        },
+        {
           "client_id": "943003306086-mgbaf5tbl61e04sb0ldbeif75da33lrk.apps.googleusercontent.com",
           "client_type": 3
         }

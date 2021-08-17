@@ -1,66 +1,131 @@
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:social_media_app/providers/post.dart';
+import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/trending_user_item.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:social_media_app/constants.dart';
 // import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserTrending extends StatelessWidget {
   // const UserTrending({ Key? key }) : super(key: key);
+  Future<List<Post>> trendingUserPosts;
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    trendingUserPosts = Api.getTrendingUserPosts();
     return Container(
       margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-      height: 300,
+      // height: 300,
       child: Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-        child: Row(
-          children: [
-            SizedBox(
-              width: 10,
-            ),
-            Expanded(
-              flex: 8,
-              child: TrendingUserItem(
-                height: 121.0,
-                width: 121.0,
-                ranking: Text('2'),
-                src:
-                    'https://images.unsplash.com/photo-1604537529586-87ac173f4310?ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MTF8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              flex: 9,
-              child: TrendingUserItem(
-                height: 145.0,
-                width: 140.0,
-                ranking: Icon(
-                  MdiIcons.crown,
-                  size: 30,
+        child: FutureBuilder(
+          future: trendingUserPosts,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(
+                child: Container(
+                  child: SpinKitWave(
+                    color: kPrimaryColor,
+                  ),
+                  height: MediaQuery.of(context).size.height * .8,
                 ),
-                src:
-                    'https://images.unsplash.com/photo-1623852620519-7a476b8d8207?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
-              ),
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              flex: 8,
-              child: TrendingUserItem(
-                height: 121.0,
-                width: 121.0,
-                ranking: Text('3'),
-                src:
-                    'https://images.unsplash.com/photo-1604537529586-87ac173f4310?ixid=MnwxMjA3fDB8MHxwcm9maWxlLXBhZ2V8MTF8fHxlbnwwfHx8fA%3D%3D&ixlib=rb-1.2.1&w=1000&q=80',
-              ),
-            ),
-            SizedBox(
-              width: 10,
-            ),
-          ],
+              );
+            }
+            // return Row(
+            //   children: [
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //     Expanded(
+            //       flex: 8,
+            //       child: TrendingUserItem(
+            //         height: 121.0,
+            //         width: 121.0,
+            //         ranking: Text('2'),
+            //         post: snapshot.data[1],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 5,
+            //     ),
+            //     Expanded(
+            //       flex: 9,
+            //       child: TrendingUserItem(
+            //         height: 145.0,
+            //         width: 140.0,
+            //         ranking: Icon(
+            //           MdiIcons.crown,
+            //           size: 30,
+            //         ),
+            //         post: snapshot.data[0],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 5,
+            //     ),
+            //     Expanded(
+            //       flex: 8,
+            //       child: TrendingUserItem(
+            //         height: 121.0,
+            //         width: 121.0,
+            //         ranking: Text('3'),
+            //         post: snapshot.data[2],
+            //       ),
+            //     ),
+            //     SizedBox(
+            //       width: 10,
+            //     ),
+            //   ],
+            // );
+            return Column(
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: TrendingUserItem(
+                    height: 250.0,
+                    width: double.infinity,
+                    post: snapshot.data[0],
+                    ranking: Text('1'),
+                  ),
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TrendingUserItem(
+                        height: 200.0,
+                        width: double.infinity,
+                        post: snapshot.data[1],
+                        ranking: Text('2'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: TrendingUserItem(
+                        height: 200.0,
+                        width: double.infinity,
+                        post: snapshot.data[2],
+                        ranking: Text('3'),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

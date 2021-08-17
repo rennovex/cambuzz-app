@@ -5,6 +5,8 @@ const kMediumTextSize = 17.0;
 const kSmallTextSize = 16.0;
 const kBodyTextSize = 16.0;
 
+const kAppBarPreferredSize = Size.fromHeight(60);
+
 const Color kPrimaryColor = Color.fromRGBO(98, 65, 234, 1);
 const Color kSecondaryColor = Color.fromRGBO(69, 83, 243, 1);
 const Color kGradientStartColor = Color.fromRGBO(98, 65, 234, 1);
@@ -30,13 +32,13 @@ const kTitleTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.bold,
   fontSize: kLargeTextSize,
-  color: Colors.white,
+  color: Colors.black,
 );
 const kSubtitleTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.normal,
-  fontSize: kLargeTextSize,
-  color: Colors.white,
+  fontSize: kSmallTextSize,
+  color: Colors.black,
 );
 const kBodyprimaryTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,

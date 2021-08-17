@@ -35,6 +35,15 @@ dependencies:
   google_sign_in: ^5.0.4
   http: ^0.13.3
   flutter_secure_storage: ^4.2.0
+  cached_network_image: ^3.0.0
+  flutter_spinkit: "^4.1.2"
+  image_picker: ^0.8.2
+  fluttertoast: ^8.0.7
+  flutter_svg: ^0.22.0
+  infinite_scroll_pagination: ^3.1.0
+  intl: ^0.17.0
+  image_cropper: ^1.4.1
+  flutter_image_compress: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +59,8 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  assets:
+    - images/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

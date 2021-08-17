@@ -1,32 +1,20 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/post.dart';
+import 'package:social_media_app/providers/post.dart';
 
 import '../constants.dart';
 
 class CommunityTrendingItem extends StatelessWidget {
   // const CommunityTrendingItem({ Key? key }) : super(key: key);
-  final String communityName;
-  final String userName;
-  final String title;
-  final String image;
-  final String text;
-  final num likeCount;
-  final PostType postType;
+  final Post post;
 
   // final flag = false;
 
-  CommunityTrendingItem({
-    this.communityName,
-    this.userName,
-    this.image,
-    this.title,
-    this.likeCount,
-    this.text,
-    this.postType,
-  });
+  CommunityTrendingItem(this.post);
 
   @override
   Widget build(BuildContext context) {
+    print(post.isImagePost());
     return Card(
       color: Color.fromRGBO(73, 73, 73, 1),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
@@ -35,30 +23,16 @@ class CommunityTrendingItem extends StatelessWidget {
         child: Row(
           // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            postType == PostType.ImagePost
+            post.isImagePost()
                 ? SizedBox(
                     width: 10,
                   )
                 : SizedBox(width: 20),
-            postType == PostType.ImagePost
-                ? ImageView(image)
-                : PostView(
-                    communityName: communityName,
-                    likeCount: likeCount,
-                    title: title,
-                    userName: userName,
-                  ),
+            post.isImagePost() ? ImageView(post.postImg) : PostView(post),
             SizedBox(
               width: 10,
             ),
-            postType == PostType.ImagePost
-                ? PostView(
-                    communityName: communityName,
-                    likeCount: likeCount,
-                    title: title,
-                    userName: userName,
-                  )
-                : PostBody(text),
+            (post.isImagePost()) ? PostView(post) : PostBody(post.postText),
             SizedBox(
               width: 10,
             ),
@@ -70,17 +44,9 @@ class CommunityTrendingItem extends StatelessWidget {
 }
 
 class PostView extends StatelessWidget {
-  final String communityName;
-  final String userName;
-  final String title;
-  final num likeCount;
+  final Post post;
 
-  PostView({
-    @required this.communityName,
-    @required this.userName,
-    @required this.likeCount,
-    @required this.title,
-  });
+  PostView(this.post);
 
   // const PostView({
   //   Key key,
@@ -97,21 +63,21 @@ class PostView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              '\$${communityName}',
+              '\$${this.post.community.name}',
               style: kTrendingCommunityName,
             ),
             SizedBox(
                 // height: 0.1,
                 ),
             Text(
-              'by ${userName}',
+              'by ${this.post.user.name}',
               style: kTrendingCommunityTitle,
             ),
             SizedBox(
               height: 3,
             ),
             Text(
-              '${title}',
+              '${this.post.title}',
               style: kTrendingCommunityBody,
               // softWrap: true,
               overflow: TextOverflow.clip,
@@ -131,7 +97,7 @@ class PostView extends StatelessWidget {
                   width: 2,
                 ),
                 Text(
-                  '${likeCount}',
+                  '${this.post.likeCount}',
                   style: kTrendingCommunityLikes,
                 ),
               ],
@@ -179,8 +145,8 @@ class ImageView extends StatelessWidget {
     return Expanded(
       child: ClipRRect(
         borderRadius: BorderRadius.circular(18),
-        child: Image.network(
-          '${image}',
+        child: CachedNetworkImage(
+          imageUrl: '$image',
           width: 145,
           height: 155,
           fit: BoxFit.cover,

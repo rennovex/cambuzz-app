@@ -1,20 +1,57 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
+import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/event.dart';
 
 class EventScreen extends StatefulWidget {
-  // const Event({ Key? key }) : super(key: key);
-  final List<Event> events;
+  EventScreen({ Key key }) : super(key: key);
+  Future<List<Event>> events;
 
-  EventScreen(this.events);
+  //EventScreen(this.events);
 
   @override
-  _EventScreenState createState() => _EventScreenState();
+  _EventScreenState createState() {
+    this.events = Api.getEvents();
+    return _EventScreenState();
+  }
 }
 
-class _EventScreenState extends State<EventScreen> {
-  expandEvent({context, eventName, communityName, description}) {
+class _EventScreenState extends State<EventScreen>
+    with AutomaticKeepAliveClientMixin<EventScreen> {
+      var user;
+  List months = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec'
+  ];
+
+@override
+  void initState() {
+    super.initState();
+
+    user = Global.myself;
+  }
+
+
+  expandEvent({context, Event event}) {
     return showDialog(
       context: context,
       builder: (context) => Center(
@@ -55,8 +92,8 @@ class _EventScreenState extends State<EventScreen> {
 
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(18),
-                        child: Image.network(
-                          'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
+                        child: CachedNetworkImage(
+                          imageUrl: event.image,
                           width: double.infinity,
                           fit: BoxFit.cover,
                           height: MediaQuery.of(context).size.height * 0.4,
@@ -90,21 +127,21 @@ class _EventScreenState extends State<EventScreen> {
                                       Row(
                                         children: [
                                           Text(
-                                            '23',
+                                            event.time.day.toString(),
                                             style: kEventExpandedDay,
                                           ),
                                           SizedBox(
                                             width: 5,
                                           ),
                                           Text(
-                                            'MAY',
+                                            months[event.time.month - 1],
                                             style: kEventExpandedMonth,
                                           ),
                                           SizedBox(
                                             width: 10,
                                           ),
                                           Text(
-                                            '7:00 PM',
+                                            '${event.time.hour}:${event.time.minute}',
                                             style: kEventExpandedTime,
                                           ),
                                         ],
@@ -121,7 +158,7 @@ class _EventScreenState extends State<EventScreen> {
                                           color: Color.fromRGBO(98, 65, 234, 1),
                                         ),
                                         child: Text(
-                                          'hackathon',
+                                          event.tag,
                                           style: kEventBadge,
                                         ),
                                       ),
@@ -129,11 +166,11 @@ class _EventScreenState extends State<EventScreen> {
                                   ),
                                 ),
                                 Text(
-                                  '$eventName',
+                                  event.name,
                                   style: kEventExpandedName,
                                 ),
                                 Text(
-                                  '$communityName',
+                                  event.community.name,
                                   style: kEventExpandedCommunityName,
                                 ),
                                 SizedBox(
@@ -146,7 +183,7 @@ class _EventScreenState extends State<EventScreen> {
                                   //         MediaQuery.of(context).size.height *
                                   //             0.2),
                                   child: Text(
-                                    '$description',
+                                    event.description,
                                     style: kEventExpandedDescription,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 6,
@@ -160,7 +197,7 @@ class _EventScreenState extends State<EventScreen> {
                                 Expanded(
                                   child: TextButton(
                                     onPressed: () {
-                                      launch('https://www.rennovex.com/');
+                                      launch(event.contact);
 
                                       Navigator.of(context).pop();
                                     },
@@ -187,7 +224,7 @@ class _EventScreenState extends State<EventScreen> {
                                         color: Colors.purple),
                                     child: TextButton(
                                       onPressed: () {
-                                        launch('https://www.rennovex.com/');
+                                        launch(event.link);
                                         print('pressed');
                                       },
                                       child: Text(
@@ -226,42 +263,94 @@ class _EventScreenState extends State<EventScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: ListView.builder(
-        itemCount: widget.events.length,
-        itemBuilder: (ctx, ind) => GestureDetector(
-          onTap: () => expandEvent(
-            context: context,
-            communityName: widget.events[ind].communityName,
-            description: widget.events[ind].description,
-            eventName: widget.events[ind].eventName,
-          ),
-          child: EventItem(
-            eventName: widget.events[ind].eventName,
-            communityName: widget.events[ind].communityName,
-            image: widget.events[ind].image,
-            description: widget.events[ind].description,
-            tag: widget.events[ind].tag,
+      child: Scaffold(
+        appBar: PreferredSize(child: CustomAppBar(user),preferredSize: kAppBarPreferredSize,),
+        body: SingleChildScrollView(
+        
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                child: Text(
+                  'Filter events',
+                  style: kTitleTextStyle,
+                ),
+              ),
+              SizedBox(
+                height: 136,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  shrinkWrap: true,
+                  itemBuilder: (_, ind) => Padding(
+                    padding: const EdgeInsets.only(left: 12),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(13),
+                      child: Image.network(
+                        'https://picsum.photos/536/354',
+                        height: 136,
+                        width: 112,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              FutureBuilder(
+                future: widget.events,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (ctx, ind) => GestureDetector(
+                        onTap: () => expandEvent(
+                          context: context,
+                          event: snapshot.data[ind],
+                        ),
+                        child: EventItem(snapshot.data[ind]),
+                      ),
+                    );
+                  } else {
+                    return SpinKitWave(
+                      color: kPrimaryColor,
+                    );
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class EventItem extends StatelessWidget {
-  final String image;
-  final String communityName;
-  final String eventName;
-  final String description;
-  final String tag;
+  final Event event;
 
-  EventItem({
-    @required this.image,
-    @required this.communityName,
-    @required this.description,
-    @required this.eventName,
-    @required this.tag,
-  });
+  List months = [
+    'jan',
+    'feb',
+    'mar',
+    'apr',
+    'may',
+    'jun',
+    'jul',
+    'aug',
+    'sep',
+    'oct',
+    'nov',
+    'dec'
+  ];
+
+  EventItem(this.event);
 
   @override
   Widget build(BuildContext context) {
@@ -270,6 +359,7 @@ class EventItem extends StatelessWidget {
         top: 20,
         left: 10,
         right: 10,
+        bottom: 20,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       elevation: 3,
@@ -281,8 +371,8 @@ class EventItem extends StatelessWidget {
               topLeft: Radius.circular(18),
               topRight: Radius.circular(18),
             ),
-            child: Image.network(
-              '$image',
+            child: CachedNetworkImage(
+              imageUrl: event.image,
               fit: BoxFit.cover,
               width: double.infinity,
               height: 150,
@@ -304,15 +394,15 @@ class EventItem extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'APR',
+                            months[event.time.month - 1],
                             style: kEventMonth,
                           ),
                           Text(
-                            '27',
+                            event.time.day.toString(),
                             style: kEventDate,
                           ),
                           Text(
-                            '7:30 PM',
+                            '${event.time.hour}:${event.time.minute}',
                             style: kEventTime,
                           ),
                         ],
@@ -332,17 +422,17 @@ class EventItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '\$${communityName}',
+                      '\$${event.community.name}',
                       style: kEventCommunityName,
                     ),
                     Text(
-                      '$eventName',
+                      '${event.name}',
                       style: kEventHeader,
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.6,
                       child: Text(
-                        '$description',
+                        '${event.description}',
                         style: kEventBody,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
@@ -362,7 +452,7 @@ class EventItem extends StatelessWidget {
                         color: Color.fromRGBO(98, 65, 234, 1),
                       ),
                       child: Text(
-                        '$tag',
+                        '${event.tag}',
                         style: kEventBadge,
                       ),
                     ),

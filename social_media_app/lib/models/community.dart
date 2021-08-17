@@ -1,42 +1,79 @@
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/models/event.dart';
+import 'package:social_media_app/models/user.dart';
+
+import 'http_helper.dart';
 
 enum ProfileType {
   UserProfile,
   CommunityProfile,
 }
 
-class Community {
+class Community with ChangeNotifier {
   final ProfileType profileType = ProfileType.CommunityProfile;
+  final String uid;
+  final User owner;
   final String name;
   final String image;
   final String coverImage;
-  final num members;
-  final num events;
+  int membersCount;
+  final int eventsCount;
+  bool isMember;
 
-  Community({
-    @required this.name,
-    @required this.image,
-    @required this.coverImage,
-    this.members,
-    this.events,
-  });
+  Community(
+      {@required this.uid,
+      @required this.name,
+      @required this.image,
+      @required this.coverImage,
+      this.owner,
+      this.membersCount,
+      this.eventsCount,
+      this.isMember});
 
-  static Community fromJson(Map<String, dynamic> json) {
-    Community community;
-    if (json.containsKey('members') && json.containsKey('events')) {
-      community = new Community(
+  factory Community.fromJsonAbstract(Map<String, dynamic> json) {
+    return Community(
+        uid: json['_id'],
+        name: json['name'],
+        image: json['image'],
+        coverImage: json['coverImage']);
+  }
+
+  factory Community.fromJson(Map<String, dynamic> json) {
+    return Community(
+        uid: json['_id'],
+        owner: User.fromJsonAbstract(json['owner']),
+        // owner: json['owner'],
         name: json['name'],
         image: json['image'],
         coverImage: json['coverImage'],
-        members: json['members'],
-        events: json['events'],
-      );
-    } else {
-      community = new Community(
-        name: json['userName'],
-        image: json['image'],
-        coverImage: json['coverImage'],
-      );
+        membersCount: json['membersCount'],
+        eventsCount: json['eventsCount'],
+        isMember: json['isMember']);
+  }
+
+  void toggleJoin() async {
+    final oldStatus = isMember;
+    final oldCount = membersCount;
+
+    isMember = !isMember;
+    isMember ? membersCount++ : membersCount--;
+    print(isMember);
+    print(membersCount);
+    notifyListeners();
+    final response = isMember
+        ? await HttpHelper.post(
+            uri: '/communities/join/${this.uid}',
+            body: {},
+          )
+        : await HttpHelper.delete(
+            uri: '/communities/join/${this.uid}',
+            body: {},
+          );
+    if (response.statusCode != 200) {
+      isMember = oldStatus;
+      membersCount = oldCount;
+      notifyListeners();
+      throw 'Cant toggle membership in communities ${response.body} of post ${this.uid}';
     }
   }
 }

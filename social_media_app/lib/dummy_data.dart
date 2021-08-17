@@ -1,7 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:social_media_app/models/event.dart';
 import 'package:social_media_app/models/trending_post.dart';
 
-import 'models/post.dart';
+import 'providers/post.dart';
 import 'models/profile.dart';
 
 final List<Profile> profiles = [
@@ -34,7 +35,7 @@ final List<Profile> profiles = [
 ];
 
 final List<Post> feed = [
-  Post(
+  /*Post(
     postImg: 'https://picsum.photos/id/237/200/300',
     profileImg:
         'https://i.pinimg.com/236x/b7/1c/5f/b71c5f377615229c2d23c79686400eff.jpg',
@@ -91,7 +92,7 @@ final List<Post> feed = [
     postType: PostType.TextPost,
     postText:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
-  ),
+  ),*/
 ];
 
 final List<TrendingPost> trending = [
@@ -100,7 +101,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),
@@ -109,7 +109,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1623885765804-b7bc6c4082ee?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMXx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),
@@ -118,7 +117,6 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1610898564097-e28bd69740a4?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Nnx8bWVtZXxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.TextPost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
     text:
@@ -129,13 +127,13 @@ final List<TrendingPost> trending = [
         'https://images.unsplash.com/photo-1623872233463-921e585ee68e?ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwyMnx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60',
     likeCount: 75,
     title: 'There are many variations of passages of Lorem Ipsum available',
-    postType: PostType.ImagePost,
     userName: 'shaquille.oatmeal',
     communityName: 'The Art Base',
   ),
 ];
 
 final List<Event> events = [
+  /*
   Event(
     image:
         'https://images.unsplash.com/photo-1514533212735-5df27d970db0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTZ8fG1hcnNobWVsbG98ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60',
@@ -170,5 +168,28 @@ final List<Event> events = [
         'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
     eventName: 'Event Header',
     tag: 'Hackathon',
-  ),
+  ),*/
+];
+
+final List<Map<String, Object>> filters = [
+  {
+    'name': 'Web Developers',
+    'color': Color.fromRGBO(4, 110, 187, 0.69),
+  },
+  {
+    'name': 'App Developers',
+    'color': Color.fromRGBO(200, 121, 2, 0.78),
+  },
+  {
+    'name': 'Ui Designers',
+    'color': Color.fromRGBO(0, 111, 71, 0.86),
+  },
+  {
+    'name': 'Singers',
+    'color': Color.fromRGBO(74, 2, 165, 0.79),
+  },
+  {
+    'name': 'Dancers',
+    'color': Color.fromRGBO(191, 0, 149, 0.80),
+  },
 ];

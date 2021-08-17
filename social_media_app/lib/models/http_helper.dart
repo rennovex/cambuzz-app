@@ -6,7 +6,7 @@ import 'package:social_media_app/Global/globals.dart';
 
 class HttpHelper {
   static const serverUrl =
-      'http://cambuzz-rennovex.herokuapp.com/api';
+      'http://cambuzz-rennovex-env.eba-fges6uxq.ap-south-1.elasticbeanstalk.com/api';
 
   // var _apiToken;
 

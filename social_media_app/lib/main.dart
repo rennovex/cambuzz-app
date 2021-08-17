@@ -25,6 +25,7 @@ import 'package:social_media_app/screens/blocked_screen.dart';
 import 'package:social_media_app/screens/event_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/feed_screen.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
+import 'package:social_media_app/screens/managers_screen.dart';
 import 'package:social_media_app/screens/profile_screen.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/search_screen.dart';
@@ -233,6 +234,7 @@ class _MyAppState extends State<MyApp> {
           CommunityProfileScreen.routeName: (ctx) => CommunityProfileScreen(),
           UserProfileScreen.routeName: (ctx) => UserProfileScreen(),
           BlockedScreen.routeName: (ctx) => BlockedScreen(),
+          ManagersScreen.routeName: (ctx) => ManagersScreen(),
           AddEventsScreen.routeName: (ctx) => AddEventsScreen(),
           SearchScreen.routeName: (ctx) => SearchScreen(),
           ProfileInfoScreen.routeName: (ctx) => ProfileInfoScreen(),

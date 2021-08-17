@@ -34,20 +34,20 @@ class Post with ChangeNotifier {
     this.commentCount,
     this.likeCount,
     this.isLiked,
-  }) {
-  }
+  }) {}
 
   String get howLongAgo {
     DateTime today = DateTime.now();
     Duration duration = today.difference(this.time);
+
     if (duration.inDays > 0) {
-      return duration.inDays.toString() + ' days ago';
+      return duration.inDays.toString() + ' days';
     } else if (duration.inHours > 0) {
-      return duration.inHours.toString() + ' hours ago';
+      return duration.inHours.toString() + ' hrs';
     } else if (duration.inMinutes > 0) {
-      return duration.inMinutes.toString() + ' minutes ago';
+      return duration.inMinutes.toString() + ' min';
     } else if (duration.inSeconds > 0) {
-      return duration.inSeconds.toString() + ' seconds ago';
+      return duration.inSeconds.toString() + ' sec';
     }
     return 'error';
   }
@@ -100,22 +100,25 @@ class Post with ChangeNotifier {
     commentCount,
   ) {
     return Post(
-        id: postId,
-        community: community,
-        title: title,
-        postImg: postImg,
-        postText: postText,
-        time: time,
-        user: user,
-        commentCount: commentCount,
-        likeCount: likeCount,
-        isLiked: isLiked,);
+      id: postId,
+      community: community,
+      title: title,
+      postImg: postImg,
+      postText: postText,
+      time: time,
+      user: user,
+      commentCount: commentCount,
+      likeCount: likeCount,
+      isLiked: isLiked,
+    );
   }
 
   factory Post.fromJson(json) {
     // if(json.containsKey)
     // if (json['user'] == null) return Post();
+    print('trying building post');
     var user = User.fromJsonAbstract(json['user']);
+    print('user completed');
 
     if (json['postType'] == 'userPost') {
       return Post().userPost(

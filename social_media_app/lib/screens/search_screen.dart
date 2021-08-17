@@ -30,7 +30,8 @@ class SearchScreen extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>
+    with AutomaticKeepAliveClientMixin {
   Future _future;
   Skill _filterType;
   int _selectedIndex;
@@ -135,9 +136,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  // Widget buildFilters() {
-  //     return
-  // }
+  @override
+  bool get wantKeepAlive => true;
 }
 
 // Widget buildFilter(int ind, setFilter) => Card(
@@ -211,6 +211,7 @@ class CustomSearchDelegate extends SearchDelegate {
     this.selectedIndex,
   });
   List searchResult;
+  String prevQuery;
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -237,12 +238,106 @@ class CustomSearchDelegate extends SearchDelegate {
     return CustomPaint(
       // size: MediaQuery.of(context).size,
       painter: SearchPainter(),
+
       child: ConstrainedBox(
         constraints:
             BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-        child: ListView.builder(
-          itemCount: searchResult.length,
-          itemBuilder: (_, ind) => buildSearchItem(searchResult[ind], context),
+        child: FutureBuilder(
+          future: filterType == null
+              ? Api.getSearch(key: query)
+              : Api.getSearchWithFilter(skillId: filterType.id, key: query),
+          builder: (_, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting)
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            if (!snapshot.hasData) {
+              // return SearchScreen();
+              if (filterType != null)
+                return SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        height: 75,
+                        decoration: BoxDecoration(
+                          color: filters[selectedIndex]['color'],
+                          borderRadius: BorderRadius.circular(13),
+                        ),
+                        margin: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 15,
+                        ),
+                        // color: filters[selectedIndex]['color'],
+                        child: ListTile(
+                          onTap: () {
+                            // setFilter(FilterType.Selected, ind);
+                            Navigator.of(context).pop();
+                          },
+                          contentPadding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          leading: Text(
+                            '${filterType.name}',
+                            style: kSearchFilterText,
+                          ),
+                          trailing: Icon(
+                            Icons.filter_alt,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              if (filterType == null)
+                return Center(
+                  child: Text('No Data'),
+                );
+            }
+            searchResult = snapshot.data;
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  if (filterType != null)
+                    Card(
+                      margin: EdgeInsets.symmetric(
+                        vertical: 5,
+                        horizontal: 15,
+                      ),
+                      color: filters[selectedIndex]['color'],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(13),
+                      ),
+                      child: ListTile(
+                        onTap: () {
+                          // setFilter(FilterType.Selected, ind);
+                          print('pop');
+                          return Navigator.of(context).pop();
+                        },
+                        contentPadding:
+                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                        leading: Text(
+                          '${filterType.name}',
+                          style: kSearchFilterText,
+                        ),
+                        trailing: Icon(
+                          Icons.filter_alt,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                      ),
+                    ),
+                  ListView.builder(
+                    itemCount: snapshot.data.length,
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemBuilder: (_, ind) =>
+                        buildSearchItem(snapshot.data[ind], context),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

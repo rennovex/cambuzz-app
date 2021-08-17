@@ -401,7 +401,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
         ));
     File compressedFile = await FlutterImageCompress.compressAndGetFile(
       croppedFile.path,
-      '${Directory.systemTemp.path}/compressed.jpg',
+      '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
       quality: 70,
     );
 
@@ -410,7 +410,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
     setState(() {
       if (compressedFile != null) _pickedImage = XFile(compressedFile.path);
       widget.setImage(_pickedImage);
-      selectedImage.length().then((value) => print(value));
+      compressedFile.length().then((value) => print(value));
       print(compressedFile.lengthSync());
     });
   }
@@ -489,15 +489,29 @@ class CustomCommunitySearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return ListView.builder(
-      itemCount: searchResult.length,
-      itemBuilder: (_, ind) => ListTile(
-        title: Text(searchResult[ind]['name']),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(searchResult[ind]['image']),
-        ),
-        onTap: () => close(context, searchResult[ind]),
-      ),
+    return FutureBuilder(
+      future: Api.getCommunitySearch(key: query),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        else if (!snapshot.hasData)
+          return Center(child: Text('Choose a community'));
+        else {
+          searchResult = snapshot.data;
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (_, ind) => ListTile(
+              title: Text(snapshot.data[ind]['name']),
+              leading: CircleAvatar(
+                backgroundImage: NetworkImage(snapshot.data[ind]['image']),
+              ),
+              onTap: () => close(context, snapshot.data[ind]),
+            ),
+          );
+        }
+      },
     );
   }
 

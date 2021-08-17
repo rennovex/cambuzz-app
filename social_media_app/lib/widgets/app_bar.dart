@@ -25,8 +25,7 @@ class CustomAppBar extends StatelessWidget {
       leading: IconButton(
         icon: CircleAvatar(
           backgroundImage: NetworkImage(
-            //TODO: COmplete this
-            user?.image??'',
+            user.image,
           ),
           radius: 19,
         ),
@@ -36,7 +35,10 @@ class CustomAppBar extends StatelessWidget {
           }));
         },
       ),
-      title: Text('CamBuzz'),
+      title: Text(
+        'CamBuzz',
+        style: kAppBarTitleStyle,
+      ),
       centerTitle: true,
       actions: [
         IconButton(

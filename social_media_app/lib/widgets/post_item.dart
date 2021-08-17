@@ -43,7 +43,7 @@ class PostItem extends StatelessWidget {
     final post = Provider.of<Post>(context, listen: false);
     return Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      elevation: 5,
+      elevation: 3,
       margin: EdgeInsets.all(15),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
@@ -54,11 +54,13 @@ class PostItem extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => showUser(context, post.user.uid),
+                  onTap: () => post.isUserPost()?showUser(context, post.user.uid):showCommunity(context, post.community.uid),
                   child: CircleAvatar(
                     radius: 21,
                     backgroundImage: CachedNetworkImageProvider(
-                      post.user?.image ?? '',
+                      post.isUserPost()
+                                  ? post.user.image
+                                  : post.community.image,
                     ),
                   ),
                 ),
@@ -119,7 +121,7 @@ class PostItem extends StatelessWidget {
                         icon: Icon(
                           Icons.more_vert,
                           color: Color.fromRGBO(97, 97, 97, 1),
-                          size: 36,
+                          size: 30,
                         ),
                         // splashRadius: 1,
                         onPressed: () => showModalBottomSheet(
@@ -137,7 +139,7 @@ class PostItem extends StatelessWidget {
                 // SizedBox(width: 10),
               ],
             ),
-            SizedBox(height: 15),
+            SizedBox(height: 20),
             Container(
               // width: 300,
               child: Text(
@@ -149,7 +151,7 @@ class PostItem extends StatelessWidget {
                 textAlign: TextAlign.start,
               ),
             ),
-            SizedBox(height: 7),
+            SizedBox(height: 20),
             if (post.isImagePost())
               GestureDetector(
                 onDoubleTap: () => post.toggleLike(),
@@ -175,6 +177,15 @@ class PostItem extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
+            if (!post.isImagePost())
+              Divider(
+                thickness: 1,
+              ),
+            if (!post.isImagePost())
+              SizedBox(
+                height: 10,
+              ),
+
             Consumer<Post>(
               builder: (_, post, __) => Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -228,33 +239,47 @@ class PostItem extends StatelessWidget {
                   SizedBox(
                     width: 20,
                   ),
-                  Row(
-                    children: [
-                      IconButton(
-                        padding: EdgeInsets.all(0),
-                        constraints: BoxConstraints(),
-                        icon: Icon(
-                          MdiIcons.comment,
-                        ),
-                        onPressed: disableComments
-                            ? null
-                            : () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
+                  GestureDetector(
+                    onTap: disableComments
+                        ? null
+                        : () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      ChangeNotifierProvider.value(
+                                          value: post,
+                                          child: PostViewScreen())),
+                            ),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          padding: EdgeInsets.all(0),
+                          constraints: BoxConstraints(),
+                          icon: Icon(
+                            MdiIcons.comment,
+                          ),
+                          onPressed: disableComments
+                              ? null
+                              : () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
                                       builder: (context) =>
                                           ChangeNotifierProvider.value(
-                                              value: post,
-                                              child: PostViewScreen())),
-                                ),
-                      ),
-                      SizedBox(
-                        width: 4,
-                      ),
-                      Text(
-                        '${post.commentCount}',
-                        style: kPostBottomMetricTextStyle,
-                      ),
-                    ],
+                                        value: post,
+                                        child: PostViewScreen(),
+                                      ),
+                                    ),
+                                  ),
+                        ),
+                        SizedBox(
+                          width: 4,
+                        ),
+                        Text(
+                          '${post.commentCount}',
+                          style: kPostBottomMetricTextStyle,
+                        ),
+                      ],
+                    ),
                   ),
                   // Row(
                   //   children: [

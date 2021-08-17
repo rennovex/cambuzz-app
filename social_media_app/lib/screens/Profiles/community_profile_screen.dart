@@ -1,8 +1,6 @@
 import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -135,8 +133,8 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                             radius: 70,
                                             foregroundImage: (pickedImage ==
                                                     null)
-                                                ? AssetImage(
-                                                    'images/no_profile_image.png')
+                                                ? NetworkImage(
+                                                    'https://picsum.photos/200')
                                                 : FileImage(
                                                     File(pickedImage.path))),
                                         SizedBox(
@@ -154,54 +152,10 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                                                     await picker.pickImage(
                                                         source: ImageSource
                                                             .gallery);
-                                                var croppedFile = await ImageCropper
-                                                    .cropImage(
-                                                        sourcePath:
-                                                            selectedImage.path,
-                                                        aspectRatioPresets: [
-                                                          CropAspectRatioPreset
-                                                              .square,
-                                                          // CropAspectRatioPreset.ratio3x2,
-                                                          // CropAspectRatioPreset.original,
-                                                          // CropAspectRatioPreset.ratio4x3,
-                                                          // CropAspectRatioPreset.ratio16x9
-                                                        ],
-                                                        androidUiSettings: AndroidUiSettings(
-                                                            toolbarTitle:
-                                                                'Cropper',
-                                                            toolbarColor: Theme
-                                                                    .of(context)
-                                                                .primaryColor,
-                                                            toolbarWidgetColor:
-                                                                Colors.white,
-                                                            initAspectRatio:
-                                                                CropAspectRatioPreset
-                                                                    .original,
-                                                            lockAspectRatio:
-                                                                true),
-                                                        iosUiSettings:
-                                                            IOSUiSettings(
-                                                          minimumAspectRatio:
-                                                              1.0,
-                                                        ));
-                                                File compressedFile =
-                                                    await FlutterImageCompress
-                                                        .compressAndGetFile(
-                                                  croppedFile.path,
-                                                  '${Directory.systemTemp.path}/compressed.jpg',
-                                                  quality: 70,
-                                                );
-
-                                                // XFile(result.path);
 
                                                 setModalState(() {
-                                                  if (compressedFile != null)
-                                                    pickedImage = XFile(
-                                                        compressedFile.path);
-                                                  selectedImage.length().then(
-                                                      (value) => print(value));
-                                                  print(compressedFile
-                                                      .lengthSync());
+                                                  if (selectedImage != null)
+                                                    pickedImage = selectedImage;
                                                 });
                                               }),
                                               RemoveImageButton(

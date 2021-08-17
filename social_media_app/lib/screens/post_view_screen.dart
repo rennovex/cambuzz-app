@@ -8,15 +8,6 @@ import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
 class PostViewScreen extends StatelessWidget {
-  Post post;
-
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   post = Provider.of<Post>(context, listen: false);
-  //   Provider.of<Post>(context, listen: false).getComments();
-  // }
-
   @override
   Widget build(BuildContext context) {
     Post post = Provider.of<Post>(context, listen: false);
@@ -27,6 +18,13 @@ class PostViewScreen extends StatelessWidget {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: Scaffold(
+          // extendBodyBehindAppBar: true,
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: kAppBarPrimaryColor,
+            brightness: Brightness.dark,
+            title: Text('Comments'),
+          ),
           body: Column(
             children: [
               Expanded(
@@ -39,7 +37,6 @@ class PostViewScreen extends StatelessWidget {
                         ),
                       ),
                       Text('Comments'),
-
                       Consumer<Post>(
                         builder: (_, post, __) => FutureBuilder(
                             future: future,
@@ -63,28 +60,6 @@ class PostViewScreen extends StatelessWidget {
                                 return Spacer();
                             }),
                       ),
-
-                      // else{
-                      //   return
-                      // }
-
-                      // FutureBuilder(
-                      //     future: _future,
-                      //     builder: (_, snapshot) {
-                      //       if (snapshot.hasData) {
-                      //         return ListView.builder(
-                      //           shrinkWrap: true,
-                      //           physics: NeverScrollableScrollPhysics(),
-                      //           itemCount: snapshot.data?.length ?? 0,
-                      //           itemBuilder: (ctx, ind) => CommentItem(
-                      //             Comment.fromJson(snapshot.data[ind]),
-                      //           ),
-                      //         );
-                      //       } else
-                      //         return Center(
-                      //           child: CircularProgressIndicator(),
-                      //         );
-                      //     }),
                     ],
                   ),
                 ),

@@ -7,6 +7,8 @@ const kBodyTextSize = 16.0;
 
 const kAppBarPreferredSize = Size.fromHeight(60);
 
+const Color kAppBarPrimaryColor = Color.fromRGBO(28, 28, 28, 1);
+
 const Color kPrimaryColor = Color.fromRGBO(98, 65, 234, 1);
 const Color kSecondaryColor = Color.fromRGBO(69, 83, 243, 1);
 const Color kGradientStartColor = Color.fromRGBO(98, 65, 234, 1);
@@ -26,11 +28,18 @@ const LinearGradient kButtonLinearGradient = LinearGradient(
   ],
 );
 
-const String kFontNamePrimary = '';
+const String kFontNamePrimary = 'Lato';
+
+const kAppBarTitleStyle = TextStyle(
+  fontFamily: 'Billabong',
+  // fontWeight: FontWeight.normal,
+  fontSize: 30,
+  color: Colors.white,
+);
 
 const kTitleTextStyle = TextStyle(
-  fontFamily: kFontNamePrimary,
-  fontWeight: FontWeight.bold,
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w900,
   fontSize: kLargeTextSize,
   color: Colors.black,
 );
@@ -62,24 +71,25 @@ const kAppBarBoxDecoration = BoxDecoration(
 );
 
 const kPostBottomMetricTextStyle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
 );
 
 const kPostHeaderTextStyle = TextStyle(
-  fontFamily: 'Poppins',
-  fontWeight: FontWeight.bold,
-  fontSize: 17,
+  fontFamily: kFontNamePrimary,
+  fontWeight: FontWeight.w900,
+  fontSize: 18,
 );
 
 const kPostSubHeaderTextStyle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
 );
 
 const kPostTimeTextStyle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
 );
 
 const kPostTitleTextStyle = TextStyle(
+  fontFamily: kFontNamePrimary,
   fontSize: 18,
   fontWeight: FontWeight.w600,
 );
@@ -89,25 +99,25 @@ const kPostTitleTextStyle = TextStyle(
 const kProfilePicRadius = 40.0;
 
 const kProfileButtonText = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontSize: 10,
   fontWeight: FontWeight.w600,
 );
 
 const kProfileName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontSize: 16,
   fontWeight: FontWeight.w800,
 );
 
 const kProfileLabel = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontSize: 12,
   fontWeight: FontWeight.w700,
 );
 
 const kProfileTitle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontSize: 13,
   fontWeight: FontWeight.w600,
 );
@@ -115,20 +125,20 @@ const kProfileTitle = TextStyle(
 // Trending
 //  User
 const kTrendingJoinButton = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontSize: 10,
   fontWeight: FontWeight.w600,
 );
 
 const kTrendingUserName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.white,
   fontSize: 7,
 );
 
 const kTrendingUserText = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   color: Colors.white,
   fontSize: 7,
@@ -137,21 +147,21 @@ const kTrendingUserText = TextStyle(
 //  Community
 
 const kTrendingCommunityName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w700,
   color: Colors.white,
   fontSize: 15,
 );
 
 const kTrendingCommunityTitle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   color: Color.fromRGBO(203, 203, 203, 1),
   fontSize: 11,
 );
 
 const kTrendingCommunityBody = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   color: Color.fromRGBO(203, 203, 203, 1),
   fontSize: 12,
@@ -159,7 +169,7 @@ const kTrendingCommunityBody = TextStyle(
 );
 
 const kTrendingCommunityContent = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   color: Colors.white,
   fontSize: 12,
@@ -167,7 +177,7 @@ const kTrendingCommunityContent = TextStyle(
 );
 
 const kTrendingCommunityLikes = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w400,
   color: Colors.red,
   fontSize: 14,
@@ -176,21 +186,21 @@ const kTrendingCommunityLikes = TextStyle(
 //  Events
 
 const kEventCommunityName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w800,
   color: Colors.black,
   fontSize: 18,
 );
 
 const kEventHeader = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.black,
   fontSize: 15,
 );
 
 const kEventBody = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   // height: 1.5,
   color: Colors.black,
@@ -198,28 +208,28 @@ const kEventBody = TextStyle(
 );
 
 const kEventBadge = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   color: Colors.white,
   fontSize: 12,
 );
 
 const kEventMonth = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w800,
   color: Colors.black,
   fontSize: 14,
 );
 
 const kEventDate = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w900,
   color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 24,
 );
 
 const kEventTime = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.black,
   fontSize: 12,
@@ -228,40 +238,40 @@ const kEventTime = TextStyle(
 //  EventExpanded
 
 const kEventExpandedDay = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w900,
   color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 30,
 );
 
 const kEventExpandedMonth = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w800,
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 18,
 );
 
 const kEventExpandedTime = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w700,
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 16,
 );
 const kEventExpandedName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w900,
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 24,
 );
 const kEventExpandedCommunityName = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w800,
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 18,
 );
 
 const kEventExpandedDescription = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   // color: Color.fromRGBO(35, 105, 254, 1),
   fontSize: 14,
@@ -270,13 +280,13 @@ const kEventExpandedDescription = TextStyle(
 // Search
 
 const kSearchTitle = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.black,
   fontSize: 18,
 );
 const kSearchFilterText = TextStyle(
-  fontFamily: 'Poppins',
+  fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.white,
   fontSize: 13,

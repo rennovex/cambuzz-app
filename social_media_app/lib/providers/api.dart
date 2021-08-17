@@ -609,4 +609,65 @@ class Api {
 
     return following;
   }
+   static Future<List<User>> getManagers() async {
+    final response = await HttpHelper.get('/communities/managers');
+
+    if (response.statusCode != 200) {
+      throw 'Managers not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<User> managers = [];
+
+    json.forEach((e) {
+      managers.add(User.fromJsonAbstract(e));
+    });
+    print('Fetched managers from API');
+    print(managers);
+
+    return managers;
+  }
+
+  static Future removeManager(String id) async {
+    final response = await HttpHelper.delete(
+      uri: '/communities/managers/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t remove manager !');
+      throw 'Could not remove manager' + response.body;
+    }
+  }
+
+  static Future addManager(String id) async {
+    final response = await HttpHelper.post(
+      uri: '/communities/managers/$id',
+      body: {},
+    );
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t add manager !');
+      throw 'Could not add manager' + response.body;
+    }
+  }
+   static Future getUserSearch({String key}) async {
+    final response = await HttpHelper.get('/users/search/$key');
+    if (response.statusCode != 200) {
+      throw 'Could not search users ' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List searchResults = [];
+
+    json.forEach((result) {
+      return searchResults.add(result);
+    });
+
+    print('Fetched Search results from Api');
+
+    return searchResults;
+  }
 }

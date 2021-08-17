@@ -129,6 +129,7 @@ class _MyAppState extends State<MyApp> {
                         print('user is not registered');
 
                         print('connection done');
+                        //TODO: do not render before spinkit
                         Future.delayed(Duration(milliseconds: 1000), (() async {
                           print('pushing registration');
                           String name, userName, email, bio, firebaseUid;
@@ -143,16 +144,26 @@ class _MyAppState extends State<MyApp> {
                                         onPrimaryButtonPressed: () {},
                                         email: email,
                                       )));
+                          if(userData==null) return setState(() {
+                            
+                          });
                           name = userData['name'];
                           userName = userData['username'];
                           email = userData['email'];
 
                           var imageData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step2()));
+
+                          if(imageData==null) return setState(() {
+                            
+                          });
                           image = imageData['image'];
 
                           var bioData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step3()));
+                          if(bioData==null) return setState(() {
+                            
+                          });
 
                           bio = bioData['bio'];
                           skills = bioData['skills'];

@@ -76,26 +76,24 @@ class _Step3State extends State<Step3> {
                               fontFamily: 'poppins',
                               fontWeight: FontWeight.w800),
                         ),
-                        SingleChildScrollView(
-                          child: Wrap(
-                            children: snapshot.data.map<Widget>((skill) {
-                              return PillToggleButton(
-                                  text: skill.name,
-                                  onPressed: (value) {
-                                    if (value) {
-                                      skills.add(skill.id);
-                                      widget.onSkillAdded != null
-                                          ? widget.onSkillAdded(skill.id)
-                                          : '';
-                                    } else {
-                                      skills.remove(skill.id);
-                                      widget.onSkillRemoved != null
-                                          ? widget.onSkillRemoved(skill.id)
-                                          : '';
-                                    }
-                                  });
-                            }).toList(),
-                          ),
+                        Wrap(
+                          children: snapshot.data.map<Widget>((skill) {
+                            return PillToggleButton(
+                                text: skill.name,
+                                onPressed: (value) {
+                                  if (value) {
+                                    skills.add(skill.id);
+                                    widget.onSkillAdded != null
+                                        ? widget.onSkillAdded(skill.id)
+                                        : '';
+                                  } else {
+                                    skills.remove(skill.id);
+                                    widget.onSkillRemoved != null
+                                        ? widget.onSkillRemoved(skill.id)
+                                        : '';
+                                  }
+                                });
+                          }).toList(),
                         )
                       ],
                     );

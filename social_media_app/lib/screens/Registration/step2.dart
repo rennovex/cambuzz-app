@@ -42,79 +42,77 @@ class _Step2State extends State<Step2> {
         header: "Let’s add your profile image!",
         step: 2,
       ),
-      screenForm: SingleChildScrollView(
-        child: Container(
-            child: Column(children: [
-          SizedBox(
-            height: 30,
-          ),
-          CircleAvatar(
-            radius: 100,
-            backgroundImage: (networkImage != null && networkImage != '')
-                ? NetworkImage(networkImage)
-                : (image != null)
-                    ? FileImage(File(image.path))
-                    : AssetImage('images/no_profile_image.png'),
-          ),
-          SizedBox(height: 30),
-          Container(
-            width: 200,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SelectImageButton(onSelectImageButtonPressed: () async {
-                  widget.onSelectImageButtonPressed != null
-                      ? widget.onSelectImageButtonPressed()
-                      : '';
-                  XFile selectedImage =
-                      await picker.pickImage(source: ImageSource.gallery);
-                  var croppedFile = await ImageCropper.cropImage(
-                      sourcePath: selectedImage.path,
-                      aspectRatioPresets: [
-                        CropAspectRatioPreset.square,
-                        // CropAspectRatioPreset.ratio3x2,
-                        // CropAspectRatioPreset.original,
-                        // CropAspectRatioPreset.ratio4x3,
-                        // CropAspectRatioPreset.ratio16x9
-                      ],
-                      androidUiSettings: AndroidUiSettings(
-                          toolbarTitle: 'Cropper',
-                          toolbarColor: Theme.of(context).primaryColor,
-                          toolbarWidgetColor: Colors.white,
-                          initAspectRatio: CropAspectRatioPreset.original,
-                          lockAspectRatio: true),
-                      iosUiSettings: IOSUiSettings(
-                        minimumAspectRatio: 1.0,
-                      ));
-                  File compressedFile =
-                      await FlutterImageCompress.compressAndGetFile(
-                    croppedFile.path,
-                    '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
-                    quality: 70,
-                  );
+      screenForm: Container(
+          child: Column(children: [
+        SizedBox(
+          height: 30,
+        ),
+        CircleAvatar(
+          radius: 100,
+          backgroundImage: (networkImage != null && networkImage != '')
+              ? NetworkImage(networkImage)
+              : (image != null)
+                  ? FileImage(File(image.path))
+                  : AssetImage('images/no_profile_image.png'),
+        ),
+        SizedBox(height: 30),
+        Container(
+          width: 200,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SelectImageButton(onSelectImageButtonPressed: () async {
+                widget.onSelectImageButtonPressed != null
+                    ? widget.onSelectImageButtonPressed()
+                    : '';
+                XFile selectedImage =
+                    await picker.pickImage(source: ImageSource.gallery);
+                var croppedFile = await ImageCropper.cropImage(
+                    sourcePath: selectedImage.path,
+                    aspectRatioPresets: [
+                      CropAspectRatioPreset.square,
+                      // CropAspectRatioPreset.ratio3x2,
+                      // CropAspectRatioPreset.original,
+                      // CropAspectRatioPreset.ratio4x3,
+                      // CropAspectRatioPreset.ratio16x9
+                    ],
+                    androidUiSettings: AndroidUiSettings(
+                        toolbarTitle: 'Cropper',
+                        toolbarColor: Theme.of(context).primaryColor,
+                        toolbarWidgetColor: Colors.white,
+                        initAspectRatio: CropAspectRatioPreset.original,
+                        lockAspectRatio: true),
+                    iosUiSettings: IOSUiSettings(
+                      minimumAspectRatio: 1.0,
+                    ));
+                File compressedFile =
+                    await FlutterImageCompress.compressAndGetFile(
+                  croppedFile.path,
+                  '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
+                  quality: 70,
+                );
 
-                  // XFile(result.path);
+                // XFile(result.path);
 
-                  setState(() {
-                    if (compressedFile != null)
-                      image = XFile(compressedFile.path);
-                    selectedImage.length().then((value) => print(value));
-                    print(compressedFile.lengthSync());
-                  });
-                }),
-                RemoveImageButton(onRemoveImageButtonPressed: () {
-                  widget.onRemoveImageButtonPressed != null
-                      ? widget.onRemoveImageButtonPressed()
-                      : '';
-                  setState(() {
-                    image = null;
-                  });
-                })
-              ],
-            ),
-          )
-        ])),
-      ),
+                setState(() {
+                  if (compressedFile != null)
+                    image = XFile(compressedFile.path);
+                  selectedImage.length().then((value) => print(value));
+                  print(compressedFile.lengthSync());
+                });
+              }),
+              RemoveImageButton(onRemoveImageButtonPressed: () {
+                widget.onRemoveImageButtonPressed != null
+                    ? widget.onRemoveImageButtonPressed()
+                    : '';
+                setState(() {
+                  image = null;
+                });
+              })
+            ],
+          ),
+        )
+      ])),
       primaryActionButtonText: "Let's set your bio >",
       primaryButtonOnPressed: () {
         widget.onBackButonPressed!=null?widget.onPrimaryButtonPressed():'';

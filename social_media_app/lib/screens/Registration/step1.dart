@@ -46,76 +46,74 @@ class _Step1State extends State<Step1> {
         step: 1,
       ),
       screenForm: Container(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              LabelledTextField(
-                labelText: 'Username',
-                onChanged: (value) async {
-                  (widget.onUsernameChange!=null)?widget.onUsernameChange(value):'';
-                  isUsernameAvailable = await Api.isUsernameAvailable(value);
-                  setState(() {
-                    widget.username=value;
-                  });
-                },
-                value: widget.username,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Text((isUsernameAvailable) ? 'available' : 'taken',
-                      style: TextStyle(
-                          color: (isUsernameAvailable)
-                              ? Colors.green
-                              : Colors.red)),
-                  Icon(
-                    (isUsernameAvailable) ? Icons.done : Icons.error,
-                    color: (isUsernameAvailable) ? Colors.green : Colors.red,
-                  ),
-                ],
-              ),
-              LabelledTextField(
-                isDisabled: true,
-                labelText: 'Email',
-                value: widget.email,
-                onChanged: widget.onEmailChange,
-                inputType: TextInputType.emailAddress,
-              ),
-              (!emailIsValid)
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'email not valid',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    )
-                  : Container(),
-              LabelledTextField(
-                labelText: 'Name',
-                onChanged: (value){
-                  widget.onNameChange!=null?widget.onNameChange(value):'';
-                  setState(() {
-                    widget.name = value;
-                  });
-                },
-                
-                value: widget.name,
-              ),
-              (!nameIsValid)
-                  ? Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          'name not valid',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ],
-                    )
-                  : Container(),
-            ],
-          ),
+        child: Column(
+          children: [
+            LabelledTextField(
+              labelText: 'Username',
+              onChanged: (value) async {
+                (widget.onUsernameChange!=null)?widget.onUsernameChange(value):'';
+                isUsernameAvailable = await Api.isUsernameAvailable(value);
+                setState(() {
+                  widget.username=value;
+                });
+              },
+              value: widget.username,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text((isUsernameAvailable) ? 'available' : 'taken',
+                    style: TextStyle(
+                        color: (isUsernameAvailable)
+                            ? Colors.green
+                            : Colors.red)),
+                Icon(
+                  (isUsernameAvailable) ? Icons.done : Icons.error,
+                  color: (isUsernameAvailable) ? Colors.green : Colors.red,
+                ),
+              ],
+            ),
+            LabelledTextField(
+              isDisabled: true,
+              labelText: 'Email',
+              value: widget.email,
+              onChanged: widget.onEmailChange,
+              inputType: TextInputType.emailAddress,
+            ),
+            (!emailIsValid)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'email not valid',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  )
+                : Container(),
+            LabelledTextField(
+              labelText: 'Name',
+              onChanged: (value){
+                widget.onNameChange!=null?widget.onNameChange(value):'';
+                setState(() {
+                  widget.name = value;
+                });
+              },
+              
+              value: widget.name,
+            ),
+            (!nameIsValid)
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Text(
+                        'name not valid',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ],
+                  )
+                : Container(),
+          ],
         ),
       ),
     );

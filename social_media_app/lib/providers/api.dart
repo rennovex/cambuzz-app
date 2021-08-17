@@ -57,23 +57,23 @@ class Api {
   }
 
   static Future isUserRegistered(String email) async {
-    final response = await HttpHelper.get('/auth/is-user-registered/'+email);
-    if(response.statusCode==200){
+    final response = await HttpHelper.get('/auth/is-user-registered/' + email);
+    if (response.statusCode == 200) {
       return true;
-    } else if(response.statusCode==404) {
+    } else if (response.statusCode == 404) {
       return false;
     } else {
       throw "User registered cannot be retrieved from server";
     }
   }
 
-  static Future postUser(User user,String firebaseUid, XFile image) async {
+  static Future postUser(User user, String firebaseUid, XFile image) async {
     final response = await HttpHelper.post(uri: '/auth/register', body: {
       'name': user.name,
       'email': user.email,
       'userName': user.userName,
       'bio': user.bio ?? '',
-      'uid':firebaseUid,
+      'uid': firebaseUid,
       'skills': user.skills ?? [],
       'fileType': '.jpg'
     });
@@ -91,9 +91,14 @@ class Api {
         print('User is created' + awsResponse.body);
       }
 
-      return {'status':true, 'uid':firebaseUid, '_id':jsonDecode(response.body)['_id'] ,'token':response.headers['x-auth-token']};
+      return {
+        'status': true,
+        'uid': firebaseUid,
+        '_id': jsonDecode(response.body)['_id'],
+        'token': response.headers['x-auth-token']
+      };
     } else {
-      print('user is not created due to'+ response.body);
+      print('user is not created due to' + response.body);
       return false;
     }
   }
@@ -157,22 +162,23 @@ class Api {
   }
 
   static Future login(String email, String uid) async {
-    final response = await HttpHelper.post(uri:'/auth/login', body: {
-      'email':email,
-      'uid':uid,
+    final response = await HttpHelper.post(uri: '/auth/login', body: {
+      'email': email,
+      'uid': uid,
     });
 
-    print(response.body+ response.statusCode.toString()+email+uid);
+    print(response.body + response.statusCode.toString() + email + uid);
 
-
-    if(response.statusCode == 200){
+    if (response.statusCode == 200) {
       User user = User.fromJsonAbstract(jsonDecode(response.body));
-      return {'status':true, 'token':response.headers['x-auth-token'], 'user':user};
+      return {
+        'status': true,
+        'token': response.headers['x-auth-token'],
+        'user': user
+      };
+    } else {
+      return {'status': false};
     }
-    else{
-      return {'status':false };
-    }
-
   }
 
   //Get User from Api
@@ -180,8 +186,10 @@ class Api {
     print('tring to get user');
     final response = await HttpHelper.get('/users');
     print('response');
-    print('response from get user'+response.body+response.statusCode.toString());
-  
+    print('response from get user' +
+        response.body +
+        response.statusCode.toString());
+
     if (response.statusCode == 401) {
       print('401 error');
       throw '401';
@@ -189,7 +197,9 @@ class Api {
       print('404 error');
       throw '404';
     } else if (response.statusCode != 200) {
-      print('some error with user'+response.statusCode.toString()+response.body);
+      print('some error with user' +
+          response.statusCode.toString() +
+          response.body);
       throw '-1';
     } else {
       final json = jsonDecode(response.body);
@@ -222,7 +232,7 @@ class Api {
       }
       return true;
     } else {
-      print('user is not created due to'+ response.body);
+      print('user is not created due to' + response.body);
       return false;
     }
   }
@@ -268,6 +278,25 @@ class Api {
   //Get Events from Api
   static Future<List<Event>> getEvents() async {
     final response = await HttpHelper.get('/events/all');
+
+    if (response.statusCode != 200) {
+      throw 'Events not fetched' + response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Event> events = [];
+
+    json.forEach((e) {
+      events.add(Event.fromJson(e));
+    });
+    print('Fetched events from API');
+
+    return events;
+  }
+
+  static Future<List<Event>> getEventsWithFilterId(String id) async {
+    final response = await HttpHelper.get('/events/all/filter/$id');
 
     if (response.statusCode != 200) {
       throw 'Events not fetched' + response.body;
@@ -360,10 +389,10 @@ class Api {
 
   //Get user Trending post from Api
   static Future<List<Post>> getTrendingUserPosts() async {
-    final response = await HttpHelper.get('/trending/community-posts/all');
+    final response = await HttpHelper.get('/trending/user-posts/all');
 
     if (response.statusCode != 200) {
-      print('error');
+      print('error ' + response.body);
       throw response.body;
     }
 
@@ -372,7 +401,6 @@ class Api {
     final List<Post> posts = [];
 
     json.forEach((post) {
-      // print(post);
       return posts.add(Post.fromJson(post));
     });
 
@@ -609,7 +637,8 @@ class Api {
 
     return following;
   }
-   static Future<List<User>> getManagers() async {
+
+  static Future<List<User>> getManagers() async {
     final response = await HttpHelper.get('/communities/managers');
 
     if (response.statusCode != 200) {
@@ -652,7 +681,8 @@ class Api {
       throw 'Could not add manager' + response.body;
     }
   }
-   static Future getUserSearch({String key}) async {
+
+  static Future getUserSearch({String key}) async {
     final response = await HttpHelper.get('/users/search/$key');
     if (response.statusCode != 200) {
       throw 'Could not search users ' + response.body;

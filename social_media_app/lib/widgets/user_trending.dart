@@ -33,98 +33,54 @@ class UserTrending extends StatelessWidget {
                 ),
               );
             }
-            // return Row(
-            //   children: [
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //     Expanded(
-            //       flex: 8,
-            //       child: TrendingUserItem(
-            //         height: 121.0,
-            //         width: 121.0,
-            //         ranking: Text('2'),
-            //         post: snapshot.data[1],
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 5,
-            //     ),
-            //     Expanded(
-            //       flex: 9,
-            //       child: TrendingUserItem(
-            //         height: 145.0,
-            //         width: 140.0,
-            //         ranking: Icon(
-            //           MdiIcons.crown,
-            //           size: 30,
-            //         ),
-            //         post: snapshot.data[0],
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 5,
-            //     ),
-            //     Expanded(
-            //       flex: 8,
-            //       child: TrendingUserItem(
-            //         height: 121.0,
-            //         width: 121.0,
-            //         ranking: Text('3'),
-            //         post: snapshot.data[2],
-            //       ),
-            //     ),
-            //     SizedBox(
-            //       width: 10,
-            //     ),
-            //   ],
-            // );
-            return Column(
-              children: [
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: TrendingUserItem(
-                    height: 250.0,
-                    width: double.infinity,
-                    post: snapshot.data[0],
-                    ranking: Text('1'),
+            // print(snapshot.data);
+            else
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10),
+                    child: TrendingUserItem(
+                      height: 250.0,
+                      width: double.infinity,
+                      post: snapshot.data[0],
+                      ranking: Text('1'),
+                    ),
                   ),
-                ),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: TrendingUserItem(
-                        height: 200.0,
-                        width: double.infinity,
-                        post: snapshot.data[1],
-                        ranking: Text('2'),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 10,
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: TrendingUserItem(
-                        height: 200.0,
-                        width: double.infinity,
-                        post: snapshot.data[2],
-                        ranking: Text('3'),
+                      Expanded(
+                        child: TrendingUserItem(
+                          height: 200.0,
+                          width: double.infinity,
+                          post: snapshot.data[1],
+                          ranking: Text('2'),
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            );
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: TrendingUserItem(
+                          height: 200.0,
+                          width: double.infinity,
+                          post: snapshot.data[2],
+                          ranking: Text('3'),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              );
           },
         ),
       ),

@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
+import 'package:social_media_app/models/eventType.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
@@ -13,21 +15,22 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/event.dart';
 
 class EventScreen extends StatefulWidget {
-  EventScreen({ Key key }) : super(key: key);
-  Future<List<Event>> events;
+  EventScreen({Key key}) : super(key: key);
 
   //EventScreen(this.events);
 
   @override
-  _EventScreenState createState() {
-    this.events = Api.getEvents();
-    return _EventScreenState();
-  }
+  _EventScreenState createState() => _EventScreenState();
 }
 
 class _EventScreenState extends State<EventScreen>
     with AutomaticKeepAliveClientMixin<EventScreen> {
-      var user;
+  Future<List<Event>> events;
+  Future eventTypes;
+
+  EventType selectedEventType;
+
+  var user;
   List months = [
     'jan',
     'feb',
@@ -43,13 +46,118 @@ class _EventScreenState extends State<EventScreen>
     'dec'
   ];
 
-@override
+  @override
   void initState() {
     super.initState();
+    events = Api.getEvents();
+    eventTypes = Api.getEventTypes();
 
     user = Global.myself;
   }
 
+  @override
+  Widget build(BuildContext context) {
+    print(selectedEventType?.name);
+    return SafeArea(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child: CustomAppBar(user),
+          preferredSize: kAppBarPreferredSize,
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
+                child: Text(
+                  'Filter events',
+                  style: kTitleTextStyle,
+                ),
+              ),
+              SizedBox(
+                height: 136,
+                child: FutureBuilder(
+                  future: eventTypes,
+                  builder: (_, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting)
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    else
+                      return ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data?.length,
+                        shrinkWrap: true,
+                        itemBuilder: (_, ind) => GestureDetector(
+                          onTap: () {
+                            return setState(() {
+                              selectedEventType = snapshot.data[ind];
+                            });
+                          },
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(left: 12),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(13),
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(width: 10)),
+                                    child: SvgPicture.network(
+                                      snapshot.data[ind]?.image,
+                                      height: 136,
+                                      width: 112,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                  left: 60,
+                                  bottom: 30,
+                                  child: Text(snapshot.data[ind].name)),
+                            ],
+                          ),
+                        ),
+                      );
+                  },
+                ),
+              ),
+              FutureBuilder(
+                future: selectedEventType == null
+                    ? Api.getEvents()
+                    : Api.getEventsWithFilterId(selectedEventType.id),
+                builder: (context, snapshot) {
+                  print(selectedEventType?.name);
+
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (ctx, ind) => GestureDetector(
+                        onTap: () => expandEvent(
+                          context: context,
+                          event: snapshot.data[ind],
+                        ),
+                        child: EventItem(snapshot.data[ind]),
+                      ),
+                    );
+                  } else {
+                    return SpinKitWave(
+                      color: kPrimaryColor,
+                    );
+                  }
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   expandEvent({context, Event event}) {
     return showDialog(
@@ -254,74 +362,6 @@ class _EventScreenState extends State<EventScreen>
                 ),
               ],
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(child: CustomAppBar(user),preferredSize: kAppBarPreferredSize,),
-        body: SingleChildScrollView(
-        
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 14),
-                child: Text(
-                  'Filter events',
-                  style: kTitleTextStyle,
-                ),
-              ),
-              SizedBox(
-                height: 136,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  shrinkWrap: true,
-                  itemBuilder: (_, ind) => Padding(
-                    padding: const EdgeInsets.only(left: 12),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(13),
-                      child: Image.network(
-                        'https://picsum.photos/536/354',
-                        height: 136,
-                        width: 112,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              FutureBuilder(
-                future: widget.events,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (ctx, ind) => GestureDetector(
-                        onTap: () => expandEvent(
-                          context: context,
-                          event: snapshot.data[ind],
-                        ),
-                        child: EventItem(snapshot.data[ind]),
-                      ),
-                    );
-                  } else {
-                    return SpinKitWave(
-                      color: kPrimaryColor,
-                    );
-                  }
-                },
-              ),
-            ],
           ),
         ),
       ),

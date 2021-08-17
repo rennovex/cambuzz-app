@@ -83,111 +83,117 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                               return Padding(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 10, vertical: 20),
-                                child: Column(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.stretch,
-                                  children: [
-                                    Row(
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    children: [
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'Create new Community',
+                                              style: kTitleTextStyle,
+                                            )
+                                          ]),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      LabelledTextField(
+                                          onChanged: (value) async {
+                                            var state = await Api
+                                                .isCommunityNameAvailable(
+                                                    value);
+                                            setModalState(() {
+                                              communityName = value;
+                                              communityNameAvailable = state;
+                                            });
+                                          },
+                                          value: communityName,
+                                          labelText: 'Community name'),
+                                      Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                            MainAxisAlignment.end,
                                         children: [
                                           Text(
-                                            'Create new Community',
-                                            style: kTitleTextStyle,
+                                            communityNameAvailable
+                                                ? 'available'
+                                                : 'taken',
+                                            style: TextStyle(
+                                                color: communityNameAvailable
+                                                    ? Colors.green
+                                                    : Colors.red),
                                           )
-                                        ]),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    LabelledTextField(
-                                        onChanged: (value) async {
-                                          var state = await Api
-                                              .isCommunityNameAvailable(value);
-                                          setModalState(() {
-                                            communityName = value;
-                                            communityNameAvailable = state;
-                                          });
-                                        },
-                                        value: communityName,
-                                        labelText: 'Community name'),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          communityNameAvailable
-                                              ? 'available'
-                                              : 'taken',
-                                          style: TextStyle(
-                                              color: communityNameAvailable
-                                                  ? Colors.green
-                                                  : Colors.red),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(height: 20),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        CircleAvatar(
-                                            radius: 70,
-                                            foregroundImage: (pickedImage ==
-                                                    null)
-                                                ? NetworkImage(
-                                                    'https://picsum.photos/200')
-                                                : FileImage(
-                                                    File(pickedImage.path))),
-                                        SizedBox(
-                                          width: 20,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children: [
-                                              SelectImageButton(
-                                                  onSelectImageButtonPressed:
-                                                      () async {
-                                                XFile selectedImage =
-                                                    await picker.pickImage(
-                                                        source: ImageSource
-                                                            .gallery);
-
-                                                setModalState(() {
-                                                  if (selectedImage != null)
-                                                    pickedImage = selectedImage;
-                                                });
-                                              }),
-                                              RemoveImageButton(
-                                                  onRemoveImageButtonPressed:
-                                                      () {
-                                                setModalState(() {
-                                                  pickedImage = null;
-                                                });
-                                              })
-                                            ],
+                                        ],
+                                      ),
+                                      SizedBox(height: 20),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          CircleAvatar(
+                                              radius: 70,
+                                              foregroundImage: (pickedImage ==
+                                                      null)
+                                                  ? NetworkImage(
+                                                      'https://picsum.photos/200')
+                                                  : FileImage(
+                                                      File(pickedImage.path))),
+                                          SizedBox(
+                                            width: 20,
                                           ),
-                                        )
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: 20,
-                                    ),
-                                    BluePrimaryButton(
-                                      text: 'Create Community',
-                                      onPressed: () async {
-                                        var completed = await Api.postCommunity(
-                                            communityName, pickedImage);
-                                        if (completed) {
-                                          print('completee');
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pop();
-                                        } else {
-                                          print('error');
-                                        }
-                                      },
-                                    )
-                                  ],
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.stretch,
+                                              children: [
+                                                SelectImageButton(
+                                                    onSelectImageButtonPressed:
+                                                        () async {
+                                                  XFile selectedImage =
+                                                      await picker.pickImage(
+                                                          source: ImageSource
+                                                              .gallery);
+
+                                                  setModalState(() {
+                                                    if (selectedImage != null)
+                                                      pickedImage =
+                                                          selectedImage;
+                                                  });
+                                                }),
+                                                RemoveImageButton(
+                                                    onRemoveImageButtonPressed:
+                                                        () {
+                                                  setModalState(() {
+                                                    pickedImage = null;
+                                                  });
+                                                })
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
+                                      BluePrimaryButton(
+                                        text: 'Create Community',
+                                        onPressed: () async {
+                                          var completed =
+                                              await Api.postCommunity(
+                                                  communityName, pickedImage);
+                                          if (completed) {
+                                            print('completee');
+                                            Navigator.of(context).pop();
+                                            Navigator.of(context).pop();
+                                          } else {
+                                            print('error');
+                                          }
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 ),
                               );
                             });
@@ -207,8 +213,9 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
               );
             } else {
               community = snapshot.data;
-              isOwner = community.owner.uid == Global.uid ? true : false;
-              print(community.owner.uid + '  ' + Global?.uid);
+              isOwner =
+                  community.owner.uid == Global?.myself.uid ? true : false;
+              print(community.owner.uid + '  ' + Global?.myself.uid);
               print(isOwner);
               return ChangeNotifierProvider.value(
                 value: community,

@@ -700,4 +700,13 @@ class Api {
 
     return searchResults;
   }
+
+  static Future postReport({String id, String objectType}) async {
+    final response = await HttpHelper.post(
+        uri: '/report', body: {"objectType": "$objectType", "objectId": "$id"});
+
+    if (response.statusCode != 201) {
+      throw 'Not reported ' + response.body;
+    }
+  }
 }

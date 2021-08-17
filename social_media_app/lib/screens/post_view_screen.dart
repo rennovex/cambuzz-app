@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/comment.dart';
@@ -167,7 +168,26 @@ class CommentItem extends StatelessWidget {
         ),
         trailing: IconButton(
           icon: Icon(Icons.more_vert),
-          onPressed: () {},
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => SingleChildScrollView(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.report_rounded),
+                    title: Text('Report'),
+                    trailing: Icon(Icons.arrow_forward_ios_rounded),
+                    onTap: () async {
+                      await Api.postReport(
+                          id: comment.id, objectType: 'Comment');
+                      Fluttertoast.showToast(msg: 'Reported');
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

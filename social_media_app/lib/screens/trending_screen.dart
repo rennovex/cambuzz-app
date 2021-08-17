@@ -9,7 +9,7 @@ import 'package:social_media_app/widgets/community_trending.dart';
 import 'package:social_media_app/widgets/user_trending.dart';
 
 class TrendingScreen extends StatefulWidget {
-  const TrendingScreen({ Key key }) : super(key: key);
+  const TrendingScreen({Key key}) : super(key: key);
 
   @override
   _TrendingScreenState createState() => _TrendingScreenState();
@@ -17,8 +17,8 @@ class TrendingScreen extends StatefulWidget {
 
 class _TrendingScreenState extends State<TrendingScreen>
     with AutomaticKeepAliveClientMixin<TrendingScreen> {
-      var user;
-      @override
+  var user;
+  @override
   void initState() {
     // TODO: implement initState
     user = Global.myself;
@@ -27,7 +27,10 @@ class _TrendingScreenState extends State<TrendingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(child: CustomAppBar(user), preferredSize: kAppBarPreferredSize,),
+      appBar: PreferredSize(
+        child: CustomAppBar(user),
+        preferredSize: kAppBarPreferredSize,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

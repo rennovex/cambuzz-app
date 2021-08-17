@@ -54,13 +54,15 @@ class PostItem extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => post.isUserPost()?showUser(context, post.user.uid):showCommunity(context, post.community.uid),
+                  onTap: () => post.isUserPost()
+                      ? showUser(context, post.user.uid)
+                      : showCommunity(context, post.community.uid),
                   child: CircleAvatar(
                     radius: 21,
                     backgroundImage: CachedNetworkImageProvider(
                       post.isUserPost()
-                                  ? post.user.image
-                                  : post.community.image,
+                          ? post.user.image
+                          : post.community.image,
                     ),
                   ),
                 ),
@@ -88,15 +90,19 @@ class PostItem extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth:
-                                      MediaQuery.of(context).size.width * 0.35,
-                                ),
-                                child: Text(
-                                  post.user.userName,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: kPostSubHeaderTextStyle,
+                              GestureDetector(
+                                onTap: () {},
+                                child: ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth:
+                                        MediaQuery.of(context).size.width *
+                                            0.35,
+                                  ),
+                                  child: Text(
+                                    post.user.userName,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: kPostSubHeaderTextStyle,
+                                  ),
                                 ),
                               ),
                               SizedBox(width: 10),

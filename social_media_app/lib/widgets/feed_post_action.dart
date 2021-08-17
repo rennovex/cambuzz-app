@@ -30,9 +30,13 @@ class FeedPostAction extends StatelessWidget {
             leading: Icon(Icons.report_rounded),
             title: Text('Report'),
             trailing: Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () async {},
+            onTap: () async {
+              await Api.postReport(id: post.id, objectType: 'Post');
+              Navigator.of(context).pop();
+              Fluttertoast.showToast(msg: 'Reported');
+            },
           ),
-          if (post.user.uid != Global.uid)
+          if (post.user.uid != Global.myself.uid)
             ListTile(
               leading: Icon(Icons.block),
               title: Text('Block'),

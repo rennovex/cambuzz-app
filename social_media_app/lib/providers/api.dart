@@ -56,6 +56,45 @@ class Api {
     }
   }
 
+  static Future putCommunity(String communityName, XFile image) async {
+    final response = await HttpHelper.put(
+        uri: '/communities', body: {'name': communityName, 'fileType': '.jpg'});
+    if (response.statusCode == 200) {
+      if (image != null) {
+        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
+
+        final awsResponse =
+            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+
+        if (awsResponse.statusCode != 200) {
+          throw 'Community could not be modified due to image upload error  ' +
+              awsResponse.body;
+        }
+        print('Community is modified' + awsResponse.body);
+      }
+
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+   static Future putCommunityWithoutImage(String communityName) async {
+     print('put request to community without image');
+    final response = await HttpHelper.put(
+        uri: '/communities/without-image', body: {'name': communityName, 'fileType': '.jpg'});
+    print('got response');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+  
+
   static Future isUserRegistered(String email) async {
     final response = await HttpHelper.get('/auth/is-user-registered/' + email);
     if (response.statusCode == 200) {

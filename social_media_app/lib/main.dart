@@ -85,9 +85,7 @@ class _MyAppState extends State<MyApp> {
               return buildLoading();
             } else if (firebaseSnapshot.connectionState ==
                 ConnectionState.waiting) {
-              return SpinKitChasingDots(
-                color: kPrimaryColor,
-              );
+              return SplashScreen();
             } else if (firebaseSnapshot.hasData) {
               Global.firebaseUser = firebaseSnapshot.data;
               print('fireabse user email = ' + firebaseSnapshot.data.email);
@@ -113,13 +111,12 @@ class _MyAppState extends State<MyApp> {
                                         if (getUserSnapshot.hasData) {
                                           print('returning my home page');
                                           Provider.of<Myself>(context,
-                                                  listen: false).myself = getUserSnapshot.data;
+                                                  listen: false)
+                                              .myself = getUserSnapshot.data;
 
                                           return MyHomePage();
                                         }
-                                        return SpinKitChasingDots(
-                                          color: kPrimaryColor,
-                                        );
+                                        return SplashScreen();
                                       });
                                 } else {
                                   print('invalid credentials' +
@@ -127,9 +124,7 @@ class _MyAppState extends State<MyApp> {
                                   //TODO invalid credentials
                                 }
                               }
-                              return SpinKitChasingDots(
-                                color: kPrimaryColor,
-                              );
+                              return SplashScreen();
                             });
                       } else {
                         print('user is not registered');
@@ -211,14 +206,10 @@ class _MyAppState extends State<MyApp> {
                         }));
 
                         print('adding spinkitdots');
-                        return SpinKitChasingDots(
-                          color: kPrimaryColor,
-                        );
+                        return SplashScreen();
                       }
                     }
-                    return SpinKitChasingDots(
-                      color: kPrimaryColor,
-                    );
+                    return SplashScreen();
                   });
             } else {
               print('firebase login attempt');
@@ -262,6 +253,22 @@ class _MyAppState extends State<MyApp> {
         child: CircularProgressIndicator(),
       ),
     );
+  }
+}
+
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Colors.black,
+        child: Center(
+          child: Container(
+            width: 70,
+            child: Image.asset('images/cambuzz_icon.png'),
+          ),
+        ));
   }
 }
 

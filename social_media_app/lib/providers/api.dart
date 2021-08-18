@@ -208,7 +208,7 @@ class Api {
     }
   }
 
-  static Future<bool> putUser(User user, XFile image) async {
+  static Future<Map> putUser(User user, XFile image) async {
     final response = await HttpHelper.put(uri: '/users', body: {
       'name': user.name,
       'email': user.email,
@@ -230,10 +230,27 @@ class Api {
         }
         print('User is created' + awsResponse.body);
       }
-      return true;
+      return {'status':true};
     } else {
       print('user is not created due to' + response.body);
-      return false;
+      return {'status':false};
+    }
+  }
+
+  static Future<Map> putUserWithoutImage(User user) async {
+    final response = await HttpHelper.put(uri: '/users/without-image', body: {
+      'name': user.name,
+      'email': user.email,
+      'userName': user.userName,
+      'bio': user.bio ?? '',
+      'skills': user.skills ?? [],
+      'fileType': '.jpg'
+    });
+    if (response.statusCode == 200) {
+      return {'status':true};
+    } else {
+      print('user is not created due to' + response.body);
+      return {'status':false};
     }
   }
 

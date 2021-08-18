@@ -16,11 +16,13 @@ class Step2 extends StatefulWidget {
   Function onBackButonPressed;
   Function onSelectImageButtonPressed;
   Function onRemoveImageButtonPressed;
+  String currentImage;
 
   Step2(
       {this.onRemoveImageButtonPressed,
       this.onSelectImageButtonPressed,
       this.onPrimaryButtonPressed,
+      this.currentImage,
       this.onBackButonPressed});
 
   @override
@@ -29,7 +31,6 @@ class Step2 extends StatefulWidget {
 
 class _Step2State extends State<Step2> {
   XFile image;
-  String networkImage;
   ImagePicker picker;
 
   @override
@@ -52,11 +53,7 @@ class _Step2State extends State<Step2> {
         ),
         CircleAvatar(
           radius: 100,
-          backgroundImage: (networkImage != null && networkImage != '')
-              ? NetworkImage(networkImage)
-              : (image != null)
-                  ? FileImage(File(image.path))
-                  : AssetImage('images/no_profile_image.png'),
+          backgroundImage:(image!=null)?FileImage(File(image.path)):(widget.currentImage != null && widget.currentImage != '')?NetworkImage(widget.currentImage):AssetImage('images/no_profile_image.png'),
         ),
         SizedBox(height: 30),
         Container(
@@ -111,6 +108,7 @@ class _Step2State extends State<Step2> {
                     : '';
                 setState(() {
                   image = null;
+                  widget.currentImage = null;
                 });
               })
             ],

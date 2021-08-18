@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
@@ -6,7 +9,11 @@ import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
+import 'package:social_media_app/screens/Registration/end.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/screens/Registration/step1.dart';
+import 'package:social_media_app/screens/Registration/step2.dart';
+import 'package:social_media_app/screens/Registration/step3.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import 'user_settings.dart';
@@ -165,10 +172,83 @@ class _userProfileState extends State<UserProfileScreen>
                         if (isMe)
                           Expanded(
                             child: OutlinedButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                      return Container();
+                                      Future.delayed(Duration(milliseconds: 1000), (() async {
+                          print('pushing registration');
+                          String name=user.name, userName=user.userName, email=user.email, bio=user.bio, firebaseUid;
+                          XFile image;
+                          List<String> skills;
+                          
+
+                          var userData = await Navigator.of(context)
+                              .push(MaterialPageRoute(
+                                  builder: (context) => Step1(
+                                    username: userName,
+                                    name: name,
+                                        onPrimaryButtonPressed: () {},
+                                        email: email,
+                                      )));
+                          if(userData==null){
+                            return Navigator.pop(context);
+                          }
+                          name = userData['name'];
+                          userName = userData['username'];
+                          email = userData['email'];
+
+                          var imageData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step2(currentImage: user.image,)));
+
+                          if(imageData==null) {
+                            return Navigator.pop(context);
+                          };
+                          image = imageData['image'];
+
+                          var bioData = await Navigator.of(context).push(
+                              MaterialPageRoute(builder: (context) => Step3(bioValue: bio,)));
+                          if(bioData==null)  {
+                            return Navigator.pop(context);
+                          };
+
+                          bio = bioData['bio'];
+                          skills = bioData['skills'];
+
+                          User newUser = User(
+                              name: name,
+                              email: email,
+                              userName: userName,
+                              bio: bio,
+                              uid:user.uid,
+                              skills: skills);
+                          var status ;
+
+                          if(image==null){
+                            print('image is null');
+                            status = await Api.putUserWithoutImage(user);
+                          } else {
+                            print('image is not null');
+                            status = await Api.putUser(newUser, image);
+                          }
+
+                          if(!status['status']){
+                            Fluttertoast.showToast(msg: 'Oops! user could not be created. Please try again');
+                            return Navigator.pop(context);
+
+                          }
+                          if (status['status']) {
+                            print('success');
+                            Global.myself = newUser;
+                            //TODO: if user does not select image, show default dp
+                            Fluttertoast.showToast(msg: 'Yay! Profile has been modified');
+                            return Navigator.pop(context);
+
+                          } else {
+                            //TODO: SHow error
+                          }
+                        }));
+                        return SpinKitChasingDots(color: kPrimaryColor,);
+
                                 //   return RegistrationScreen(true, onRegistrationComplete: (){
                                 //     //completed
                                 //   }, user:Global.myself);

@@ -99,7 +99,7 @@ class Api {
       };
     } else {
       print('user is not created due to' + response.body);
-      return false;
+      return {'status':false};
     }
   }
 

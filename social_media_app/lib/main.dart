@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
@@ -179,6 +180,12 @@ class _MyAppState extends State<MyApp> {
                           var status =
                               await Api.postUser(user, firebaseUid, image);
 
+                          if(!status['status']){
+                            Fluttertoast.showToast(msg: 'Oops! user could not be created. Please try again');
+                            setState(() {
+                              
+                            });
+                          }
                           if (status['status']) {
                             print('success');
                             Global.uid = status['uid'];

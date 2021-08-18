@@ -13,6 +13,7 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
@@ -57,6 +58,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
+        ChangeNotifierProvider.value(value: Myself()),
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -110,8 +112,10 @@ class _MyAppState extends State<MyApp> {
                                       builder: (context, getUserSnapshot) {
                                         if (getUserSnapshot.hasData) {
                                           print('returning my home page');
-                                          return MyHomePage(
-                                              getUserSnapshot.data);
+                                          Provider.of<Myself>(context,
+                                                  listen: false).myself = getUserSnapshot.data;
+
+                                          return MyHomePage();
                                         }
                                         return SpinKitChasingDots(
                                           color: kPrimaryColor,
@@ -146,9 +150,7 @@ class _MyAppState extends State<MyApp> {
                                         onPrimaryButtonPressed: () {},
                                         email: email,
                                       )));
-                          if(userData==null) return setState(() {
-                            
-                          });
+                          if (userData == null) return setState(() {});
                           name = userData['name'];
                           userName = userData['username'];
                           email = userData['email'];
@@ -156,16 +158,12 @@ class _MyAppState extends State<MyApp> {
                           var imageData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step2()));
 
-                          if(imageData==null) return setState(() {
-                            
-                          });
+                          if (imageData == null) return setState(() {});
                           image = imageData['image'];
 
                           var bioData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step3()));
-                          if(bioData==null) return setState(() {
-                            
-                          });
+                          if (bioData == null) return setState(() {});
 
                           bio = bioData['bio'];
                           skills = bioData['skills'];
@@ -180,18 +178,20 @@ class _MyAppState extends State<MyApp> {
                           var status =
                               await Api.postUser(user, firebaseUid, image);
 
-                          if(!status['status']){
-                            Fluttertoast.showToast(msg: 'Oops! user could not be created. Please try again');
-                            setState(() {
-                              
-                            });
+                          if (!status['status']) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Oops! user could not be created. Please try again');
+                            setState(() {});
                           }
                           if (status['status']) {
                             print('success');
                             Global.uid = status['uid'];
                             Global.apiToken = status['token'];
                             user.uid = status['_id'];
-                            Global.myself = user;
+                            print('provider setting myself');
+                            Provider.of<Myself>(context).setMyself(user);
+                            //Global.myself = user;
                             //TODO: if user does not select image, show default dp
                             await Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => End(
@@ -267,9 +267,10 @@ class _MyAppState extends State<MyApp> {
 
 class MyHomePage extends StatefulWidget {
   User.User myself;
-  MyHomePage(User.User myself) {
+  MyHomePage() {
     this.myself = myself;
-    Global.myself = myself;
+
+    //Global.myself = myself;
   }
   @override
   _MyHomePageState createState() => _MyHomePageState();

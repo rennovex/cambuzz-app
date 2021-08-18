@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/paged_feed_list_view.dart';
@@ -21,12 +22,10 @@ class FeedScreen extends StatefulWidget {
 class _FeedScreenState extends State<FeedScreen>
     with AutomaticKeepAliveClientMixin<FeedScreen> {
   Future feed;
-  var user;
 
   @override
   void initState() {
     super.initState();
-    user = Global.myself;
   }
 
   @override
@@ -34,7 +33,7 @@ class _FeedScreenState extends State<FeedScreen>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(child: CustomAppBar(user), preferredSize: kAppBarPreferredSize ,),
+        appBar: PreferredSize(child: CustomAppBar(Provider.of<Myself>(context).myself), preferredSize: kAppBarPreferredSize ,),
         // appBar: AppBar(
         //   leading: IconButton(
         //     icon: Icon(Icons.search),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/user.dart';
@@ -12,6 +13,7 @@ class CustomAppBar extends StatelessWidget {
   CustomAppBar(this.user);
   @override
   Widget build(BuildContext context) {
+    if(user==null) return SpinKitChasingDots(color: kPrimaryColor,);
     return AppBar(
       backgroundColor: Color.fromRGBO(28, 28, 28, 1),
       foregroundColor: Colors.white,

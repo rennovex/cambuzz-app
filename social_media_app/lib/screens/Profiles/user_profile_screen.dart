@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Registration/end.dart';
@@ -64,10 +65,12 @@ class _userProfileState extends State<UserProfileScreen>
               child: CircularProgressIndicator(),
             );
           } else {
+            if(Provider.of<Myself>(context).myself==null) return SpinKitChasingDots(color: kPrimaryColor,);
+
             user = snapshot.data;
-            isMe = user.uid == Global.myself.uid;
-            print('is me'+isMe.toString());
-            print(Global.myself.email);
+            isMe = user.uid.compareTo(Provider.of<Myself>(context).myself.uid)==0;
+            print(user.uid + ' ' +Provider.of<Myself>(context).myself.uid);
+
             return ChangeNotifierProvider.value(
               value: user,
               child: SingleChildScrollView(
@@ -225,10 +228,15 @@ class _userProfileState extends State<UserProfileScreen>
 
                           if(image==null){
                             print('image is null');
+                            newUser.image = user.image;
                             status = await Api.putUserWithoutImage(user);
                           } else {
                             print('image is not null');
                             status = await Api.putUser(newUser, image);
+                            if(status['status']){
+                              print('new user name = '+status['user'].name);
+                              newUser.image = status['user'].image;
+                            } else newUser.image = user.image;
                           }
 
                           if(!status['status']){
@@ -238,11 +246,11 @@ class _userProfileState extends State<UserProfileScreen>
                           }
                           if (status['status']) {
                             print('success');
-                            Global.myself = newUser;
+                            Provider.of<Myself>(context, listen: false).setMyself(newUser);
                             //TODO: if user does not select image, show default dp
                             Fluttertoast.showToast(msg: 'Yay! Profile has been modified');
+                            Navigator.pop(context);
                             return Navigator.pop(context);
-
                           } else {
                             //TODO: SHow error
                           }

@@ -7,6 +7,7 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/eventType.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -30,7 +31,6 @@ class _EventScreenState extends State<EventScreen>
 
   EventType selectedEventType;
 
-  var user;
   List months = [
     'jan',
     'feb',
@@ -52,7 +52,6 @@ class _EventScreenState extends State<EventScreen>
     events = Api.getEvents();
     eventTypes = Api.getEventTypes();
 
-    user = Global.myself;
   }
 
   @override
@@ -61,7 +60,7 @@ class _EventScreenState extends State<EventScreen>
     return SafeArea(
       child: Scaffold(
         appBar: PreferredSize(
-          child: CustomAppBar(user),
+          child: CustomAppBar(Provider.of<Myself>(context).myself),
           preferredSize: kAppBarPreferredSize,
         ),
         body: SingleChildScrollView(

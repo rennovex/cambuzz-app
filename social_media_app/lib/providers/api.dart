@@ -230,7 +230,7 @@ class Api {
         }
         print('User is created' + awsResponse.body);
       }
-      return {'status':true};
+      return {'status':true, 'user':User.fromJsonAbstract(jsonDecode(response.body))};
     } else {
       print('user is not created due to' + response.body);
       return {'status':false};
@@ -247,7 +247,7 @@ class Api {
       'fileType': '.jpg'
     });
     if (response.statusCode == 200) {
-      return {'status':true};
+      return {'status':true,'user':User.fromJsonAbstract(jsonDecode(response.body))};
     } else {
       print('user is not created due to' + response.body);
       return {'status':false};

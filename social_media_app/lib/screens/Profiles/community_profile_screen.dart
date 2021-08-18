@@ -8,6 +8,7 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
@@ -214,7 +215,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
             } else {
               community = snapshot.data;
               isOwner = community?.isManager || community?.isOwner;
-              print(community.owner.uid + '  ' + Global?.myself.uid);
+              print(community.owner.uid + '  ' + Provider.of<Myself>(context).myself.uid);
               print(isOwner);
               return ChangeNotifierProvider.value(
                 value: community,

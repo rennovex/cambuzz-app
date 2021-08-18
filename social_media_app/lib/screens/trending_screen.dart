@@ -4,6 +4,7 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/dummy_data.dart';
 import 'package:social_media_app/models/user.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:social_media_app/widgets/community_trending.dart';
 import 'package:social_media_app/widgets/user_trending.dart';
@@ -17,18 +18,18 @@ class TrendingScreen extends StatefulWidget {
 
 class _TrendingScreenState extends State<TrendingScreen>
     with AutomaticKeepAliveClientMixin<TrendingScreen> {
-  var user;
+  //var user;
   @override
   void initState() {
     // TODO: implement initState
-    user = Global.myself;
+    //user = Global.myself;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        child: CustomAppBar(user),
+        child: CustomAppBar(Provider.of<Myself>(context).myself),
         preferredSize: kAppBarPreferredSize,
       ),
       body: SafeArea(

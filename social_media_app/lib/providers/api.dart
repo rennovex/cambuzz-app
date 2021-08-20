@@ -161,6 +161,44 @@ class Api {
     return posts;
   }
 
+  static Future getUserPosts(String id) async {
+    final response = await HttpHelper.get('/posts/user/$id');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Post> posts = [];
+
+    json.forEach((post) {
+      return posts.add(Post.fromJson(post));
+    });
+    print('Fetched User posts from Api');
+
+    return posts;
+  }
+
+  static Future getCommunityPosts(String id) async {
+    final response = await HttpHelper.get('/posts/community/$id');
+
+    if (response.statusCode != 200) {
+      throw response.body;
+    }
+
+    final json = jsonDecode(response.body) as List;
+
+    final List<Post> posts = [];
+
+    json.forEach((post) {
+      return posts.add(Post.fromJson(post));
+    });
+    print('Fetched Feed from Api');
+
+    return posts;
+  }
+
   static Future login(String email, String uid) async {
     final response = await HttpHelper.post(uri: '/auth/login', body: {
       'email': email,

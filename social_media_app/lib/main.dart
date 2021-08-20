@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
@@ -12,6 +13,7 @@ import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
 import 'package:social_media_app/screens/Profiles/user_profile_screen.dart';
@@ -56,6 +58,7 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: GoogleSignInProvider()),
+        ChangeNotifierProvider.value(value: Myself()),
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
@@ -82,9 +85,7 @@ class _MyAppState extends State<MyApp> {
               return buildLoading();
             } else if (firebaseSnapshot.connectionState ==
                 ConnectionState.waiting) {
-              return SpinKitChasingDots(
-                color: kPrimaryColor,
-              );
+              return SplashScreen();
             } else if (firebaseSnapshot.hasData) {
               Global.firebaseUser = firebaseSnapshot.data;
               print('fireabse user email = ' + firebaseSnapshot.data.email);
@@ -109,12 +110,13 @@ class _MyAppState extends State<MyApp> {
                                       builder: (context, getUserSnapshot) {
                                         if (getUserSnapshot.hasData) {
                                           print('returning my home page');
-                                          return MyHomePage(
-                                              getUserSnapshot.data);
+                                          Provider.of<Myself>(context,
+                                                  listen: false)
+                                              .myself = getUserSnapshot.data;
+
+                                          return MyHomePage();
                                         }
-                                        return SpinKitChasingDots(
-                                          color: kPrimaryColor,
-                                        );
+                                        return SplashScreen();
                                       });
                                 } else {
                                   print('invalid credentials' +
@@ -122,9 +124,7 @@ class _MyAppState extends State<MyApp> {
                                   //TODO invalid credentials
                                 }
                               }
-                              return SpinKitChasingDots(
-                                color: kPrimaryColor,
-                              );
+                              return SplashScreen();
                             });
                       } else {
                         print('user is not registered');
@@ -145,9 +145,7 @@ class _MyAppState extends State<MyApp> {
                                         onPrimaryButtonPressed: () {},
                                         email: email,
                                       )));
-                          if(userData==null) return setState(() {
-                            
-                          });
+                          if (userData == null) return setState(() {});
                           name = userData['name'];
                           userName = userData['username'];
                           email = userData['email'];
@@ -155,16 +153,12 @@ class _MyAppState extends State<MyApp> {
                           var imageData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step2()));
 
-                          if(imageData==null) return setState(() {
-                            
-                          });
+                          if (imageData == null) return setState(() {});
                           image = imageData['image'];
 
                           var bioData = await Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Step3()));
-                          if(bioData==null) return setState(() {
-                            
-                          });
+                          if (bioData == null) return setState(() {});
 
                           bio = bioData['bio'];
                           skills = bioData['skills'];
@@ -179,12 +173,20 @@ class _MyAppState extends State<MyApp> {
                           var status =
                               await Api.postUser(user, firebaseUid, image);
 
+                          if (!status['status']) {
+                            Fluttertoast.showToast(
+                                msg:
+                                    'Oops! user could not be created. Please try again');
+                            setState(() {});
+                          }
                           if (status['status']) {
                             print('success');
                             Global.uid = status['uid'];
                             Global.apiToken = status['token'];
                             user.uid = status['_id'];
-                            Global.myself = user;
+                            print('provider setting myself');
+                            Provider.of<Myself>(context).setMyself(user);
+                            //Global.myself = user;
                             //TODO: if user does not select image, show default dp
                             await Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => End(
@@ -204,14 +206,10 @@ class _MyAppState extends State<MyApp> {
                         }));
 
                         print('adding spinkitdots');
-                        return SpinKitChasingDots(
-                          color: kPrimaryColor,
-                        );
+                        return SplashScreen();
                       }
                     }
-                    return SpinKitChasingDots(
-                      color: kPrimaryColor,
-                    );
+                    return SplashScreen();
                   });
             } else {
               print('firebase login attempt');
@@ -258,11 +256,28 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        color: Colors.black,
+        child: Center(
+          child: Container(
+            width: 70,
+            child: Image.asset('images/cambuzz_icon.png'),
+          ),
+        ));
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   User.User myself;
-  MyHomePage(User.User myself) {
+  MyHomePage() {
     this.myself = myself;
-    Global.myself = myself;
+
+    //Global.myself = myself;
   }
   @override
   _MyHomePageState createState() => _MyHomePageState();

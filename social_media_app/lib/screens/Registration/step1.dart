@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
@@ -37,7 +38,18 @@ class _Step1State extends State<Step1> {
   Widget build(BuildContext context) {
     return RegistrationScreen(
       primaryButtonOnPressed: () {
+        if(!isUsernameAvailable) {
+          return Fluttertoast.showToast(msg: 'Oops! username is taken');
+        }
+        else if( widget.username.length<3 || widget.username.contains('\$') || widget.username.length>20){
+          return Fluttertoast.showToast(msg: 'Oops! username must be between 3 and 20 characters long');
+        }
+        else if(!nameIsValid || widget.name.trim().length<3 || widget.name.length>20){
+          return Fluttertoast.showToast(msg: 'Oops! Name must be between 3 and 20 characters long');
+        }
+        
         widget.onPrimaryButtonPressed!=null?widget.onPrimaryButtonPressed():'';
+        
         Navigator.of(context).pop({'name':widget.name, 'email':widget.email, 'username':widget.username});
       },
       primaryActionButtonText: "Let's set your dp >",
@@ -62,15 +74,15 @@ class _Step1State extends State<Step1> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Text((isUsernameAvailable) ? 'available' : 'taken',
+                Text((widget.username.length>2)?(isUsernameAvailable) ? 'available' : 'taken':'',
                     style: TextStyle(
                         color: (isUsernameAvailable)
                             ? Colors.green
                             : Colors.red)),
-                Icon(
+                (widget.username.length>2)?Icon(
                   (isUsernameAvailable) ? Icons.done : Icons.error,
                   color: (isUsernameAvailable) ? Colors.green : Colors.red,
-                ),
+                ):Container()
               ],
             ),
             LabelledTextField(

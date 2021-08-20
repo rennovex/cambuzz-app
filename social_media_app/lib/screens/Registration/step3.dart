@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
@@ -19,7 +20,7 @@ class Step3 extends StatefulWidget {
       {this.onBackButonPressed,
       this.primaryButtonOnPressed,
       this.bioValue,
-      this.bioMax = 10,
+      this.bioMax = 100,
       this.onBioChanged,
       this.onSkillAdded,
       this.onSkillRemoved});
@@ -104,6 +105,10 @@ class _Step3State extends State<Step3> {
       ),
       primaryActionButtonText: "Finish",
       primaryButtonOnPressed: () {
+        if(widget.bioValue==null|| widget.bioValue.trim().length<3){
+          Fluttertoast.showToast(msg: 'Oops! Bio must be between 3 and 100 characters long');
+          return;
+        }
         widget.primaryButtonOnPressed != null
             ? widget.primaryButtonOnPressed()
             : '';

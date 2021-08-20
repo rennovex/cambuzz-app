@@ -1,6 +1,9 @@
 import 'dart:io';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -8,6 +11,7 @@ import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
@@ -35,19 +39,12 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
   Community community;
   bool isOwner = false;
 
-  ImagePicker picker;
-  XFile pickedImage;
-
-  bool communityNameAvailable = true;
-  String communityName = '';
-
   @override
   void initState() {
     super.initState();
     future = widget.uid == null
         ? Api.getCommunity()
         : Api.getCommunityWithId(widget.uid);
-    picker = ImagePicker();
   }
 
   @override
@@ -78,125 +75,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                       showModalBottomSheet(
                           context: context,
                           builder: (context) {
-                            return StatefulBuilder(
-                                builder: (context, setModalState) {
-                              return Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 20),
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              'Create new Community',
-                                              style: kTitleTextStyle,
-                                            )
-                                          ]),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      LabelledTextField(
-                                          onChanged: (value) async {
-                                            var state = await Api
-                                                .isCommunityNameAvailable(
-                                                    value);
-                                            setModalState(() {
-                                              communityName = value;
-                                              communityNameAvailable = state;
-                                            });
-                                          },
-                                          value: communityName,
-                                          labelText: 'Community name'),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            communityNameAvailable
-                                                ? 'available'
-                                                : 'taken',
-                                            style: TextStyle(
-                                                color: communityNameAvailable
-                                                    ? Colors.green
-                                                    : Colors.red),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          CircleAvatar(
-                                              radius: 70,
-                                              foregroundImage: (pickedImage ==
-                                                      null)
-                                                  ? NetworkImage(
-                                                      'https://picsum.photos/200')
-                                                  : FileImage(
-                                                      File(pickedImage.path))),
-                                          SizedBox(
-                                            width: 20,
-                                          ),
-                                          Expanded(
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.stretch,
-                                              children: [
-                                                SelectImageButton(
-                                                    onSelectImageButtonPressed:
-                                                        () async {
-                                                  XFile selectedImage =
-                                                      await picker.pickImage(
-                                                          source: ImageSource
-                                                              .gallery);
-
-                                                  setModalState(() {
-                                                    if (selectedImage != null)
-                                                      pickedImage =
-                                                          selectedImage;
-                                                  });
-                                                }),
-                                                RemoveImageButton(
-                                                    onRemoveImageButtonPressed:
-                                                        () {
-                                                  setModalState(() {
-                                                    pickedImage = null;
-                                                  });
-                                                })
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 20,
-                                      ),
-                                      BluePrimaryButton(
-                                        text: 'Create Community',
-                                        onPressed: () async {
-                                          var completed =
-                                              await Api.postCommunity(
-                                                  communityName, pickedImage);
-                                          if (completed) {
-                                            print('completee');
-                                            Navigator.of(context).pop();
-                                            Navigator.of(context).pop();
-                                          } else {
-                                            print('error');
-                                          }
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            });
+                            return CreateCommunityBottomSheet();
                           });
                     },
                     child: Padding(
@@ -213,9 +92,10 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
               );
             } else {
               community = snapshot.data;
-              isOwner =
-                  community.owner.uid == Global?.myself.uid ? true : false;
-              print(community.owner.uid + '  ' + Global?.myself.uid);
+              isOwner = community?.isManager || community?.isOwner;
+              print(community.owner.uid +
+                  '  ' +
+                  Provider.of<Myself>(context).myself.uid);
               print(isOwner);
               return ChangeNotifierProvider.value(
                 value: community,
@@ -301,7 +181,17 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                           if (isOwner)
                             Expanded(
                               child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  showModalBottomSheet(
+                                      context: context,
+                                      builder: (context) {
+                                        return CreateCommunityBottomSheet(
+                                          communityName: community.name,
+                                          currentImage: community.image,
+                                          editCommunity: true,
+                                        );
+                                      });
+                                },
                                 child: Text(
                                   'Edit Community',
                                   textAlign: TextAlign.center,
@@ -398,6 +288,182 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
               );
             }
           },
+        ),
+      ),
+    );
+  }
+}
+
+class CreateCommunityBottomSheet extends StatefulWidget {
+  String communityName;
+  ImagePicker picker;
+  String currentImage;
+  bool editCommunity;
+  CreateCommunityBottomSheet(
+      {this.communityName = '',
+      this.currentImage,
+      this.editCommunity = false}) {
+    picker = ImagePicker();
+  }
+
+  @override
+  _CreateCommunityBottomSheetState createState() =>
+      _CreateCommunityBottomSheetState();
+}
+
+class _CreateCommunityBottomSheetState
+    extends State<CreateCommunityBottomSheet> {
+  bool communityNameAvailable = true;
+
+  XFile pickedImage;
+
+  @override
+  Widget build(BuildContext context) {
+    print(widget.communityName);
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Text(
+                widget.editCommunity
+                    ? 'Edit Community'
+                    : 'Create new Community',
+                style: kTitleTextStyle,
+              )
+            ]),
+            SizedBox(
+              height: 20,
+            ),
+            LabelledTextField(
+                onChanged: (value) async {
+                  var state = await Api.isCommunityNameAvailable(value);
+                  setState(() {
+                    widget.communityName = value;
+                    communityNameAvailable = state;
+                  });
+                },
+                value: widget.communityName,
+                labelText: 'Community name'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Text(
+                  communityNameAvailable ? 'available' : 'taken',
+                  style: TextStyle(
+                      color:
+                          communityNameAvailable ? Colors.green : Colors.red),
+                )
+              ],
+            ),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  radius: 70,
+                  foregroundImage: (pickedImage != null)
+                      ? FileImage(File(pickedImage.path))
+                      : (widget.currentImage != null)
+                          ? NetworkImage(widget.currentImage)
+                          : AssetImage('images/no_profile_image.png'),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      SelectImageButton(onSelectImageButtonPressed: () async {
+                        XFile selectedImage =
+                    await widget.picker.pickImage(source: ImageSource.gallery);
+                var croppedFile = await ImageCropper.cropImage(
+                    sourcePath: selectedImage.path,
+                    aspectRatioPresets: [
+                      CropAspectRatioPreset.square,
+                      // CropAspectRatioPreset.ratio3x2,
+                      // CropAspectRatioPreset.original,
+                      // CropAspectRatioPreset.ratio4x3,
+                      // CropAspectRatioPreset.ratio16x9
+                    ],
+                    androidUiSettings: AndroidUiSettings(
+                        toolbarTitle: 'Cropper',
+                        toolbarColor: Theme.of(context).primaryColor,
+                        toolbarWidgetColor: Colors.white,
+                        initAspectRatio: CropAspectRatioPreset.original,
+                        lockAspectRatio: true),
+                    iosUiSettings: IOSUiSettings(
+                      minimumAspectRatio: 1.0,
+                    ));
+                File compressedFile =
+                    await FlutterImageCompress.compressAndGetFile(
+                  croppedFile.path,
+                  '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
+                  quality: 70,
+                );
+
+                // XFile(result.path);
+
+                setState(() {
+                  if (compressedFile != null)
+                    pickedImage = XFile(compressedFile.path);
+                  selectedImage.length().then((value) => print(value));
+                  print(compressedFile.lengthSync());
+                });
+                      }),
+                      RemoveImageButton(onRemoveImageButtonPressed: () {
+                        setState(() {
+                          pickedImage = null;
+                          widget.currentImage = null;
+                        });
+                      })
+                    ],
+                  ),
+                )
+              ],
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            BluePrimaryButton(
+              text: widget.editCommunity?'Modify community':'Create Community',
+              onPressed: () async {
+                if (widget.communityName.trim().length < 3 ||
+                    widget.communityName.trim().length > 50) {
+                  return Fluttertoast.showToast(
+                      msg:
+                          'Community name should be between 3 and 50 characters long');
+                } else if (pickedImage == null && !widget.editCommunity) {
+                  return Fluttertoast.showToast(
+                      msg: 'Community should have an image');
+                }
+                var completed;
+
+                if(widget.editCommunity){
+                  if(pickedImage == null){
+                    print('picked image null');
+                    completed = await Api.putCommunityWithoutImage(widget.communityName);
+                  } else {
+                    completed = await Api.putCommunity(widget.communityName, pickedImage);
+                  }
+                } else {
+                  completed =  await Api.postCommunity(widget.communityName, pickedImage);
+                }
+                if (completed) {
+                  Fluttertoast.showToast(
+                      msg: widget.editCommunity?'Community modified':'Yay! your community is up and running');
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pop();
+                } else {
+                  Fluttertoast.showToast(
+                      msg: 'Oops! Could not ${widget.editCommunity?'edit':'create'} community');
+                }
+              },
+            )
+          ],
         ),
       ),
     );

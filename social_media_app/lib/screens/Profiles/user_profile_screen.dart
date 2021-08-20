@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
+import 'package:social_media_app/screens/Registration/end.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
+import 'package:social_media_app/screens/Registration/step1.dart';
+import 'package:social_media_app/screens/Registration/step2.dart';
+import 'package:social_media_app/screens/Registration/step3.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
@@ -74,10 +82,17 @@ class _userProfileState extends State<UserProfileScreen>
               child: CircularProgressIndicator(),
             );
           } else {
+            if (Provider.of<Myself>(context).myself == null)
+              return SpinKitChasingDots(
+                color: kPrimaryColor,
+              );
+
             user = snapshot.data;
-            isMe = user.uid == Global.myself.uid;
-            print('is me' + isMe.toString());
-            print(Global.myself.email);
+            isMe =
+                user.uid.compareTo(Provider.of<Myself>(context).myself.uid) ==
+                    0;
+            print(user.uid + ' ' + Provider.of<Myself>(context).myself.uid);
+
             return ChangeNotifierProvider.value(
               value: user,
               child: Column(
@@ -181,10 +196,142 @@ class _userProfileState extends State<UserProfileScreen>
                       if (isMe)
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {
+                            onPressed: () => Navigator.pushNamed(
+                              context,
+                              ProfileInfoScreen.routeName,
+                              arguments: ProfileInfoArguments(
+                                  id: user.uid, title: 'Following'),
+                            ),
+
+                            // return Container();
+
+                            child: Row(
+                              children: [
+                                Icon(
+                                  MdiIcons.medal,
+                                  color: Colors.purpleAccent,
+                                ),
+                                Text(
+                                  '${user.followingCount ?? 0} Following',
+                                  style: kProfileLabel,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Row(
+                    children: [
+                      SizedBox(width: 15),
+                      if (isMe)
+                        Expanded(
+                          child: OutlinedButton(
+                            onPressed: () async {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return Container();
+                                Future.delayed(Duration(milliseconds: 1000),
+                                    (() async {
+                                  print('pushing registration');
+                                  String name = user.name,
+                                      userName = user.userName,
+                                      email = user.email,
+                                      bio = user.bio,
+                                      firebaseUid;
+                                  XFile image;
+                                  List<String> skills;
+
+                                  var userData = await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => Step1(
+                                                username: userName,
+                                                name: name,
+                                                onPrimaryButtonPressed: () {},
+                                                email: email,
+                                              )));
+                                  if (userData == null) {
+                                    return Navigator.pop(context);
+                                  }
+                                  name = userData['name'];
+                                  userName = userData['username'];
+                                  email = userData['email'];
+
+                                  var imageData = await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => Step2(
+                                                currentImage: user.image,
+                                              )));
+
+                                  if (imageData == null) {
+                                    return Navigator.pop(context);
+                                  }
+                                  ;
+                                  image = imageData['image'];
+
+                                  var bioData = await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: (context) => Step3(
+                                                bioValue: bio,
+                                              )));
+                                  if (bioData == null) {
+                                    return Navigator.pop(context);
+                                  }
+                                  ;
+
+                                  bio = bioData['bio'];
+                                  skills = bioData['skills'];
+
+                                  User newUser = User(
+                                      name: name,
+                                      email: email,
+                                      userName: userName,
+                                      bio: bio,
+                                      uid: user.uid,
+                                      skills: skills);
+                                  var status;
+
+                                  if (image == null) {
+                                    print('image is null');
+                                    newUser.image = user.image;
+                                    status =
+                                        await Api.putUserWithoutImage(user);
+                                  } else {
+                                    print('image is not null');
+                                    status = await Api.putUser(newUser, image);
+                                    if (status['status']) {
+                                      print('new user name = ' +
+                                          status['user'].name);
+                                      newUser.image = status['user'].image;
+                                    } else
+                                      newUser.image = user.image;
+                                  }
+
+                                  if (!status['status']) {
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            'Oops! user could not be created. Please try again');
+                                    return Navigator.pop(context);
+                                  }
+                                  if (status['status']) {
+                                    print('success');
+                                    Provider.of<Myself>(context, listen: false)
+                                        .setMyself(newUser);
+                                    //TODO: if user does not select image, show default dp
+                                    Fluttertoast.showToast(
+                                        msg: 'Yay! Profile has been modified');
+                                    Navigator.pop(context);
+                                    return Navigator.pop(context);
+                                  } else {
+                                    //TODO: SHow error
+                                  }
+                                }));
+                                return SpinKitChasingDots(
+                                  color: kPrimaryColor,
+                                );
+
                                 //   return RegistrationScreen(true, onRegistrationComplete: (){
                                 //     //completed
                                 //   }, user:Global.myself);
@@ -293,7 +440,7 @@ class _userProfileState extends State<UserProfileScreen>
 
   Widget buildProfilePosts() => FutureBuilder(
       future: widget.userId == null
-          ? Api.getUserPosts(Global.myself.uid)
+          ? Api.getUserPosts(Provider.of<Myself>(context).myself.uid)
           : Api.getUserPosts(widget.userId),
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)

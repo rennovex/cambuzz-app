@@ -1,9 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:path_provider/path_provider.dart';
 import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/Registration/image_selection_buttons.dart';
 import 'package:social_media_app/widgets/Registration/registration_step_top.dart';
@@ -13,11 +16,13 @@ class Step2 extends StatefulWidget {
   Function onBackButonPressed;
   Function onSelectImageButtonPressed;
   Function onRemoveImageButtonPressed;
+  String currentImage;
 
   Step2(
       {this.onRemoveImageButtonPressed,
       this.onSelectImageButtonPressed,
       this.onPrimaryButtonPressed,
+      this.currentImage,
       this.onBackButonPressed});
 
   @override
@@ -26,7 +31,6 @@ class Step2 extends StatefulWidget {
 
 class _Step2State extends State<Step2> {
   XFile image;
-  String networkImage;
   ImagePicker picker;
 
   @override
@@ -49,11 +53,7 @@ class _Step2State extends State<Step2> {
         ),
         CircleAvatar(
           radius: 100,
-          backgroundImage: (networkImage != null && networkImage != '')
-              ? NetworkImage(networkImage)
-              : (image != null)
-                  ? FileImage(File(image.path))
-                  : AssetImage('images/no_profile_image.png'),
+          backgroundImage:(image!=null)?FileImage(File(image.path)):(widget.currentImage != null && widget.currentImage != '')?NetworkImage(widget.currentImage):AssetImage('images/no_profile_image.png'),
         ),
         SizedBox(height: 30),
         Container(
@@ -101,12 +101,14 @@ class _Step2State extends State<Step2> {
                   print(compressedFile.lengthSync());
                 });
               }),
-              RemoveImageButton(onRemoveImageButtonPressed: () {
+              RemoveImageButton(onRemoveImageButtonPressed: () async {
+                
                 widget.onRemoveImageButtonPressed != null
                     ? widget.onRemoveImageButtonPressed()
                     : '';
                 setState(() {
                   image = null;
+                  widget.currentImage = null;
                 });
               })
             ],

@@ -56,6 +56,45 @@ class Api {
     }
   }
 
+  static Future putCommunity(String communityName, XFile image) async {
+    final response = await HttpHelper.put(
+        uri: '/communities', body: {'name': communityName, 'fileType': '.jpg'});
+    if (response.statusCode == 200) {
+      if (image != null) {
+        final awsUploadLink = jsonDecode(response.body)['imageUploadUrl'];
+
+        final awsResponse =
+            await HttpHelper.putImage(uri: '$awsUploadLink', body: image);
+
+        if (awsResponse.statusCode != 200) {
+          throw 'Community could not be modified due to image upload error  ' +
+              awsResponse.body;
+        }
+        print('Community is modified' + awsResponse.body);
+      }
+
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+   static Future putCommunityWithoutImage(String communityName) async {
+     print('put request to community without image');
+    final response = await HttpHelper.put(
+        uri: '/communities/without-image', body: {'name': communityName, 'fileType': '.jpg'});
+    print('got response');
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      print(response.body);
+      return false;
+    }
+  }
+
+  
+
   static Future isUserRegistered(String email) async {
     final response = await HttpHelper.get('/auth/is-user-registered/' + email);
     if (response.statusCode == 200) {
@@ -99,7 +138,7 @@ class Api {
       };
     } else {
       print('user is not created due to' + response.body);
-      return false;
+      return {'status':false};
     }
   }
 
@@ -246,7 +285,7 @@ class Api {
     }
   }
 
-  static Future<bool> putUser(User user, XFile image) async {
+  static Future<Map> putUser(User user, XFile image) async {
     final response = await HttpHelper.put(uri: '/users', body: {
       'name': user.name,
       'email': user.email,
@@ -268,10 +307,27 @@ class Api {
         }
         print('User is created' + awsResponse.body);
       }
-      return true;
+      return {'status':true, 'user':User.fromJsonAbstract(jsonDecode(response.body))};
     } else {
       print('user is not created due to' + response.body);
-      return false;
+      return {'status':false};
+    }
+  }
+
+  static Future<Map> putUserWithoutImage(User user) async {
+    final response = await HttpHelper.put(uri: '/users/without-image', body: {
+      'name': user.name,
+      'email': user.email,
+      'userName': user.userName,
+      'bio': user.bio ?? '',
+      'skills': user.skills ?? [],
+      'fileType': '.jpg'
+    });
+    if (response.statusCode == 200) {
+      return {'status':true,'user':User.fromJsonAbstract(jsonDecode(response.body))};
+    } else {
+      print('user is not created due to' + response.body);
+      return {'status':false};
     }
   }
 

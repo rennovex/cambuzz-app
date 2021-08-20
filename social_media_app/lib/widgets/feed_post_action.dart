@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 
 class FeedPostAction extends StatelessWidget {
@@ -36,7 +38,7 @@ class FeedPostAction extends StatelessWidget {
               Fluttertoast.showToast(msg: 'Reported');
             },
           ),
-          if (post.user.uid != Global.myself.uid)
+          if (post.user.uid != Provider.of<Myself>(context).myself.uid)
             ListTile(
               leading: Icon(Icons.block),
               title: Text('Block'),

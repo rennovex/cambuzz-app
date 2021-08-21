@@ -16,6 +16,7 @@ import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/Registration/step1.dart';
 import 'package:social_media_app/screens/Registration/step2.dart';
 import 'package:social_media_app/screens/Registration/step3.dart';
+import 'package:social_media_app/widgets/appBars.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
@@ -62,6 +63,8 @@ class _userProfileState extends State<UserProfileScreen>
     super.build(context);
     return SafeArea(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
+        appBar: transparentAppBar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
@@ -185,40 +188,6 @@ class _userProfileState extends State<UserProfileScreen>
                           ],
                         ),
                       ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 22,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(width: 15),
-                      if (isMe)
-                        Expanded(
-                          child: OutlinedButton(
-                            onPressed: () => Navigator.pushNamed(
-                              context,
-                              ProfileInfoScreen.routeName,
-                              arguments: ProfileInfoArguments(
-                                  id: user.uid, title: 'Following'),
-                            ),
-
-                            // return Container();
-
-                            child: Row(
-                              children: [
-                                Icon(
-                                  MdiIcons.medal,
-                                  color: Colors.purpleAccent,
-                                ),
-                                Text(
-                                  '${user.followingCount ?? 0} Following',
-                                  style: kProfileLabel,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                     ],
                   ),
                   SizedBox(
@@ -428,9 +397,6 @@ class _userProfileState extends State<UserProfileScreen>
                       SizedBox(width: 15),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
                 ],
               ),
             );
@@ -454,7 +420,10 @@ class _userProfileState extends State<UserProfileScreen>
             scrollDirection: Axis.vertical,
             itemCount: snapshot.data?.length,
             itemBuilder: (_, ind) => ChangeNotifierProvider.value(
-                value: snapshot.data[ind] as Post, child: PostItem()),
+                value: snapshot.data[ind] as Post,
+                child: PostItem(
+                  disableNavigation: true,
+                )),
           );
         } else
           return Center(

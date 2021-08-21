@@ -12,12 +12,15 @@ import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
+import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
 import 'package:social_media_app/widgets/Registration/image_selection_buttons.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
+import 'package:social_media_app/widgets/appBars.dart';
 import 'package:social_media_app/widgets/blue_primary_button.dart';
+import 'package:social_media_app/widgets/post_item.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import '../../constants.dart';
@@ -52,10 +55,7 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: Colors.transparent,
-        ),
+        appBar: transparentAppBar(),
         body: FutureBuilder(
           future: future,
           builder: (BuildContext context, AsyncSnapshot<Community> snapshot) {
@@ -282,6 +282,32 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                       SizedBox(
                         height: 20,
                       ),
+                      FutureBuilder(
+                          future: Api.getCommunityPosts(community.uid),
+                          builder: (_, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting)
+                              return Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            else if (snapshot.hasData) {
+                              return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                scrollDirection: Axis.vertical,
+                                itemCount: snapshot.data?.length,
+                                itemBuilder: (_, ind) =>
+                                    ChangeNotifierProvider.value(
+                                        value: snapshot.data[ind] as Post,
+                                        child: PostItem(
+                                          disableNavigation: true,
+                                        )),
+                              );
+                            } else
+                              return Center(
+                                child: Text('No posts'),
+                              );
+                          })
                     ],
                   ),
                 ),
@@ -378,41 +404,41 @@ class _CreateCommunityBottomSheetState
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       SelectImageButton(onSelectImageButtonPressed: () async {
-                        XFile selectedImage =
-                    await widget.picker.pickImage(source: ImageSource.gallery);
-                var croppedFile = await ImageCropper.cropImage(
-                    sourcePath: selectedImage.path,
-                    aspectRatioPresets: [
-                      CropAspectRatioPreset.square,
-                      // CropAspectRatioPreset.ratio3x2,
-                      // CropAspectRatioPreset.original,
-                      // CropAspectRatioPreset.ratio4x3,
-                      // CropAspectRatioPreset.ratio16x9
-                    ],
-                    androidUiSettings: AndroidUiSettings(
-                        toolbarTitle: 'Cropper',
-                        toolbarColor: Theme.of(context).primaryColor,
-                        toolbarWidgetColor: Colors.white,
-                        initAspectRatio: CropAspectRatioPreset.original,
-                        lockAspectRatio: true),
-                    iosUiSettings: IOSUiSettings(
-                      minimumAspectRatio: 1.0,
-                    ));
-                File compressedFile =
-                    await FlutterImageCompress.compressAndGetFile(
-                  croppedFile.path,
-                  '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
-                  quality: 70,
-                );
+                        XFile selectedImage = await widget.picker
+                            .pickImage(source: ImageSource.gallery);
+                        var croppedFile = await ImageCropper.cropImage(
+                            sourcePath: selectedImage.path,
+                            aspectRatioPresets: [
+                              CropAspectRatioPreset.square,
+                              // CropAspectRatioPreset.ratio3x2,
+                              // CropAspectRatioPreset.original,
+                              // CropAspectRatioPreset.ratio4x3,
+                              // CropAspectRatioPreset.ratio16x9
+                            ],
+                            androidUiSettings: AndroidUiSettings(
+                                toolbarTitle: 'Cropper',
+                                toolbarColor: Theme.of(context).primaryColor,
+                                toolbarWidgetColor: Colors.white,
+                                initAspectRatio: CropAspectRatioPreset.original,
+                                lockAspectRatio: true),
+                            iosUiSettings: IOSUiSettings(
+                              minimumAspectRatio: 1.0,
+                            ));
+                        File compressedFile =
+                            await FlutterImageCompress.compressAndGetFile(
+                          croppedFile.path,
+                          '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
+                          quality: 70,
+                        );
 
-                // XFile(result.path);
+                        // XFile(result.path);
 
-                setState(() {
-                  if (compressedFile != null)
-                    pickedImage = XFile(compressedFile.path);
-                  selectedImage.length().then((value) => print(value));
-                  print(compressedFile.lengthSync());
-                });
+                        setState(() {
+                          if (compressedFile != null)
+                            pickedImage = XFile(compressedFile.path);
+                          selectedImage.length().then((value) => print(value));
+                          print(compressedFile.lengthSync());
+                        });
                       }),
                       RemoveImageButton(onRemoveImageButtonPressed: () {
                         setState(() {
@@ -429,7 +455,9 @@ class _CreateCommunityBottomSheetState
               height: 20,
             ),
             BluePrimaryButton(
-              text: widget.editCommunity?'Modify community':'Create Community',
+              text: widget.editCommunity
+                  ? 'Modify community'
+                  : 'Create Community',
               onPressed: () async {
                 if (widget.communityName.trim().length < 3 ||
                     widget.communityName.trim().length > 50) {
@@ -442,24 +470,30 @@ class _CreateCommunityBottomSheetState
                 }
                 var completed;
 
-                if(widget.editCommunity){
-                  if(pickedImage == null){
+                if (widget.editCommunity) {
+                  if (pickedImage == null) {
                     print('picked image null');
-                    completed = await Api.putCommunityWithoutImage(widget.communityName);
+                    completed = await Api.putCommunityWithoutImage(
+                        widget.communityName);
                   } else {
-                    completed = await Api.putCommunity(widget.communityName, pickedImage);
+                    completed = await Api.putCommunity(
+                        widget.communityName, pickedImage);
                   }
                 } else {
-                  completed =  await Api.postCommunity(widget.communityName, pickedImage);
+                  completed = await Api.postCommunity(
+                      widget.communityName, pickedImage);
                 }
                 if (completed) {
                   Fluttertoast.showToast(
-                      msg: widget.editCommunity?'Community modified':'Yay! your community is up and running');
+                      msg: widget.editCommunity
+                          ? 'Community modified'
+                          : 'Yay! your community is up and running');
                   Navigator.of(context).pop();
                   Navigator.of(context).pop();
                 } else {
                   Fluttertoast.showToast(
-                      msg: 'Oops! Could not ${widget.editCommunity?'edit':'create'} community');
+                      msg:
+                          'Oops! Could not ${widget.editCommunity ? 'edit' : 'create'} community');
                 }
               },
             )

@@ -11,11 +11,13 @@ import 'package:social_media_app/widgets/feed_post_action.dart';
 
 class PostItem extends StatelessWidget {
   final bool disableComments;
+  final bool disableNavigation;
   // final post = Provider.of<Post>(context);
   //  Post post =
 
   PostItem({
     this.disableComments = false,
+    this.disableNavigation = false,
     // @required this.post,
     Key key,
   }) : super(key: key);
@@ -54,9 +56,11 @@ class PostItem extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => post.isUserPost()
-                      ? showUser(context, post.user.uid)
-                      : showCommunity(context, post.community.uid),
+                  onTap: () => disableNavigation
+                      ? null
+                      : post.isUserPost()
+                          ? showUser(context, post.user.uid)
+                          : showCommunity(context, post.community.uid),
                   child: CircleAvatar(
                     radius: 21,
                     backgroundImage: CachedNetworkImageProvider(
@@ -75,11 +79,12 @@ class PostItem extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           GestureDetector(
-                            onTap: () {
-                              post.isUserPost()
-                                  ? showUser(context, post.user.uid)
-                                  : showCommunity(context, post.community.uid);
-                            },
+                            onTap: () => disableNavigation
+                                ? null
+                                : post.isUserPost()
+                                    ? showUser(context, post.user.uid)
+                                    : showCommunity(
+                                        context, post.community.uid),
                             child: Text(
                               post.isUserPost()
                                   ? post.user.name
@@ -91,7 +96,12 @@ class PostItem extends StatelessWidget {
                           Row(
                             children: [
                               GestureDetector(
-                                onTap: () {},
+                                onTap: () => disableNavigation
+                                    ? null
+                                    : post.isUserPost()
+                                        ? showUser(context, post.user.uid)
+                                        : showCommunity(
+                                            context, post.community.uid),
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
                                     maxWidth:

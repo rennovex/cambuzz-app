@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/providers/api.dart';
+
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
@@ -26,49 +27,47 @@ class PostViewScreen extends StatelessWidget {
             brightness: Brightness.dark,
             title: Text('Comments'),
           ),
-          body: SingleChildScrollView(
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        Consumer<Post>(
-                          builder: (_, post, __) => PostItem(
-                            disableComments: true,
-                          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Consumer<Post>(
+                        builder: (_, post, __) => PostItem(
+                          disableComments: true,
                         ),
-                        Text('Comments'),
-                        Consumer<Post>(
-                          builder: (_, post, __) => FutureBuilder(
-                              future: future,
-                              builder: (_, snapshot) {
-                                print(snapshot.connectionState);
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting)
-                                  return Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                else if (snapshot.hasData) {
-                                  return ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: post.comments?.length ?? 0,
-                                    itemBuilder: (ctx, ind) => CommentItem(
-                                      Comment.fromJson(post.comments[ind]),
-                                    ),
-                                  );
-                                } else
-                                  return Spacer();
-                              }),
-                        ),
-                      ],
-                    ),
+                      ),
+                      Text('Comments'),
+                      Consumer<Post>(
+                        builder: (_, post, __) => FutureBuilder(
+                            future: future,
+                            builder: (_, snapshot) {
+                              print(snapshot.connectionState);
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting)
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              else if (snapshot.hasData) {
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: post.comments?.length ?? 0,
+                                  itemBuilder: (ctx, ind) => CommentItem(
+                                    Comment.fromJson(post.comments[ind]),
+                                  ),
+                                );
+                              } else
+                                return Container();
+                            }),
+                      ),
+                    ],
                   ),
                 ),
-                NewComment(post),
-              ],
-            ),
+              ),
+              NewComment(post),
+            ],
           ),
         ),
       ),

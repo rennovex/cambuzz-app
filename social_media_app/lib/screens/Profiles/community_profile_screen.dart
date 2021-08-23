@@ -16,6 +16,7 @@ import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/widgets/Registration/image_selection_buttons.dart';
 import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
 import 'package:social_media_app/widgets/appBars.dart';
@@ -238,7 +239,8 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                               child: OutlinedButton(
                                 onPressed: () => showModalBottomSheet<dynamic>(
                                   context: context,
-                                  builder: (context) => CommunitySettings(),
+                                  builder: (context) =>
+                                      CommunitySettings(community),
                                 ),
                                 child: Text(
                                   'Manage',
@@ -259,7 +261,8 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                           if (!isOwner)
                             Expanded(
                               child: OutlinedButton(
-                                onPressed: () {},
+                                onPressed: () =>
+                                    showUser(context, community.owner?.uid),
                                 child: Text(
                                   'Contact Head',
                                   textAlign: TextAlign.center,

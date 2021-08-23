@@ -52,6 +52,7 @@ class User with ChangeNotifier {
       followersCount: json['followersCount'],
       likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
+      // skills: json['skills'],
       isAbstract: false,
     );
   }
@@ -69,6 +70,7 @@ class User with ChangeNotifier {
       followersCount: json['followersCount'],
       likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
+      // skills: json['skills'],
       isAbstract: false,
     );
   }

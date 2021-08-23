@@ -53,7 +53,11 @@ class _Step2State extends State<Step2> {
         ),
         CircleAvatar(
           radius: 100,
-          backgroundImage:(image!=null)?FileImage(File(image.path)):(widget.currentImage != null && widget.currentImage != '')?NetworkImage(widget.currentImage):AssetImage('images/no_profile_image.png'),
+          backgroundImage: (image != null)
+              ? FileImage(File(image.path))
+              : (widget.currentImage != null && widget.currentImage != '')
+                  ? NetworkImage(widget.currentImage)
+                  : AssetImage('images/no_profile_image.png'),
         ),
         SizedBox(height: 30),
         Container(
@@ -89,7 +93,7 @@ class _Step2State extends State<Step2> {
                     await FlutterImageCompress.compressAndGetFile(
                   croppedFile.path,
                   '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
-                  quality: 70,
+                  quality: 30,
                 );
 
                 // XFile(result.path);
@@ -102,7 +106,6 @@ class _Step2State extends State<Step2> {
                 });
               }),
               RemoveImageButton(onRemoveImageButtonPressed: () async {
-                
                 widget.onRemoveImageButtonPressed != null
                     ? widget.onRemoveImageButtonPressed()
                     : '';
@@ -117,8 +120,10 @@ class _Step2State extends State<Step2> {
       ])),
       primaryActionButtonText: "Let's set your bio >",
       primaryButtonOnPressed: () {
-        widget.onBackButonPressed!=null?widget.onPrimaryButtonPressed():'';
-        Navigator.pop(context, {'image':image});
+        widget.onBackButonPressed != null
+            ? widget.onPrimaryButtonPressed()
+            : '';
+        Navigator.pop(context, {'image': image});
       },
       topElementStackBottomPositioning: 50,
     );

@@ -98,10 +98,7 @@ class PostItem extends StatelessWidget {
                               GestureDetector(
                                 onTap: () => disableNavigation
                                     ? null
-                                    : post.isUserPost()
-                                        ? showUser(context, post.user.uid)
-                                        : showCommunity(
-                                            context, post.community.uid),
+                                    : showUser(context, post.user.uid),
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
                                     maxWidth:

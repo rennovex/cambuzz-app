@@ -18,6 +18,7 @@ import 'package:social_media_app/screens/Registration/step2.dart';
 import 'package:social_media_app/screens/Registration/step3.dart';
 import 'package:social_media_app/widgets/appBars.dart';
 import 'package:social_media_app/widgets/post_item.dart';
+import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
 import '../post_view_screen.dart';
@@ -397,6 +398,7 @@ class _userProfileState extends State<UserProfileScreen>
                       SizedBox(width: 15),
                     ],
                   ),
+                  ProfileEvents(skills: user.skills),
                 ],
               ),
             );

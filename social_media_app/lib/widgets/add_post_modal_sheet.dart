@@ -157,8 +157,19 @@ class _AddPostState extends State<AddPost> {
                           color: Color.fromRGBO(225, 37, 255, 1),
                         ),
                       ),
-                    )
+                    ),
                   ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                  bottom: 10,
+                ),
+                child: Text(
+                  'Please leave the community field empty to post to your profile',
+                  // softWrap: true,
+                  maxLines: 3,
                 ),
               ),
               // Padding(
@@ -402,7 +413,7 @@ class _ImagePickerState extends State<ImagePickerHelper> {
     File compressedFile = await FlutterImageCompress.compressAndGetFile(
       croppedFile.path,
       '${Directory.systemTemp.path}/${DateTime.now()}.jpg',
-      quality: 70,
+      quality: 60,
     );
 
     // XFile(result.path);

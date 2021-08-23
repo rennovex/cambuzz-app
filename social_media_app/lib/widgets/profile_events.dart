@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/models/skill.dart';
 
 class ProfileEvents extends StatelessWidget {
   // const ProfileEvents({ Key? key }) : super(key: key);
+  final List skills;
+
+  ProfileEvents({this.skills});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +17,7 @@ class ProfileEvents extends StatelessWidget {
         ),
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
-        itemCount: 3,
+        itemCount: skills?.length ?? 3,
         itemBuilder: (ctx, index) => ProfileEventItem(),
       ),
     );

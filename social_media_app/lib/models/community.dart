@@ -20,6 +20,7 @@ class Community with ChangeNotifier {
   final int eventsCount;
   bool isMember;
   bool isOwner;
+  bool isSociety;
   bool isManager;
 
   Community(
@@ -32,6 +33,7 @@ class Community with ChangeNotifier {
       this.eventsCount,
       this.isMember,
       this.isManager,
+      this.isSociety = false,
       this.isOwner});
 
   factory Community.fromJsonAbstract(Map<String, dynamic> json) {
@@ -54,7 +56,8 @@ class Community with ChangeNotifier {
         eventsCount: json['eventsCount'],
         isMember: json['isMember'],
         isOwner: json['isOwner'],
-        isManager: json['isManager']);
+        isManager: json['isManager'],
+        isSociety: json['isSociety']);
   }
 
   void toggleJoin() async {

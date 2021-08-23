@@ -8,7 +8,10 @@ import 'package:social_media_app/screens/blocked_screen.dart';
 
 class UserSettings extends StatelessWidget {
   Function onLogout;
-  UserSettings ({ Key key,this.onLogout, }) : super(key: key);
+  UserSettings({
+    Key key,
+    this.onLogout,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +29,7 @@ class UserSettings extends StatelessWidget {
               style: kTitleTextStyle,
             ),
           ),
-          ListTile(
-            leading: Icon(Icons.privacy_tip_rounded),
-            title: Text('Private Account'),
-            trailing: Switch(
-              onChanged: (_) {
-                isPrivate = _;
-              },
-              activeColor: Color.fromRGBO(0, 114, 255, 1),
-              value: isPrivate,
-            ),
-          ),
+
           ListTile(
             leading: Icon(Icons.group),
             title: Text('Communities'),

@@ -18,7 +18,7 @@ class ProfileEvents extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: skills?.length ?? 3,
-        itemBuilder: (ctx, index) => ProfileEventItem(),
+        itemBuilder: (ctx, index) => ProfileEventItem(skills[index]?.image),
       ),
     );
   }
@@ -26,6 +26,9 @@ class ProfileEvents extends StatelessWidget {
 
 class ProfileEventItem extends StatelessWidget {
   // const ProfileEventItem({ Key? key }) : super(key: key);
+  final String image;
+
+  ProfileEventItem(this.image);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,7 @@ class ProfileEventItem extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(19),
         child: Image.network(
-          'https://images.unsplash.com/photo-1589254066213-a0c9dc853511?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=334&q=80',
+          image,
           height: 200,
           width: 166,
           fit: BoxFit.cover,

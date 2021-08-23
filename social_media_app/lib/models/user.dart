@@ -1,4 +1,6 @@
+
 import 'package:flutter/foundation.dart';
+import 'package:social_media_app/models/skill.dart';
 
 import 'http_helper.dart';
 
@@ -20,7 +22,7 @@ class User with ChangeNotifier {
   int likeCount;
   num achievements;
   String email;
-  List<String> skills;
+  List<Skill> skills;
   bool isAbstract;
   bool isFollowing;
 
@@ -40,7 +42,34 @@ class User with ChangeNotifier {
       this.email,
       this.skills});
 
+  static List properties = ['_id', 'userName', 'name', 'image', 'coverImage','bio','followingCount', 'followersCount', 'likeCount','isFollowing', 'skills'];
+  static List abstractProperties = ['_id', 'userName', 'name', 'image'];
+
+  static bool isUserPropertiesValid(Map <String, dynamic> json, List<String> properties){
+    print('testing');
+    for(String i in properties){
+      print('test $i');
+      if(!json.keys.contains(i)){
+
+        return false;
+      }
+      print('pass $i');
+
+    }
+    return true;
+  }
+
   factory User.fromJson(Map<String, dynamic> json) {
+    print('user.from json'+json.toString());
+    List<Skill> skills = [];
+    for(var i in json['skills']){
+      print('skill = '+i.toString());
+      skills.add(Skill.fromJson(i));
+      print('parsed skill');
+    }
+
+    //if(!isUserPropertiesValid(json, properties)) throw 'User Properties invalid';
+
     return User(
       uid: json['_id'],
       userName: json['userName'],
@@ -52,12 +81,21 @@ class User with ChangeNotifier {
       followersCount: json['followersCount'],
       likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
-      // skills: json['skills'],
+      skills: skills,
       isAbstract: false,
     );
   }
 
   factory User.fromJsonMyProfile(Map<String, dynamic> json) {
+    print('user.from json my profile'+(json['skills'].toString()));
+    List<Skill> skills = [];
+    for(var i in json['skills']){
+      print('skill = '+i.toString());
+      skills.add(Skill.fromJson(i));
+      print('parsed skill');
+    }
+
+    //if(!isUserPropertiesValid(json, properties)) throw 'User Properties invalid';
     return User(
       uid: json['_id'],
       userName: json['userName'],
@@ -70,12 +108,18 @@ class User with ChangeNotifier {
       followersCount: json['followersCount'],
       likeCount: json['likeCount'],
       isFollowing: json['isFollowing'],
-      // skills: json['skills'],
+      skills: skills,
       isAbstract: false,
     );
   }
 
   factory User.fromJsonAbstract(Map<String, dynamic> json) {
+    print('user.from json abstract'+json.toString());
+
+    //if(!isUserPropertiesValid(json, abstractProperties)) throw 'User Properties invalid';
+
+    print('intact');
+
     return User(
         uid: json['_id'],
         userName: json['userName'],

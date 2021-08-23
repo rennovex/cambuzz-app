@@ -113,7 +113,7 @@ class Api {
       'userName': user.userName,
       'bio': user.bio ?? '',
       'uid': firebaseUid,
-      'skills': user.skills ?? [],
+      'skills': user.skills.map((e) => e.id) ?? [],
       'fileType': '.jpg'
     });
     if (response.statusCode == 201) {
@@ -291,7 +291,7 @@ class Api {
       'email': user.email,
       'userName': user.userName,
       'bio': user.bio ?? '',
-      'skills': user.skills ?? [],
+      'skills': user.skills.map((e) => e.id) ?? [],
       'fileType': '.jpg'
     });
     if (response.statusCode == 200) {
@@ -320,7 +320,7 @@ class Api {
       'email': user.email,
       'userName': user.userName,
       'bio': user.bio ?? '',
-      'skills': user.skills ?? [],
+      'skills': user.skills.map((e) => e.id) ?? [],
       'fileType': '.jpg'
     });
     if (response.statusCode == 200) {

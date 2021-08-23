@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
+import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/providers/myself.dart';
@@ -168,7 +169,7 @@ class _MyAppState extends State<MyApp> {
                               email: email,
                               userName: userName,
                               bio: bio,
-                              skills: skills);
+                              skills: skills.map((e) => Skill(id: e)));
 
                           var status =
                               await Api.postUser(user, firebaseUid, image);

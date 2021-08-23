@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
+import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
@@ -260,7 +261,7 @@ class _userProfileState extends State<UserProfileScreen>
                                       userName: userName,
                                       bio: bio,
                                       uid: user.uid,
-                                      skills: skills);
+                                      skills: skills.map((e) => Skill(id:e)));
                                   var status;
 
                                   if (image == null) {

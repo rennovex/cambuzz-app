@@ -134,7 +134,13 @@ const kTrendingUserName = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
   color: Colors.white,
-  fontSize: 7,
+  fontSize: 11,
+  shadows: <Shadow>[
+    Shadow(
+      blurRadius: 5.0,
+      color: Color.fromARGB(255, 0, 0, 0),
+    ),
+  ],
 );
 
 const kTrendingUserText = TextStyle(
@@ -142,6 +148,13 @@ const kTrendingUserText = TextStyle(
   fontWeight: FontWeight.w500,
   color: Colors.white,
   fontSize: 7,
+);
+
+const kTrendingUserRankingText = TextStyle(
+  fontFamily: kFontNamePrimary,
+  fontWeight: FontWeight.w600,
+  color: Colors.white,
+  fontSize: 11,
 );
 
 //  Community

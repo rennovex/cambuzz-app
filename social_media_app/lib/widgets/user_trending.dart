@@ -42,8 +42,9 @@ class UserTrending extends StatelessWidget {
                     child: TrendingUserItem(
                       height: 250.0,
                       width: double.infinity,
+                      borderColor: Color.fromRGBO(255, 245, 0, 1),
                       post: snapshot.data[0],
-                      ranking: Text('1'),
+                      ranking: Icon(MdiIcons.crown),
                     ),
                   ),
                   Row(
@@ -56,7 +57,15 @@ class UserTrending extends StatelessWidget {
                           height: 200.0,
                           width: double.infinity,
                           post: snapshot.data[1],
-                          ranking: Text('2'),
+                          ranking: CircleAvatar(
+                            radius: 15,
+                            child: Text(
+                              '2',
+                              style: kTrendingUserRankingText,
+                            ),
+                            backgroundColor: Color.fromRGBO(0, 255, 255, 1),
+                          ),
+                          borderColor: Color.fromRGBO(0, 255, 255, 1),
                         ),
                       ),
                       SizedBox(
@@ -67,7 +76,15 @@ class UserTrending extends StatelessWidget {
                           height: 200.0,
                           width: double.infinity,
                           post: snapshot.data[2],
-                          ranking: Text('3'),
+                          ranking: CircleAvatar(
+                            radius: 15,
+                            child: Text(
+                              '3',
+                              style: kTrendingUserRankingText,
+                            ),
+                            backgroundColor: Color.fromRGBO(255, 122, 0, 1),
+                          ),
+                          borderColor: Color.fromRGBO(255, 122, 0, 1),
                         ),
                       ),
                       SizedBox(

@@ -11,11 +11,13 @@ class TrendingUserItem extends StatelessWidget {
   final height;
   final width;
   final Widget ranking;
+  final Color borderColor;
   final Post post;
 
   TrendingUserItem({
     this.post,
     this.ranking,
+    this.borderColor,
     this.height,
     this.width,
   });
@@ -38,91 +40,95 @@ class TrendingUserItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           // ranking,
-          SizedBox(
-            // height: height,
-            // width: width,
-
-            child: Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: CachedNetworkImage(
-                    imageUrl: '${post.postImg}',
-                    fit: BoxFit.cover,
-                    width: width,
-                    height: height,
-                  ),
-                ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(100),
-                //     color: Colors.black,
-                //   ),
-                //   child: Row(
-                //     mainAxisSize: MainAxisSize.max,
-                //     // mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       SizedBox(
-                //         width: 5,
-                //       ),
-                //       CircleAvatar(
-                //         backgroundImage: NetworkImage(
-                //           post.user.image,
-                //         ),
-                //         radius: 14,
-                //       ),
-                //       SizedBox(
-                //         width: 5,
-                //       ),
-                //       Column(
-                //         crossAxisAlignment: CrossAxisAlignment.start,
-                //         mainAxisAlignment: MainAxisAlignment.center,
-                //         children: [
-                //           Text(
-                //             post.user.userName,
-                //             style: kTrendingUserName,
-                //           ),
-                //           Text(
-                //             post.title,
-                //             style: kTrendingUserText,
-                //           ),
-                //         ],
-                //       )
-                //     ],
-                //   ),
-                // ),
-                GestureDetector(
-                  onTap: () => showUser(context, post.user.uid),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 5, right: 5),
-                    child: Column(
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                            post.user.image,
-                          ),
-                          radius: 20,
-                        ),
-                        Text(
-                          post.user.userName,
-                          style: kTitleTextStyle.copyWith(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            shadows: <Shadow>[
-                              Shadow(
-                                blurRadius: 5.0,
-                                color: Color.fromARGB(255, 0, 0, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: borderColor,
+                      width: 2,
                     ),
                   ),
-                )
-              ],
-            ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: CachedNetworkImage(
+                      imageUrl: '${post.postImg}',
+                      fit: BoxFit.cover,
+                      width: width,
+                      height: height,
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                child: ranking,
+                left: 10,
+                top: 10,
+              ),
+              // Container(
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(100),
+              //     color: Colors.black,
+              //   ),
+              //   child: Row(
+              //     mainAxisSize: MainAxisSize.max,
+              //     // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [
+              //       SizedBox(
+              //         width: 5,
+              //       ),
+              //       CircleAvatar(
+              //         backgroundImage: NetworkImage(
+              //           post.user.image,
+              //         ),
+              //         radius: 14,
+              //       ),
+              //       SizedBox(
+              //         width: 5,
+              //       ),
+              //       Column(
+              //         crossAxisAlignment: CrossAxisAlignment.start,
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Text(
+              //             post.user.userName,
+              //             style: kTrendingUserName,
+              //           ),
+              //           Text(
+              //             post.title,
+              //             style: kTrendingUserText,
+              //           ),
+              //         ],
+              //       )
+              //     ],
+              //   ),
+              // ),
+              GestureDetector(
+                onTap: () => showUser(context, post.user.uid),
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 5, right: 5),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(
+                          post.user.image,
+                        ),
+                        radius: 20,
+                      ),
+                      Text(
+                        post.user.userName,
+                        style: kTrendingUserName,
+                      ),
+                    ],
+                  ),
+                ),
+              )
+            ],
           ),
 
           // SizedBox(

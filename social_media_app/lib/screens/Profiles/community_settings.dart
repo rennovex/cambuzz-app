@@ -27,21 +27,21 @@ class CommunitySettings extends StatelessWidget {
             ),
           ),
 
+          ListTile(
+            onTap: () =>
+                Navigator.of(context).pushNamed(ManagersScreen.routeName),
+            leading: Icon(Icons.group),
+            title: Text('Managers'),
+            trailing: Icon(Icons.arrow_forward_ios_rounded),
+          ),
           if (community.isSociety == true)
             ListTile(
               onTap: () =>
-                  Navigator.of(context).pushNamed(ManagersScreen.routeName),
-              leading: Icon(Icons.group),
-              title: Text('Managers'),
+                  Navigator.of(context).pushNamed(AddEventsScreen.routeName),
+              leading: Icon(Icons.add),
+              title: Text('Add event'),
               trailing: Icon(Icons.arrow_forward_ios_rounded),
             ),
-          ListTile(
-            onTap: () =>
-                Navigator.of(context).pushNamed(AddEventsScreen.routeName),
-            leading: Icon(Icons.add),
-            title: Text('Add event'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-          ),
           // ListTile(
           //   leading: Icon(Icons.block),
           //   title: Text('Blocked'),

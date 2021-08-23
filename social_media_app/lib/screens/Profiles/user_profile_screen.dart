@@ -261,7 +261,7 @@ class _userProfileState extends State<UserProfileScreen>
                                       userName: userName,
                                       bio: bio,
                                       uid: user.uid,
-                                      skills: skills.map((e) => Skill(id:e)));
+                                      skills: skills.map((e) => Skill(id: e)));
                                   var status;
 
                                   if (image == null) {
@@ -399,7 +399,9 @@ class _userProfileState extends State<UserProfileScreen>
                       SizedBox(width: 15),
                     ],
                   ),
-                  ProfileEvents(skills: user.skills),
+                  // ignore: null_aware_before_operator
+                  if (user.skills?.length > 0 ?? 0)
+                    ProfileEvents(skills: user.skills),
                 ],
               ),
             );

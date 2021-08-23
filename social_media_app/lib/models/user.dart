@@ -60,12 +60,9 @@ class User with ChangeNotifier {
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
-    print('user.from json'+json.toString());
     List<Skill> skills = [];
     for(var i in json['skills']){
-      print('skill = '+i.toString());
       skills.add(Skill.fromJson(i));
-      print('parsed skill');
     }
 
     //if(!isUserPropertiesValid(json, properties)) throw 'User Properties invalid';
@@ -87,12 +84,9 @@ class User with ChangeNotifier {
   }
 
   factory User.fromJsonMyProfile(Map<String, dynamic> json) {
-    print('user.from json my profile'+(json['skills'].toString()));
     List<Skill> skills = [];
     for(var i in json['skills']){
-      print('skill = '+i.toString());
       skills.add(Skill.fromJson(i));
-      print('parsed skill');
     }
 
     //if(!isUserPropertiesValid(json, properties)) throw 'User Properties invalid';
@@ -114,11 +108,9 @@ class User with ChangeNotifier {
   }
 
   factory User.fromJsonAbstract(Map<String, dynamic> json) {
-    print('user.from json abstract'+json.toString());
 
     //if(!isUserPropertiesValid(json, abstractProperties)) throw 'User Properties invalid';
 
-    print('intact');
 
     return User(
         uid: json['_id'],

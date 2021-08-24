@@ -40,7 +40,7 @@ class UserProfileScreen extends StatefulWidget {
 class _userProfileState extends State<UserProfileScreen>
     with AutomaticKeepAliveClientMixin {
   Future<User> future;
-  var posts;
+  Future posts;
   User user;
   bool isMe;
 
@@ -65,22 +65,13 @@ class _userProfileState extends State<UserProfileScreen>
   }
 
   Future refresh() async {
-    return widget.userId == null
-        ? Api.getUserPosts(
-                Provider.of<Myself>(context, listen: false).myself.uid)
-            .then(
-            (value) => setState(() {
-              // return posts;
-              posts = value;
-            }),
-          )
-        : Api.getUserPosts(widget.userId).then(
-            (value) => setState(() {
-              // return posts;
-              posts = value;
-            }),
-          );
-
+    setState(() {
+      posts = widget.userId == null
+          ? Api.getUserPosts(
+                  Provider.of<Myself>(context, listen: false).myself.uid)
+              .then((value) => value)
+          : Api.getUserPosts(widget.userId).then((value) => value);
+    });
     // return posts = null;
   }
 

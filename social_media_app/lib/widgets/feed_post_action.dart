@@ -52,19 +52,21 @@ class FeedPostAction extends StatelessWidget {
               },
             ),
 
-          ListTile(
-            leading: Icon(Icons.delete),
-            title: Text('Delete post'),
-            trailing: Icon(Icons.arrow_forward_ios_rounded),
-            onTap: () async {
-              final response = await post.deletePost();
-              Navigator.of(context).pop();
-              if (response.statusCode == 200) {
-                refresh();
-              }
-              // Fluttertoast.showToast(msg: 'Post deleted');
-            },
-          ),
+          if (post.user.uid ==
+              Provider.of<Myself>(context, listen: false).myself.uid)
+            ListTile(
+              leading: Icon(Icons.delete),
+              title: Text('Delete post'),
+              trailing: Icon(Icons.arrow_forward_ios_rounded),
+              onTap: () async {
+                final response = await post.deletePost();
+                Navigator.of(context).pop();
+                if (response.statusCode == 200) {
+                  refresh();
+                }
+                // Fluttertoast.showToast(msg: 'Post deleted');
+              },
+            ),
 
           // Container(
           //   margin: EdgeInsets.only(

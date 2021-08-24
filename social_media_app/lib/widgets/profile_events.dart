@@ -10,7 +10,7 @@ class ProfileEvents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 203,
+      height: 140,
       child: ListView.builder(
         padding: EdgeInsets.only(
           left: 18,
@@ -38,8 +38,8 @@ class ProfileEventItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(19),
         child: Image.network(
           image,
-          height: 200,
-          width: 166,
+          height: 140,
+          width: 140,
           fit: BoxFit.cover,
         ),
       ),

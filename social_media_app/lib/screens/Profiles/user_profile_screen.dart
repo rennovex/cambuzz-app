@@ -59,7 +59,8 @@ class _userProfileState extends State<UserProfileScreen>
   void didChangeDependencies() {
     super.didChangeDependencies();
     posts = widget.userId == null
-        ? Api.getUserPosts(Provider.of<Myself>(context).myself.uid)
+        ? Api.getUserPosts(
+            Provider.of<Myself>(context, listen: false).myself.uid)
         : Api.getUserPosts(widget.userId);
     // user = Provider.of<User>(context);
   }
@@ -419,7 +420,10 @@ class _userProfileState extends State<UserProfileScreen>
                   ),
                   // ignore: null_aware_before_operator
                   if (user.skills?.length > 0 ?? 0)
-                    ProfileEvents(skills: user.skills),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: ProfileEvents(skills: user.skills),
+                    ),
                 ],
               ),
             );

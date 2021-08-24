@@ -152,40 +152,51 @@ class CommentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
-      margin: EdgeInsets.all(8),
-      elevation: 3,
-      child: ListTile(
-        // isThreeLine: true,
-        leading: CircleAvatar(
-          backgroundImage: CachedNetworkImageProvider(comment.user.image),
-          radius: 22,
-        ),
-        title: Text(comment.user.userName),
-        subtitle: Text(
-          '${comment.text}',
-          style: kSubtitleTextStyle,
-        ),
-        trailing: IconButton(
-          icon: Icon(Icons.more_vert),
-          onPressed: () => showModalBottomSheet(
-            context: context,
-            builder: (context) => SingleChildScrollView(
-              child: Column(
-                children: [
-                  ListTile(
-                    leading: Icon(Icons.report_rounded),
-                    title: Text('Report'),
-                    trailing: Icon(Icons.arrow_forward_ios_rounded),
-                    onTap: () async {
-                      await Api.postReport(
-                          id: comment.id, objectType: 'Comment');
-                      Fluttertoast.showToast(msg: 'Reported');
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
+    return Container(
+      decoration: new BoxDecoration(
+        boxShadow: [
+          new BoxShadow(
+            color: Color.fromRGBO(0, 0, 0, .09),
+            blurRadius: 14.0,
+            offset: Offset.fromDirection(1.57079,4)
+          ),
+        ],
+      ),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        margin: EdgeInsets.all(8),
+        elevation: 0,
+        child: ListTile(
+          // isThreeLine: true,
+          leading: CircleAvatar(
+            backgroundImage: CachedNetworkImageProvider(comment.user.image),
+            radius: 22,
+          ),
+          title: Text(comment.user.userName),
+          subtitle: Text(
+            '${comment.text}',
+            style: kSubtitleTextStyle,
+          ),
+          trailing: IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () => showModalBottomSheet(
+              context: context,
+              builder: (context) => SingleChildScrollView(
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: Icon(Icons.report_rounded),
+                      title: Text('Report'),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () async {
+                        await Api.postReport(
+                            id: comment.id, objectType: 'Comment');
+                        Fluttertoast.showToast(msg: 'Reported');
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

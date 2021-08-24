@@ -144,6 +144,8 @@ const kTrendingUserName = TextStyle(
   ],
 );
 
+
+
 const kTrendingUserText = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,

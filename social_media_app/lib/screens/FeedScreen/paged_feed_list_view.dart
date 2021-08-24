@@ -74,7 +74,9 @@ class _PagedFeedListViewState extends State<PagedFeedListView> {
         builderDelegate: PagedChildBuilderDelegate<Post>(
           itemBuilder: (context, post, index) => ChangeNotifierProvider.value(
             value: post,
-            child: PostItem(),
+            child: PostItem(
+              refresh: () => _pagingController.refresh(),
+            ),
           ),
           firstPageErrorIndicatorBuilder: (context) => Center(
             child: Text('FirstPageError'),

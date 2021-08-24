@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/models/community.dart';
@@ -196,6 +197,20 @@ class Post with ChangeNotifier {
     comments = json;
     // return json;
     notifyListeners();
+    return response;
+  }
+
+  Future deletePost() async {
+    final response =
+        await HttpHelper.delete(uri: '/posts/${this.id}', body: {});
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t delete post');
+      throw response.body + ' Couldnt delete post';
+    }
+
+    Fluttertoast.showToast(msg: 'Post deleted');
+
     return response;
   }
 }

@@ -40,7 +40,7 @@ class UserProfileScreen extends StatefulWidget {
 class _userProfileState extends State<UserProfileScreen>
     with AutomaticKeepAliveClientMixin {
   Future<User> future;
-  Future<List> posts;
+  var posts;
   User user;
   bool isMe;
 
@@ -50,15 +50,39 @@ class _userProfileState extends State<UserProfileScreen>
     widget.userId == null
         ? future = Api.getUser()
         : future = Api.getUserWithId(widget.userId);
+
     // posts = ;
     // Api.getsnapshot().then((value) => snapshot = value);
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   super.didChangeDependencies();
-  //   // user = Provider.of<User>(context);
-  // }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    posts = widget.userId == null
+        ? Api.getUserPosts(Provider.of<Myself>(context).myself.uid)
+        : Api.getUserPosts(widget.userId);
+    // user = Provider.of<User>(context);
+  }
+
+  Future refresh() async {
+    return widget.userId == null
+        ? Api.getUserPosts(
+                Provider.of<Myself>(context, listen: false).myself.uid)
+            .then(
+            (value) => setState(() {
+              // return posts;
+              posts = value;
+            }),
+          )
+        : Api.getUserPosts(widget.userId).then(
+            (value) => setState(() {
+              // return posts;
+              posts = value;
+            }),
+          );
+
+    // return posts = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,12 +91,15 @@ class _userProfileState extends State<UserProfileScreen>
       child: Scaffold(
         extendBodyBehindAppBar: true,
         appBar: transparentAppBar(),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              buildProfileUI(),
-              buildProfilePosts(),
-            ],
+        body: RefreshIndicator(
+          onRefresh: refresh,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                buildProfileUI(),
+                buildProfilePosts(),
+              ],
+            ),
           ),
         ),
       ),
@@ -87,7 +114,7 @@ class _userProfileState extends State<UserProfileScreen>
               child: CircularProgressIndicator(),
             );
           } else {
-            if (Provider.of<Myself>(context).myself == null)
+            if (Provider.of<Myself>(context, listen: false).myself == null)
               return SpinKitChasingDots(
                 color: kPrimaryColor,
               );
@@ -410,9 +437,7 @@ class _userProfileState extends State<UserProfileScreen>
       );
 
   Widget buildProfilePosts() => FutureBuilder(
-      future: widget.userId == null
-          ? Api.getUserPosts(Provider.of<Myself>(context).myself.uid)
-          : Api.getUserPosts(widget.userId),
+      future: posts,
       builder: (_, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting)
           return Center(
@@ -428,6 +453,7 @@ class _userProfileState extends State<UserProfileScreen>
                 value: snapshot.data[ind] as Post,
                 child: PostItem(
                   disableNavigation: true,
+                  refresh: refresh,
                 )),
           );
         } else

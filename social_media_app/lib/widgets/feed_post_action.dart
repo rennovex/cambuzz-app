@@ -9,8 +9,9 @@ import 'package:social_media_app/providers/post.dart';
 class FeedPostAction extends StatelessWidget {
   // const FeedPostAction({Post post, Key key}) : super(key: key);
   final Post post;
+  final Function refresh;
 
-  FeedPostAction(this.post);
+  FeedPostAction({this.post, this.refresh});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,8 @@ class FeedPostAction extends StatelessWidget {
               Fluttertoast.showToast(msg: 'Reported');
             },
           ),
-          if (post.user.uid != Provider.of<Myself>(context).myself.uid)
+          if (post.user.uid !=
+              Provider.of<Myself>(context, listen: false).myself.uid)
             ListTile(
               leading: Icon(Icons.block),
               title: Text('Block'),
@@ -49,6 +51,20 @@ class FeedPostAction extends StatelessWidget {
                 Fluttertoast.showToast(msg: '${post.user.userName} blocked');
               },
             ),
+
+          ListTile(
+            leading: Icon(Icons.delete),
+            title: Text('Delete post'),
+            trailing: Icon(Icons.arrow_forward_ios_rounded),
+            onTap: () async {
+              final response = await post.deletePost();
+              Navigator.of(context).pop();
+              if (response.statusCode == 200) {
+                refresh();
+              }
+              // Fluttertoast.showToast(msg: 'Post deleted');
+            },
+          ),
 
           // Container(
           //   margin: EdgeInsets.only(

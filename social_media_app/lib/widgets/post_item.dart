@@ -12,12 +12,14 @@ import 'package:social_media_app/widgets/feed_post_action.dart';
 class PostItem extends StatelessWidget {
   final bool disableComments;
   final bool disableNavigation;
+  final Function refresh;
   // final post = Provider.of<Post>(context);
   //  Post post =
 
   PostItem({
     this.disableComments = false,
     this.disableNavigation = false,
+    this.refresh,
     // @required this.post,
     Key key,
   }) : super(key: key);
@@ -140,7 +142,8 @@ class PostItem extends StatelessWidget {
                         onPressed: () => showModalBottomSheet(
                           context: context,
                           builder: (context) => FeedPostAction(
-                            post,
+                            post: post,
+                            refresh: refresh,
                           ),
                         ),
                       ),

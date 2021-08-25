@@ -265,6 +265,7 @@ class _userProfileState extends State<UserProfileScreen>
                                       .push(MaterialPageRoute(
                                           builder: (context) => Step3(
                                                 bioValue: bio,
+                                                skills: User.getSkillsId(user.skills),
                                               )));
                                   if (bioData == null) {
                                     return Navigator.pop(context);

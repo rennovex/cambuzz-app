@@ -3,10 +3,11 @@ import 'package:social_media_app/constants.dart';
 
 class PillToggleButton extends StatefulWidget {
   final String text;
+  var selected = false;
   final Function(bool) onPressed;
 
-  const PillToggleButton(
-      {Key key, @required this.text, @required this.onPressed})
+  PillToggleButton(
+      {Key key, @required this.text, @required this.onPressed, this.selected})
       : super(key: key);
 
   @override
@@ -14,7 +15,6 @@ class PillToggleButton extends StatefulWidget {
 }
 
 class _PillToggleButtonState extends State<PillToggleButton> {
-  var selected = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,11 @@ class _PillToggleButtonState extends State<PillToggleButton> {
               shape: MaterialStateProperty.all(RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                   side: BorderSide(
-                      color: (selected) ? kPrimaryColor : Colors.black)))),
+                      color: (widget.selected) ? kPrimaryColor : Colors.black)))),
           onPressed: () {
             setState(() {
-              selected = !selected;
-              (this.widget.onPressed ?? () {})(selected);
+              widget.selected = !widget.selected;
+              (this.widget.onPressed ?? () {})(widget.selected);
             });
           },
           child: Container(
@@ -38,7 +38,7 @@ class _PillToggleButtonState extends State<PillToggleButton> {
               style: TextStyle(
                 fontFamily: 'poppins',
                 fontSize: 13,
-                color: (selected) ? kPrimaryColor : Colors.black,
+                color: (widget.selected) ? kPrimaryColor : Colors.black,
               ),
             ),
           )),

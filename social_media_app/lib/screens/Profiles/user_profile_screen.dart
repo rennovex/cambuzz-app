@@ -279,14 +279,14 @@ class _userProfileState extends State<UserProfileScreen>
                                       userName: userName,
                                       bio: bio,
                                       uid: user.uid,
-                                      skills: skills.map((e) => Skill(id: e)));
+                                      skills: User.getSkillsFromIds(skills));
                                   var status;
 
                                   if (image == null) {
                                     print('image is null');
                                     newUser.image = user.image;
                                     status =
-                                        await Api.putUserWithoutImage(user);
+                                        await Api.putUserWithoutImage(newUser);
                                   } else {
                                     print('image is not null');
                                     status = await Api.putUser(newUser, image);

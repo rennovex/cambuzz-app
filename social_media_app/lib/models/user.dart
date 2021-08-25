@@ -1,4 +1,3 @@
-
 import 'package:flutter/foundation.dart';
 import 'package:social_media_app/models/skill.dart';
 
@@ -42,26 +41,37 @@ class User with ChangeNotifier {
       this.email,
       this.skills});
 
-  static List properties = ['_id', 'userName', 'name', 'image', 'coverImage','bio','followingCount', 'followersCount', 'likeCount','isFollowing', 'skills'];
+  static List properties = [
+    '_id',
+    'userName',
+    'name',
+    'image',
+    'coverImage',
+    'bio',
+    'followingCount',
+    'followersCount',
+    'likeCount',
+    'isFollowing',
+    'skills'
+  ];
   static List abstractProperties = ['_id', 'userName', 'name', 'image'];
 
-  static bool isUserPropertiesValid(Map <String, dynamic> json, List<String> properties){
+  static bool isUserPropertiesValid(
+      Map<String, dynamic> json, List<String> properties) {
     print('testing');
-    for(String i in properties){
+    for (String i in properties) {
       print('test $i');
-      if(!json.keys.contains(i)){
-
+      if (!json.keys.contains(i)) {
         return false;
       }
       print('pass $i');
-
     }
     return true;
   }
 
   factory User.fromJson(Map<String, dynamic> json) {
     List<Skill> skills = [];
-    for(var i in json['skills']){
+    for (var i in json['skills']) {
       skills.add(Skill.fromJson(i));
     }
 
@@ -85,7 +95,7 @@ class User with ChangeNotifier {
 
   factory User.fromJsonMyProfile(Map<String, dynamic> json) {
     List<Skill> skills = [];
-    for(var i in json['skills']){
+    for (var i in json['skills']) {
       skills.add(Skill.fromJson(i));
     }
 
@@ -108,9 +118,7 @@ class User with ChangeNotifier {
   }
 
   factory User.fromJsonAbstract(Map<String, dynamic> json) {
-
     //if(!isUserPropertiesValid(json, abstractProperties)) throw 'User Properties invalid';
-
 
     return User(
         uid: json['_id'],
@@ -142,5 +150,21 @@ class User with ChangeNotifier {
       notifyListeners();
       throw 'Cant unfollow ${response.body} of post ${this.uid}';
     }
+  }
+
+  static List<String> getSkillsId(List<Skill> skills) {
+    List<String> ids = [];
+    for (var i in skills) {
+      ids.add(i.id);
+    }
+    return ids;
+  }
+
+  static List<Skill> getSkillsFromIds(List<String> ids) {
+    List<Skill> skills = [];
+    for (var i in ids) {
+      skills.add(Skill(id: i));
+    }
+    return skills;
   }
 }

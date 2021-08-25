@@ -169,7 +169,7 @@ class _MyAppState extends State<MyApp> {
                               email: email,
                               userName: userName,
                               bio: bio,
-                              skills: skills.map((e) => Skill(id: e)));
+                              skills: User.User.getSkillsFromIds(skills));
 
                           var status =
                               await Api.postUser(user, firebaseUid, image);

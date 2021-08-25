@@ -31,7 +31,7 @@ class ProfileHeader extends StatelessWidget {
               width: double.infinity,
               height: size.height * 0.25,
             ),
-          ), 
+          ),
         ),
         Positioned(
           // left: 150,
@@ -40,6 +40,12 @@ class ProfileHeader extends StatelessWidget {
             decoration: BoxDecoration(
               gradient: kLinearGradient,
               shape: BoxShape.circle,
+              boxShadow: [
+                new BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, .09),
+                    blurRadius: 10.0,
+                    offset: Offset.fromDirection(1.57079, 4)),
+              ],
             ),
             child: CircleAvatar(
               backgroundColor: Colors.transparent,

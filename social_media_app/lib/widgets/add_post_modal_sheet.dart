@@ -45,6 +45,11 @@ class _AddPostState extends State<AddPost> {
     print(textPostController.value.text);
 
     if (postType == PostType.TextPost) {
+      if (titleController.value.text.trim().isEmpty) {
+        Fluttertoast.showToast(msg: 'Title cannot be empty');
+        return;
+      }
+
       if (textPostController.value.text.trim().isEmpty) {
         Fluttertoast.showToast(msg: 'Text Post cannot be empty');
         return;
@@ -176,16 +181,27 @@ class _AddPostState extends State<AddPost> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                  bottom: 10,
-                ),
-                child: Text(
-                  'Please leave the community field empty to post to your profile',
-                  // softWrap: true,
-                  maxLines: 3,
-                ),
-              ),
+                  padding: const EdgeInsets.only(
+                    // left: 10,
+                    bottom: 10,
+                  ),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.info,
+                      size: 30,
+                    ),
+                    // minLeadingWidth: 0,
+                    horizontalTitleGap: 0,
+                    title: Text(
+                      'Please leave the community field empty to post to your profile',
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                        fontSize: 11,
+                        // height: 10.5,
+                      ),
+                    ),
+                  )),
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
               //   child: TextField(
@@ -220,7 +236,11 @@ class _AddPostState extends State<AddPost> {
                   top: 10,
                   left: 15,
                 ),
-                child: const Text('Post Type'),
+                child: Text(
+                  'Post Type',
+                  style: kSubtitleTextStyle.copyWith(
+                      fontSize: 14, color: Color.fromRGBO(113, 106, 106, 1)),
+                ),
               ),
               Row(
                 children: [

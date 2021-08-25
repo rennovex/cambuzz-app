@@ -38,7 +38,6 @@ class PostViewScreen extends StatelessWidget {
                           disableComments: true,
                         ),
                       ),
-                      Text('Comments'),
                       Consumer<Post>(
                         builder: (_, post, __) => FutureBuilder(
                             future: future,
@@ -156,10 +155,9 @@ class CommentItem extends StatelessWidget {
       decoration: new BoxDecoration(
         boxShadow: [
           new BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, .09),
-            blurRadius: 14.0,
-            offset: Offset.fromDirection(1.57079,4)
-          ),
+              color: Color.fromRGBO(0, 0, 0, .09),
+              blurRadius: 14.0,
+              offset: Offset.fromDirection(1.57079, 4)),
         ],
       ),
       child: Card(
@@ -172,7 +170,12 @@ class CommentItem extends StatelessWidget {
             backgroundImage: CachedNetworkImageProvider(comment.user.image),
             radius: 22,
           ),
-          title: Text(comment.user.userName),
+          title: Text(
+            comment.user.userName,
+            style: kTitleTextStyle.copyWith(
+              fontSize: 15,
+            ),
+          ),
           subtitle: Text(
             '${comment.text}',
             style: kSubtitleTextStyle,

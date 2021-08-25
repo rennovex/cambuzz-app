@@ -320,7 +320,7 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
           child: Text(
             'Post Event',
             textAlign: TextAlign.center,
-            style: kSubtitleTextStyle.copyWith(color: Colors.white),
+            // style: kSubtitleTextStyle.copyWith(color: Colors.white),
           ),
           style: TextButton.styleFrom(
             primary: Colors.white,

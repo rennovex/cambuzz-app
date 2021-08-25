@@ -28,7 +28,7 @@ const LinearGradient kButtonLinearGradient = LinearGradient(
   ],
 );
 
-const String kFontNamePrimary = 'Lato';
+const String kFontNamePrimary = 'Poppins';
 
 const kAppBarTitleStyle = TextStyle(
   fontFamily: 'Billabong',
@@ -39,15 +39,15 @@ const kAppBarTitleStyle = TextStyle(
 
 const kTitleTextStyle = TextStyle(
   fontFamily: 'Poppins',
-  fontWeight: FontWeight.w900,
+  fontWeight: FontWeight.w700,
   fontSize: kLargeTextSize,
   color: Colors.black,
 );
 
 const kSubtitleTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
-  fontWeight: FontWeight.normal,
-  fontSize: kSmallTextSize,
+  fontWeight: FontWeight.w400,
+  fontSize: 13,
   color: Colors.black,
 );
 const kBodyprimaryTextStyle = TextStyle(
@@ -77,11 +77,13 @@ const kPostBottomMetricTextStyle = TextStyle(
 
 const kPostHeaderTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
-  fontWeight: FontWeight.w900,
-  fontSize: 18,
+  fontWeight: FontWeight.w700,
+  fontSize: 17,
 );
 
 const kPostSubHeaderTextStyle = TextStyle(
+  fontWeight: FontWeight.w400,
+  fontSize: 14,
   fontFamily: kFontNamePrimary,
 );
 
@@ -91,7 +93,7 @@ const kPostTimeTextStyle = TextStyle(
 
 const kPostTitleTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
-  fontSize: 18,
+  fontSize: 16,
   fontWeight: FontWeight.w600,
 );
 
@@ -143,8 +145,6 @@ const kTrendingUserName = TextStyle(
     ),
   ],
 );
-
-
 
 const kTrendingUserText = TextStyle(
   fontFamily: kFontNamePrimary,

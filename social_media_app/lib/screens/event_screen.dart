@@ -373,7 +373,11 @@ class _EventScreenState extends State<EventScreen>
                         left: 10,
                         top: 10,
                         child: IconButton(
-                          icon: Icon(Icons.close),
+                          icon: Icon(
+                            Icons.close,
+                            size: 30,
+                            color: Colors.white,
+                          ),
                           onPressed: () => Navigator.of(context).pop(),
                         ))
                   ],

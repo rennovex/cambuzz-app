@@ -49,10 +49,9 @@ class PostItem extends StatelessWidget {
       decoration: new BoxDecoration(
         boxShadow: [
           new BoxShadow(
-            color: Color.fromRGBO(0, 0, 0, .09),
-            blurRadius: 14.0,
-            offset: Offset.fromDirection(1.57079,4)
-          ),
+              color: Color.fromRGBO(0, 0, 0, .09),
+              blurRadius: 14.0,
+              offset: Offset.fromDirection(1.57079, 4)),
         ],
       ),
       child: Card(
@@ -160,7 +159,7 @@ class PostItem extends StatelessWidget {
                       ],
                     ),
                   ),
-    
+
                   //
                   // SizedBox(width: 10),
                 ],
@@ -211,7 +210,7 @@ class PostItem extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-    
+
               Consumer<Post>(
                 builder: (_, post, __) => Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -261,7 +260,7 @@ class PostItem extends StatelessWidget {
                         ),
                       ),
                     ),
-    
+
                     SizedBox(
                       width: 20,
                     ),

@@ -31,7 +31,7 @@ const LinearGradient kButtonLinearGradient = LinearGradient(
 const String kFontNamePrimary = 'Poppins';
 
 const kAppBarTitleStyle = TextStyle(
-  fontFamily: 'Billabong',
+  fontFamily: 'NovaSlim',
   // fontWeight: FontWeight.normal,
   fontSize: 30,
   color: Colors.white,

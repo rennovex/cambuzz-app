@@ -49,6 +49,8 @@ class Post with ChangeNotifier {
       return duration.inMinutes.toString() + ' min';
     } else if (duration.inSeconds > 0) {
       return duration.inSeconds.toString() + ' sec';
+    } else if (duration.inSeconds == 0) {
+      return 'now';
     }
     return 'error';
   }

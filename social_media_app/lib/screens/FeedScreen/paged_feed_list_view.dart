@@ -8,6 +8,8 @@ import 'package:social_media_app/widgets/post_item.dart';
 class PagedFeedListView extends StatefulWidget {
   const PagedFeedListView({Key key}) : super(key: key);
 
+  // static Function refresh = (){};
+
   @override
   _PagedFeedListViewState createState() => _PagedFeedListViewState();
 }
@@ -62,6 +64,8 @@ class _PagedFeedListViewState extends State<PagedFeedListView> {
     _pagingController.dispose();
     super.dispose();
   }
+
+  // widget.refresh = _pagingController.refresh();
 
   @override
   Widget build(BuildContext context) {

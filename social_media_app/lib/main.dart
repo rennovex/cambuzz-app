@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
@@ -307,7 +308,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _selectedPageIndex = 0;
 
     initializePages();
-    print(_pages);
 
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
@@ -331,11 +331,20 @@ class _MyHomePageState extends State<MyHomePage> {
         resizeToAvoidBottomInset: false,
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
-          onPressed: () => showModalBottomSheet<dynamic>(
-            isScrollControlled: true,
-            context: context,
-            builder: (context) => AddPost(context),
-          ),
+          onPressed: () async {
+            final shouldReload = await showModalBottomSheet<dynamic>(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => AddPost(
+                    context,
+                  ),
+                ) ??
+                false;
+            // shouldReload = true;
+            if (shouldReload)
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (_) => super.widget));
+          },
           tooltip: 'Increment',
           child: Container(
             child: Icon(

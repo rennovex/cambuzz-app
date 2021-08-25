@@ -51,7 +51,6 @@ class _EventScreenState extends State<EventScreen>
     super.initState();
     events = Api.getEvents();
     eventTypes = Api.getEventTypes();
-
   }
 
   @override
@@ -370,6 +369,13 @@ class _EventScreenState extends State<EventScreen>
                         ),
                       ),
                     ),
+                    Positioned(
+                        left: 10,
+                        top: 10,
+                        child: IconButton(
+                          icon: Icon(Icons.close),
+                          onPressed: () => Navigator.of(context).pop(),
+                        ))
                   ],
                 ),
               ],

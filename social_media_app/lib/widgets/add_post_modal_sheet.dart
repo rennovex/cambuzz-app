@@ -33,12 +33,13 @@ class _AddPostState extends State<AddPost> {
   TextEditingController textPostController;
   XFile chosenImage;
   dynamic chosenCommunity;
+  bool isPosting = false;
 
   void setImage(XFile image) {
     chosenImage = image;
   }
 
-  void postPost() {
+  Future<void> postPost() async {
     print(titleController.value.text);
     print(postType);
     print(textPostController.value.text);
@@ -48,13 +49,18 @@ class _AddPostState extends State<AddPost> {
         Fluttertoast.showToast(msg: 'Text Post cannot be empty');
         return;
       }
+
+      setState(() {
+        isPosting = true;
+      });
+
       chosenCommunity != null
-          ? Api.postCommunityTextPost(
+          ? await Api.postCommunityTextPost(
               id: chosenCommunity['_id'],
               title: titleController.value.text.trim(),
               text: textPostController.value.text.trim(),
             )
-          : Api.postUserTextPost(
+          : await Api.postUserTextPost(
               title: titleController.value.text.trim(),
               text: textPostController.value.text.trim(),
             );
@@ -65,22 +71,30 @@ class _AddPostState extends State<AddPost> {
         Fluttertoast.showToast(msg: 'No Image Selected');
         return;
       }
+
       if (titleController.value.text.trim().isEmpty) {
         Fluttertoast.showToast(msg: 'Please enter title');
         return;
       }
+
+      setState(() {
+        isPosting = true;
+      });
       chosenCommunity != null
-          ? Api.postCommunityImagePost(
+          ? await Api.postCommunityImagePost(
               id: chosenCommunity['_id'],
               title: titleController.value.text.trim(),
               image: chosenImage,
             )
-          : Api.postUserImagePost(
+          : await Api.postUserImagePost(
               title: titleController.value.text.trim(),
               image: chosenImage,
             );
     }
-    Navigator.of(context).pop();
+    setState(() {
+      isPosting = false;
+    });
+    Navigator.of(context).pop(true);
   }
 
   @override
@@ -287,8 +301,8 @@ class _AddPostState extends State<AddPost> {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: Color.fromRGBO(69, 83, 243, 1)),
-                        onPressed: () => postPost(),
-                        child: Text('Post'),
+                        onPressed: () => isPosting ? null : postPost(),
+                        child: Text(isPosting ? 'Posting' : 'Post'),
                       ),
                     ),
                   ),

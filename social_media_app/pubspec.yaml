@@ -93,6 +93,14 @@ flutter:
         - asset: fonts/Poppins/Poppins-Light.ttf
 
 
+    - family: BillionDreams
+      fonts:
+        - asset: fonts/billion-dreams-font/BillionDreams.ttf
+
+    - family: BubbleBobble
+      fonts:
+        - asset: fonts/bubble-bobble/BubbleBobble.ttf
+
     - family: Lato
       fonts:
         - asset: fonts/Lato/Lato-Regular.ttf

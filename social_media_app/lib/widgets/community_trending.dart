@@ -31,6 +31,8 @@ class CommunityTrending extends StatelessWidget {
               ),
               child: Text(
                 'Top community posts',
+                style: kTitleTextStyle,
+
               ),
             ),
             Padding(

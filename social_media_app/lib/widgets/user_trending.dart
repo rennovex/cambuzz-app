@@ -30,6 +30,7 @@ class UserTrending extends StatelessWidget {
               ),
               child: Text(
                 'Whats trending',
+                style: kTitleTextStyle,
               ),
             ),
             FutureBuilder(

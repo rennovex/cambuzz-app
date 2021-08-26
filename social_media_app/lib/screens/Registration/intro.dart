@@ -10,7 +10,7 @@ class Intro extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RegistrationScreen(
-      screenMetaData: Image.asset('images/cambuzz_icon.png'),
+      screenMetaData: Image.asset('images/cambuzz_icon.png', width: 200,),
       screenForm: Container(
         child: Column(
           children: [

@@ -15,7 +15,7 @@ class RegistrationStepTop extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        
+        SizedBox(height: 10,),
         Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -24,6 +24,7 @@ class RegistrationStepTop extends StatelessWidget {
                 'images/cambuzz_icon.png',
                 width: 90,
               ),
+              SizedBox(width: 10,),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

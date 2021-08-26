@@ -16,6 +16,8 @@ class Step3 extends StatefulWidget {
   int bioMax;
   Function(String) onSkillAdded;
   Function(String) onSkillRemoved;
+  List<String> skills = [];
+
   Step3(
       {this.onBackButonPressed,
       this.primaryButtonOnPressed,
@@ -23,6 +25,7 @@ class Step3 extends StatefulWidget {
       this.bioMax = 100,
       this.onBioChanged,
       this.onSkillAdded,
+      this.skills,
       this.onSkillRemoved});
 
   @override
@@ -30,7 +33,6 @@ class Step3 extends StatefulWidget {
 }
 
 class _Step3State extends State<Step3> {
-  List<String> skills = [];
 
   @override
   Widget build(BuildContext context) {
@@ -81,14 +83,15 @@ class _Step3State extends State<Step3> {
                           children: snapshot.data.map<Widget>((skill) {
                             return PillToggleButton(
                                 text: skill.name,
+                                selected: widget.skills.contains(skill.id),
                                 onPressed: (value) {
                                   if (value) {
-                                    skills.add(skill.id);
+                                    widget.skills.add(skill.id);
                                     widget.onSkillAdded != null
                                         ? widget.onSkillAdded(skill.id)
                                         : '';
                                   } else {
-                                    skills.remove(skill.id);
+                                    widget.skills.remove(skill.id);
                                     widget.onSkillRemoved != null
                                         ? widget.onSkillRemoved(skill.id)
                                         : '';
@@ -112,7 +115,7 @@ class _Step3State extends State<Step3> {
         widget.primaryButtonOnPressed != null
             ? widget.primaryButtonOnPressed()
             : '';
-        Navigator.of(context).pop({'bio':widget.bioValue, 'skills':skills});
+        Navigator.of(context).pop({'bio':widget.bioValue, 'skills':widget.skills});
       },
       topElementStackBottomPositioning: 50,
     );

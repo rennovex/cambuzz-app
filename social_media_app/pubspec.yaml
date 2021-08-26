@@ -91,6 +91,11 @@ flutter:
         - asset: fonts/Poppins/Poppins-Regular.ttf
         - asset: fonts/Poppins/Poppins-Bold.ttf
         - asset: fonts/Poppins/Poppins-Light.ttf
+    
+    - family: NovaSlim
+      fonts:
+        - asset: fonts/Nova_Slim/NovaSlim-Regular.ttf
+
 
 
     - family: BillionDreams

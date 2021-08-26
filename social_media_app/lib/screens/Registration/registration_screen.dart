@@ -4,7 +4,6 @@ import 'package:social_media_app/widgets/primary_gradient_button.dart';
 
 final user = {};
 
-
 class RegistrationScreen extends StatelessWidget {
   final Widget screenMetaData;
   final Widget screenForm;
@@ -22,47 +21,62 @@ class RegistrationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('primary button Text = '+primaryActionButtonText);
+    print('primary button Text = ' + primaryActionButtonText);
     return SafeArea(
       child: Scaffold(
-        body: Container(
-          child: Column(
-            children: [
-              Container(
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
-                  children: [
-                    Positioned(
-                      child: SvgPicture.asset(
-                        'images/registration_background.svg',
+        body: SingleChildScrollView(
+          child: Container(
+            constraints: BoxConstraints(
+                minHeight: MediaQuery.of(context).size.height,
+                minWidth: double.infinity,
+                maxHeight: double.infinity),
+            child: Column(
+              children: [
+                Container(
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    alignment: Alignment.center,
+                    children: [
+                      Positioned(
+                        child: SvgPicture.asset(
+                          'images/registration_background.svg',
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      child: Container(
-                        child: screenMetaData,
-                        width: MediaQuery.of(context).size.width * .9,
-                      ),
-                      bottom: bottomElementStackBottomPositioning,
-                      top: topElementStackBottomPositioning,
-                    )
-                  ],
+                      Positioned(
+                        child: Container(
+                          child: screenMetaData,
+                          width: MediaQuery.of(context).size.width * .9,
+                        ),
+                        bottom: bottomElementStackBottomPositioning,
+                        top: topElementStackBottomPositioning,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                    child: Container(
+                Column(
+                  
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
                         width: MediaQuery.of(context).size.width * .9,
                         child: screenForm),
-                  )),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                child: Container(
-                  width: MediaQuery.of(context).size.width * .8,
-                  child: PrimaryGradientButton(onPressed: primaryButtonOnPressed, text:primaryActionButtonText),
-                ),
-              ),
-            ],
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .8,
+                          child: PrimaryGradientButton(
+                              onPressed: primaryButtonOnPressed,
+                              text: primaryActionButtonText),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),

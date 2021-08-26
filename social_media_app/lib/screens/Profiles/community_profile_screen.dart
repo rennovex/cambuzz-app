@@ -359,12 +359,11 @@ class CreateCommunityBottomSheet extends StatefulWidget {
 class _CreateCommunityBottomSheetState
     extends State<CreateCommunityBottomSheet> {
   bool communityNameAvailable = true;
-
+  bool waitingForResponse = false;
   XFile pickedImage;
 
   @override
   Widget build(BuildContext context) {
-    print(widget.communityName);
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20),
       child: SingleChildScrollView(
@@ -474,9 +473,10 @@ class _CreateCommunityBottomSheetState
               height: 20,
             ),
             BluePrimaryButton(
+              isDisabled: waitingForResponse,
               text: widget.editCommunity
-                  ? 'Modify community'
-                  : 'Create Community',
+                  ? (waitingForResponse)?'Modifying...':'Modify community'
+                  : (waitingForResponse)?'Creating...':'Create Community',
               onPressed: () async {
                 if (widget.communityName.trim().length < 3 ||
                     widget.communityName.trim().length > 50) {
@@ -488,6 +488,9 @@ class _CreateCommunityBottomSheetState
                       msg: 'Community should have an image');
                 }
                 var completed;
+                setState(() {
+                  waitingForResponse = true;
+                });
 
                 if (widget.editCommunity) {
                   if (pickedImage == null) {
@@ -503,6 +506,7 @@ class _CreateCommunityBottomSheetState
                       widget.communityName, pickedImage);
                 }
                 if (completed) {
+                  
                   Fluttertoast.showToast(
                       msg: widget.editCommunity
                           ? 'Community modified'
@@ -514,6 +518,9 @@ class _CreateCommunityBottomSheetState
                       msg:
                           'Oops! Could not ${widget.editCommunity ? 'edit' : 'create'} community');
                 }
+                setState(() {
+                  waitingForResponse = false;
+                });
               },
             )
           ],

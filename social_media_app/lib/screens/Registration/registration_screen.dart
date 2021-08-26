@@ -36,10 +36,8 @@ class RegistrationScreen extends StatelessWidget {
                         clipBehavior: Clip.none,
                         alignment: Alignment.center,
                         children: [
-                          Positioned(
-                            child: SvgPicture.asset(
-                              'images/registration_background.svg',
-                            ),
+                          SvgPicture.asset(
+                            'images/registration_background.svg',
                           ),
                           Positioned(
                             child: Container(

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,17 @@ class GoogleSignInProvider with ChangeNotifier {
         final authResult =
             await FirebaseAuth.instance.signInWithCredential(credential);
         final currentUser = FirebaseAuth.instance.currentUser;
-        return {"email":currentUser.email, "uid":currentUser.uid};
+
+        if (currentUser.email.endsWith('tkmce.ac.in'))
+          return {"email": currentUser.email, "uid": currentUser.uid};
+        else {
+          Fluttertoast.showToast(
+            msg: 'Please use @tkmce.ac.in email',
+          );
+          print('Non TKMCE member');
+          currentUser.delete();
+          logout();
+        }
         // if (authResult.additionalUserInfo.isNewUser) {
         //   //
         // } else {

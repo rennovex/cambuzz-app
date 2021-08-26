@@ -173,7 +173,7 @@ final List<Event> events = [
 
 final List<Map<String, Object>> filters = [
   {
-    'name': 'Web Developers',
+    // 'name': 'Web Developers',
     'color': Color.fromRGBO(4, 110, 187, 0.69),
   },
   {

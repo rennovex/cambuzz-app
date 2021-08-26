@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
@@ -164,10 +165,12 @@ class _userProfileState extends State<UserProfileScreen>
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.person,
+                            FaIcon(
+                              FontAwesomeIcons.solidUser,
                               color: Colors.blue,
+                              size: 18,
                             ),
+                            SizedBox(width: 5),
                             Consumer<User>(
                               builder: (_, user, __) => (Text(
                                 '${user.followersCount ?? 0} Followers',
@@ -179,10 +182,12 @@ class _userProfileState extends State<UserProfileScreen>
                       ),
                       Row(
                         children: [
-                          Icon(
-                            Icons.favorite,
+                          FaIcon(
+                            FontAwesomeIcons.solidHeart,
                             color: Colors.red,
+                            size: 18,
                           ),
+                          SizedBox(width: 5),
                           Text(
                             '${user?.likeCount ?? 0} Likes',
                             style: kProfileLabel,
@@ -198,10 +203,12 @@ class _userProfileState extends State<UserProfileScreen>
                         ),
                         child: Row(
                           children: [
-                            Icon(
-                              MdiIcons.medal,
+                            FaIcon(
+                              FontAwesomeIcons.userFriends,
                               color: Colors.purpleAccent,
+                              size: 18,
                             ),
+                            SizedBox(width: 5),
                             Text(
                               '${user.followingCount ?? 0} Following',
                               style: kProfileLabel,
@@ -265,7 +272,8 @@ class _userProfileState extends State<UserProfileScreen>
                                       .push(MaterialPageRoute(
                                           builder: (context) => Step3(
                                                 bioValue: bio,
-                                                skills: User.getSkillsId(user.skills),
+                                                skills: User.getSkillsId(
+                                                    user.skills),
                                               )));
                                   if (bioData == null) {
                                     return Navigator.pop(context);
@@ -399,7 +407,9 @@ class _userProfileState extends State<UserProfileScreen>
                       if (!isMe)
                         Expanded(
                           child: OutlinedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Fluttertoast.showToast(msg: 'Coming soon!');
+                            },
                             child: Text(
                               'Send a message',
                               textAlign: TextAlign.center,

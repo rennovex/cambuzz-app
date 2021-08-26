@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -187,7 +188,8 @@ class _MyAppState extends State<MyApp> {
                             Global.apiToken = status['token'];
                             user.uid = status['_id'];
                             print('provider setting myself');
-                            Provider.of<Myself>(context).setMyself(user);
+                            Provider.of<Myself>(context, listen: false).myself =
+                                user;
                             //Global.myself = user;
                             //TODO: if user does not select image, show default dp
                             await Navigator.of(context).push(MaterialPageRoute(
@@ -384,6 +386,7 @@ class _MyHomePageState extends State<MyHomePage> {
             child: BottomNavigationBar(
               backgroundColor: Colors.white,
               type: BottomNavigationBarType.fixed,
+              // selectedLabelStyle: ,
               currentIndex: _selectedPageIndex,
               onTap: (index) {
                 setState(() {
@@ -393,13 +396,15 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               selectedItemColor: kPrimaryColor,
               items: [
-                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Feed'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.search), label: 'Search'),
+                    icon: FaIcon(FontAwesomeIcons.home), label: 'Feed'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.trending_up), label: 'Trending'),
+                    icon: FaIcon(FontAwesomeIcons.search), label: 'Search'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.calendar_today_outlined), label: 'Events'),
+                    icon: FaIcon(FontAwesomeIcons.fire), label: 'Trending'),
+                BottomNavigationBarItem(
+                    icon: FaIcon(FontAwesomeIcons.solidCalendarCheck),
+                    label: 'Events'),
               ],
             ),
           ),

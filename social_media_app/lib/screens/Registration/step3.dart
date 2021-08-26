@@ -16,7 +16,7 @@ class Step3 extends StatefulWidget {
   int bioMax;
   Function(String) onSkillAdded;
   Function(String) onSkillRemoved;
-  List<String> skills = [];
+  List<String> skills;
 
   Step3(
       {this.onBackButonPressed,
@@ -26,14 +26,15 @@ class Step3 extends StatefulWidget {
       this.onBioChanged,
       this.onSkillAdded,
       this.skills,
-      this.onSkillRemoved});
+      this.onSkillRemoved}) {
+    skills = skills == null ? [] : skills;
+  }
 
   @override
   _Step3State createState() => _Step3State();
 }
 
 class _Step3State extends State<Step3> {
-
   @override
   Widget build(BuildContext context) {
     return RegistrationScreen(
@@ -83,7 +84,9 @@ class _Step3State extends State<Step3> {
                           children: snapshot.data.map<Widget>((skill) {
                             return PillToggleButton(
                                 text: skill.name,
-                                selected: widget.skills.contains(skill.id),
+                                selected: widget.skills == null
+                                    ? false
+                                    : widget.skills.contains(skill.id),
                                 onPressed: (value) {
                                   if (value) {
                                     widget.skills.add(skill.id);
@@ -108,14 +111,16 @@ class _Step3State extends State<Step3> {
       ),
       primaryActionButtonText: "Finish",
       primaryButtonOnPressed: () {
-        if(widget.bioValue==null|| widget.bioValue.trim().length<3){
-          Fluttertoast.showToast(msg: 'Oops! Bio must be between 3 and 100 characters long');
+        if (widget.bioValue == null || widget.bioValue.trim().length < 3) {
+          Fluttertoast.showToast(
+              msg: 'Oops! Bio must be between 3 and 100 characters long');
           return;
         }
         widget.primaryButtonOnPressed != null
             ? widget.primaryButtonOnPressed()
             : '';
-        Navigator.of(context).pop({'bio':widget.bioValue, 'skills':widget.skills});
+        Navigator.of(context)
+            .pop({'bio': widget.bioValue, 'skills': widget.skills});
       },
       topElementStackBottomPositioning: 50,
     );

@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -159,10 +160,12 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                               ),
                               child: Row(
                                 children: [
-                                  Icon(
-                                    Icons.wallet_membership_outlined,
+                                  FaIcon(
+                                    FontAwesomeIcons.users,
                                     color: Colors.red,
+                                    size: 18,
                                   ),
+                                  SizedBox(width: 5),
                                   Consumer<Community>(
                                     builder: (_, community, __) => Text(
                                       '${community.membersCount ?? 0} Members',
@@ -174,9 +177,13 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                             ),
                             Row(
                               children: [
-                                Icon(
-                                  MdiIcons.medal,
+                                FaIcon(
+                                  FontAwesomeIcons.solidCalendarCheck,
                                   color: Colors.purpleAccent,
+                                  size: 18,
+                                ),
+                                SizedBox(
+                                  width: 5,
                                 ),
                                 Text(
                                   '${community.eventsCount ?? 0} Events',
@@ -475,8 +482,12 @@ class _CreateCommunityBottomSheetState
             BluePrimaryButton(
               isDisabled: waitingForResponse,
               text: widget.editCommunity
-                  ? (waitingForResponse)?'Modifying...':'Modify community'
-                  : (waitingForResponse)?'Creating...':'Create Community',
+                  ? (waitingForResponse)
+                      ? 'Modifying...'
+                      : 'Modify community'
+                  : (waitingForResponse)
+                      ? 'Creating...'
+                      : 'Create Community',
               onPressed: () async {
                 if (widget.communityName.trim().length < 3 ||
                     widget.communityName.trim().length > 50) {
@@ -506,7 +517,6 @@ class _CreateCommunityBottomSheetState
                       widget.communityName, pickedImage);
                 }
                 if (completed) {
-                  
                   Fluttertoast.showToast(
                       msg: widget.editCommunity
                           ? 'Community modified'

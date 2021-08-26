@@ -55,81 +55,72 @@ class _SearchScreenState extends State<SearchScreen>
     return SafeArea(
       child: Scaffold(
         appBar: buildAppBar(context, _filterType, _selectedIndex),
-        body: CustomPaint(
-          // size: MediaQuery.of(context).size,
-          painter: SearchPainter(),
-
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-            child: SingleChildScrollView(
-              child: Column(
-                // mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // CustomAppBar(),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                      bottom: 10,
-                    ),
-                    child: Text(
-                      'Filters',
-                      style: kSearchTitle,
-                    ),
-                  ),
-                  FutureBuilder(
-                      future: _future,
-                      builder: (_, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        } else {
-                          return ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: snapshot.data?.length ?? 0,
-                            itemBuilder: (_, ind) => Card(
-                              margin: EdgeInsets.symmetric(
-                                vertical: 5,
-                                horizontal: 15,
-                              ),
-                              color: filters[ind]['color'],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(13),
-                              ),
-                              child: ListTile(
-                                onTap: () {
-                                  // setFilter(FilterType.Selected, ind);
-                                  showSearch(
-                                      context: context,
-                                      delegate: CustomSearchDelegate(
-                                          filterType: snapshot.data[ind],
-                                          selectedIndex: ind));
-                                },
-                                contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 10),
-                                leading: Text(
-                                  '${snapshot.data[ind].name}',
-                                  style: kSearchFilterText,
-                                ),
-                                trailing: Icon(
-                                  Icons.filter_alt,
-                                  color: Colors.white,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-                          );
-                        }
-                      }),
-                  // SearchFilters(_filterType, _selectedIndex, setFilter),
-                  // if (_filterType == FilterType.Selected) SearchResults(),
-                ],
+        body: SingleChildScrollView(
+          child: Column(
+            // mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // CustomAppBar(),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  bottom: 10,
+                ),
+                child: Text(
+                  'Filters',
+                  style: kSearchTitle,
+                ),
               ),
-            ),
+              FutureBuilder(
+                  future: _future,
+                  builder: (_, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    } else {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data?.length ?? 0,
+                        itemBuilder: (_, ind) => Card(
+                          margin: EdgeInsets.symmetric(
+                            vertical: 5,
+                            horizontal: 15,
+                          ),
+                          color: filters[ind]['color'],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(13),
+                          ),
+                          child: ListTile(
+                            onTap: () {
+                              // setFilter(FilterType.Selected, ind);
+                              showSearch(
+                                  context: context,
+                                  delegate: CustomSearchDelegate(
+                                      filterType: snapshot.data[ind],
+                                      selectedIndex: ind));
+                            },
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            leading: Text(
+                              '${snapshot.data[ind].name}',
+                              style: kSearchFilterText,
+                            ),
+                            trailing: Icon(
+                              Icons.filter_alt,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  }),
+              // SearchFilters(_filterType, _selectedIndex, setFilter),
+              // if (_filterType == FilterType.Selected) SearchResults(),
+            ],
           ),
         ),
       ),
@@ -172,6 +163,7 @@ class _SearchScreenState extends State<SearchScreen>
 
 AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
   return AppBar(
+    backgroundColor: kAppBarPrimaryColor,
     foregroundColor: Colors.black,
     toolbarHeight: 50,
     title: GestureDetector(
@@ -188,6 +180,7 @@ AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
         height: 38,
         decoration: BoxDecoration(
             color: Color.fromRGBO(82, 82, 82, 1),
+            // color: Colors.black,
             borderRadius: BorderRadius.circular(10)),
         child: Row(
           children: [
@@ -195,7 +188,10 @@ AppBar buildAppBar(BuildContext context, filterType, selectedIndex) {
               padding: const EdgeInsets.all(8.0),
               child: Icon(Icons.search),
             ),
-            Text('Search'),
+            Text(
+              'Search',
+              // style: kTe,
+            ),
           ],
         ),
       ),
@@ -235,221 +231,203 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    return CustomPaint(
-      // size: MediaQuery.of(context).size,
-      painter: SearchPainter(),
-
-      child: ConstrainedBox(
-        constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-        child: FutureBuilder(
-          future: filterType == null
-              ? Api.getSearch(key: query)
-              : Api.getSearchWithFilter(skillId: filterType.id, key: query),
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            if (!snapshot.hasData) {
-              // return SearchScreen();
-              if (filterType != null)
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 75,
-                        decoration: BoxDecoration(
-                          color: filters[selectedIndex]['color'],
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        margin: EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 15,
-                        ),
-                        // color: filters[selectedIndex]['color'],
-                        child: ListTile(
-                          onTap: () {
-                            // setFilter(FilterType.Selected, ind);
-                            Navigator.of(context).pop();
-                          },
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          leading: Text(
-                            '${filterType.name}',
-                            style: kSearchFilterText,
-                          ),
-                          trailing: Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              if (filterType == null)
-                return Center(
-                  child: Text('No Data'),
-                );
-            }
-            searchResult = snapshot.data;
+    return FutureBuilder(
+      future: filterType == null
+          ? Api.getSearch(key: query)
+          : Api.getSearchWithFilter(skillId: filterType.id, key: query),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        if (!snapshot.hasData) {
+          // return SearchScreen();
+          if (filterType != null)
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  if (filterType != null)
-                    Card(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 15,
-                      ),
+                  Container(
+                    height: 75,
+                    decoration: BoxDecoration(
                       color: filters[selectedIndex]['color'],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    margin: EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 15,
+                    ),
+                    // color: filters[selectedIndex]['color'],
+                    child: ListTile(
+                      onTap: () {
+                        // setFilter(FilterType.Selected, ind);
+                        Navigator.of(context).pop();
+                      },
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      leading: Text(
+                        '${filterType.name}',
+                        style: kSearchFilterText,
                       ),
-                      child: ListTile(
-                        onTap: () {
-                          // setFilter(FilterType.Selected, ind);
-                          print('pop');
-                          return Navigator.of(context).pop();
-                        },
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        leading: Text(
-                          '${filterType.name}',
-                          style: kSearchFilterText,
-                        ),
-                        trailing: Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
-                          size: 30,
-                        ),
+                      trailing: Icon(
+                        Icons.filter_alt,
+                        color: Colors.white,
+                        size: 30,
                       ),
                     ),
-                  ListView.builder(
-                    itemCount: snapshot.data.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, ind) =>
-                        buildSearchItem(snapshot.data[ind], context),
                   ),
                 ],
               ),
             );
-          },
-        ),
-      ),
+          if (filterType == null)
+            return Center(
+              child: Text('No Data'),
+            );
+        }
+        searchResult = snapshot.data;
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              if (filterType != null)
+                Card(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 15,
+                  ),
+                  color: filters[selectedIndex]['color'],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: ListTile(
+                    onTap: () {
+                      // setFilter(FilterType.Selected, ind);
+                      print('pop');
+                      return Navigator.of(context).pop();
+                    },
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    leading: Text(
+                      '${filterType.name}',
+                      style: kSearchFilterText,
+                    ),
+                    trailing: Icon(
+                      Icons.filter_alt,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ListView.builder(
+                itemCount: snapshot.data.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (_, ind) =>
+                    buildSearchItem(snapshot.data[ind], context),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    return CustomPaint(
-      // size: MediaQuery.of(context).size,
-      painter: SearchPainter(),
-
-      child: ConstrainedBox(
-        constraints:
-            BoxConstraints(minHeight: MediaQuery.of(context).size.height),
-        child: FutureBuilder(
-          future: filterType == null
-              ? Api.getSearch(key: query)
-              : Api.getSearchWithFilter(skillId: filterType.id, key: query),
-          builder: (_, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting)
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            if (!snapshot.hasData) {
-              // return SearchScreen();
-              if (filterType != null)
-                return SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Container(
-                        height: 75,
-                        decoration: BoxDecoration(
-                          color: filters[selectedIndex]['color'],
-                          borderRadius: BorderRadius.circular(13),
-                        ),
-                        margin: EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 15,
-                        ),
-                        // color: filters[selectedIndex]['color'],
-                        child: ListTile(
-                          onTap: () {
-                            // setFilter(FilterType.Selected, ind);
-                            Navigator.of(context).pop();
-                          },
-                          contentPadding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          leading: Text(
-                            '${filterType.name}',
-                            style: kSearchFilterText,
-                          ),
-                          trailing: Icon(
-                            Icons.filter_alt,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              if (filterType == null)
-                return Center(
-                  child: Text('No Data'),
-                );
-            }
-            searchResult = snapshot.data;
+    return FutureBuilder(
+      future: filterType == null
+          ? Api.getSearch(key: query)
+          : Api.getSearchWithFilter(skillId: filterType.id, key: query),
+      builder: (_, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting)
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        if (!snapshot.hasData) {
+          // return SearchScreen();
+          if (filterType != null)
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  if (filterType != null)
-                    Card(
-                      margin: EdgeInsets.symmetric(
-                        vertical: 5,
-                        horizontal: 15,
-                      ),
+                  Container(
+                    height: 75,
+                    decoration: BoxDecoration(
                       color: filters[selectedIndex]['color'],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13),
+                      borderRadius: BorderRadius.circular(13),
+                    ),
+                    margin: EdgeInsets.symmetric(
+                      vertical: 5,
+                      horizontal: 15,
+                    ),
+                    // color: filters[selectedIndex]['color'],
+                    child: ListTile(
+                      onTap: () {
+                        // setFilter(FilterType.Selected, ind);
+                        Navigator.of(context).pop();
+                      },
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      leading: Text(
+                        '${filterType.name}',
+                        style: kSearchFilterText,
                       ),
-                      child: ListTile(
-                        onTap: () {
-                          // setFilter(FilterType.Selected, ind);
-                          print('pop');
-                          return Navigator.of(context).pop();
-                        },
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        leading: Text(
-                          '${filterType.name}',
-                          style: kSearchFilterText,
-                        ),
-                        trailing: Icon(
-                          Icons.filter_alt,
-                          color: Colors.white,
-                          size: 30,
-                        ),
+                      trailing: Icon(
+                        Icons.filter_alt,
+                        color: Colors.white,
+                        size: 30,
                       ),
                     ),
-                  ListView.builder(
-                    itemCount: snapshot.data.length,
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemBuilder: (_, ind) =>
-                        buildSearchItem(snapshot.data[ind], context),
                   ),
                 ],
               ),
             );
-          },
-        ),
-      ),
+          if (filterType == null)
+            return Center(
+              child: Text('No Data'),
+            );
+        }
+        searchResult = snapshot.data;
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              if (filterType != null)
+                Card(
+                  margin: EdgeInsets.symmetric(
+                    vertical: 5,
+                    horizontal: 15,
+                  ),
+                  color: filters[selectedIndex]['color'],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: ListTile(
+                    onTap: () {
+                      // setFilter(FilterType.Selected, ind);
+                      print('pop');
+                      return Navigator.of(context).pop();
+                    },
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    leading: Text(
+                      '${filterType.name}',
+                      style: kSearchFilterText,
+                    ),
+                    trailing: Icon(
+                      Icons.filter_alt,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ListView.builder(
+                itemCount: snapshot.data.length,
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                itemBuilder: (_, ind) =>
+                    buildSearchItem(snapshot.data[ind], context),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

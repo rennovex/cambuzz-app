@@ -38,7 +38,7 @@ class CommunityTrending extends StatelessWidget {
               child: FutureBuilder(
                   future: trendingPosts,
                   builder: (context, snapshot) {
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData && snapshot.data.length > 0) {
                       return ListView.builder(
                         shrinkWrap: true,
                         physics: NeverScrollableScrollPhysics(),
@@ -46,13 +46,22 @@ class CommunityTrending extends StatelessWidget {
                             CommunityTrendingItem(snapshot.data[index]),
                         itemCount: snapshot.data.length,
                       );
-                    } else {
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return Center(
                         child: Container(
                           child: SpinKitWave(
                             color: kPrimaryColor,
                           ),
                           height: MediaQuery.of(context).size.height * .8,
+                        ),
+                      );
+                    } else {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.3,
+                        child: Center(
+                          child:
+                              Text('Oops! seems like nothing is trending rn'),
                         ),
                       );
                     }

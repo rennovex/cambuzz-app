@@ -57,113 +57,131 @@ class _EventScreenState extends State<EventScreen>
   Widget build(BuildContext context) {
     print(selectedEventType?.name);
     return SafeArea(
-      child: Scaffold(
-        appBar: PreferredSize(
-          child: CustomAppBar(Provider.of<Myself>(context).myself),
-          preferredSize: kAppBarPreferredSize,
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 14),
-                    child: Text(
-                      'Filter events',
-                      style: kTitleTextStyle,
+      child: RefreshIndicator(
+        onRefresh: () {
+          return Future.delayed(
+            Duration.zero,
+          ).then((value) => setState(() {}));
+        },
+        child: Scaffold(
+          appBar: PreferredSize(
+            child: CustomAppBar(
+                Provider.of<Myself>(context, listen: false).myself),
+            preferredSize: kAppBarPreferredSize,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 20, horizontal: 14),
+                      child: Text(
+                        'Filter events',
+                        style: kTitleTextStyle,
+                      ),
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      return setState(() {
-                        selectedEventType = null;
-                      });
-                    },
-                    child: Text('View All'),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 136,
-                child: FutureBuilder(
-                  future: eventTypes,
-                  builder: (_, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting)
-                      return Center(
-                        child: CircularProgressIndicator(),
-                      );
-                    else
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data?.length,
-                        shrinkWrap: true,
-                        itemBuilder: (_, ind) => GestureDetector(
-                          onTap: () {
-                            return setState(() {
-                              selectedEventType = snapshot.data[ind];
-                            });
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Container(
-                              padding: selectedEventType == snapshot.data[ind]
-                                  ? EdgeInsets.all(8)
-                                  : EdgeInsets.all(0),
-                              decoration: BoxDecoration(
-                                color: Colors.greenAccent,
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 0),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(13),
-                                  child: Image.network(
-                                    snapshot.data[ind]?.image,
-                                    // height: 136,
-                                    // width: 112,
-                                    fit: BoxFit.cover,
+                    TextButton(
+                      onPressed: () {
+                        return setState(() {
+                          selectedEventType = null;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20.0),
+                        child: Text('View All'),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 136,
+                  child: FutureBuilder(
+                    future: eventTypes,
+                    builder: (_, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting)
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      else
+                        return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: snapshot.data?.length,
+                          shrinkWrap: true,
+                          itemBuilder: (_, ind) => GestureDetector(
+                            onTap: () {
+                              return setState(() {
+                                selectedEventType = snapshot.data[ind];
+                              });
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Container(
+                                padding: selectedEventType == snapshot.data[ind]
+                                    ? EdgeInsets.all(8)
+                                    : EdgeInsets.all(0),
+                                decoration: BoxDecoration(
+                                  color: Colors.greenAccent,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 0),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(13),
+                                    child: Image.network(
+                                      snapshot.data[ind]?.image,
+                                      // height: 136,
+                                      // width: 112,
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ),
+                        );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, left: 18),
+                  child: Text(
+                    'Upcoming events',
+                    style: kTitleTextStyle,
+                  ),
+                ),
+                FutureBuilder(
+                  future: selectedEventType == null
+                      ? Api.getEvents()
+                      : Api.getEventsWithFilterId(selectedEventType.id),
+                  builder: (context, snapshot) {
+                    print(selectedEventType?.name);
+
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.length,
+                        itemBuilder: (ctx, ind) => GestureDetector(
+                          onTap: () => expandEvent(
+                            context: context,
+                            event: snapshot.data[ind],
+                          ),
+                          child: EventItem(snapshot.data[ind]),
                         ),
                       );
+                    } else {
+                      return SpinKitWave(
+                        color: kPrimaryColor,
+                      );
+                    }
                   },
                 ),
-              ),
-              FutureBuilder(
-                future: selectedEventType == null
-                    ? Api.getEvents()
-                    : Api.getEventsWithFilterId(selectedEventType.id),
-                builder: (context, snapshot) {
-                  print(selectedEventType?.name);
-
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (ctx, ind) => GestureDetector(
-                        onTap: () => expandEvent(
-                          context: context,
-                          event: snapshot.data[ind],
-                        ),
-                        child: EventItem(snapshot.data[ind]),
-                      ),
-                    );
-                  } else {
-                    return SpinKitWave(
-                      color: kPrimaryColor,
-                    );
-                  }
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -316,9 +334,7 @@ class _EventScreenState extends State<EventScreen>
                                 Expanded(
                                   child: TextButton(
                                     onPressed: () {
-                                      launch(event.contact);
-
-                                      Navigator.of(context).pop();
+                                      launch("tel://${event.contact}");
                                     },
                                     child: Text('Contact'),
                                     style: OutlinedButton.styleFrom(

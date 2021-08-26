@@ -193,7 +193,7 @@ class _AddPostState extends State<AddPost> {
                     // minLeadingWidth: 0,
                     horizontalTitleGap: 0,
                     title: Text(
-                      'Please leave the community field empty to post to your profile',
+                      'Leave the community field empty to post to your profile',
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,

@@ -46,7 +46,7 @@ class UserTrending extends StatelessWidget {
                   );
                 }
                 // print(snapshot.data);
-                else if (snapshot.hasData)
+                else if (snapshot.hasData && snapshot.data.length == 3)
                   return Column(
                     children: [
                       Padding(
@@ -111,8 +111,11 @@ class UserTrending extends StatelessWidget {
                     ],
                   );
                 else
-                  return Center(
-                    child: Text('No data'),
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.3,
+                    child: Center(
+                      child: Text('Oops! seems like nothing is trending rn'),
+                    ),
                   );
               },
             ),

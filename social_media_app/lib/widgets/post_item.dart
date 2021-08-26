@@ -182,8 +182,10 @@ class PostItem extends StatelessWidget {
                   onDoubleTap: () => post.toggleLike(),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
+                    // TODO
                     child: CachedNetworkImage(
                       imageUrl: post.postImg,
+
                       // placeholder: (context, url) =>
                       //     Center(child: CircularProgressIndicator()),
                       width: double.infinity,

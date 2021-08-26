@@ -54,6 +54,7 @@ class RegistrationScreen extends StatelessWidget {
                   ),
                 ),
                 Column(
+                  
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
@@ -62,11 +63,14 @@ class RegistrationScreen extends StatelessWidget {
                     Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width * .8,
-                        child: PrimaryGradientButton(
-                            onPressed: primaryButtonOnPressed,
-                            text: primaryActionButtonText),
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width * .8,
+                          child: PrimaryGradientButton(
+                              onPressed: primaryButtonOnPressed,
+                              text: primaryActionButtonText),
+                        ),
                       ),
                     ),
                   ],

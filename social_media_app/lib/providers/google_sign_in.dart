@@ -49,16 +49,16 @@ class GoogleSignInProvider with ChangeNotifier {
             await FirebaseAuth.instance.signInWithCredential(credential);
         final currentUser = FirebaseAuth.instance.currentUser;
 
-        // if (currentUser.email.endsWith('tkmce.ac.in'))
-        return {"email": currentUser.email, "uid": currentUser.uid};
-        // else {
-        //   Fluttertoast.showToast(
-        //     msg: 'Please use @tkmce.ac.in email',
-        //   );
-        //   print('Non TKMCE member');
-        //   currentUser.delete();
-        //   logout();
-        // }
+        if (currentUser.email.endsWith('tkmce.ac.in'))
+          return {"email": currentUser.email, "uid": currentUser.uid};
+        else {
+          Fluttertoast.showToast(
+            msg: 'Please use @tkmce.ac.in email',
+          );
+          print('Non TKMCE member');
+          currentUser.delete();
+          logout();
+        }
         // if (authResult.additionalUserInfo.isNewUser) {
         //   //
         // } else {

@@ -491,7 +491,7 @@ class _CreateCommunityBottomSheetState
               onPressed: () async {
                 if (widget.communityName.trim().length < 3 ||
                     widget.communityName.trim().length > 50) {
-                  print(widget.communityName);
+                  print('Community name = '+widget.communityName);
                   return Fluttertoast.showToast(
                       msg:
                           'Community name should be between 3 and 50 characters long');

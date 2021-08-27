@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,15 @@ import 'package:social_media_app/models/user.dart' as User;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging messaging;
+  messaging = FirebaseMessaging.instance;
   Global.apiToken = await SecureStorage.readApiToken() ?? '';
   Global.uid = await SecureStorage.readUid() ?? '';
   print('uid = ' + Global.uid);
   print('token = ' + Global.apiToken);
+  messaging.subscribeToTopic('newEventAdded');
+  messaging.subscribeToTopic('trending');
+  messaging.subscribeToTopic('announcement');
 
   runApp(MyApp());
 }

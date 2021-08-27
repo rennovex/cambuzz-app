@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "943003306086-1is0ca9q9go1t13qmjj46ljsvloruq2a.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rennovex.cambuzz",
+            "certificate_hash": "9446ff2a89ea69cd3941a7ad4d0d66cce9a9596d"
+          }
+        },
+        {
+          "client_id": "943003306086-9qa59qred228cfv3e8j6d84pfir0na16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rennovex.cambuzz",
+            "certificate_hash": "75b90ac8d86dcecbdc8a897d4baa921e54326dc4"
+          }
+        },
+        {
           "client_id": "943003306086-jo72d4om8snnnvet7db814hm9jnrub0m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

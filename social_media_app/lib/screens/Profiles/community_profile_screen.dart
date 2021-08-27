@@ -392,7 +392,7 @@ class _CreateCommunityBottomSheetState
                 onChanged: (value) async {
                   var state = await Api.isCommunityNameAvailable(value);
                   setState(() {
-                    widget.communityName = value;
+                    widget.communityName = value.toLowerCase();
                     communityNameAvailable = state;
                   });
                 },
@@ -491,6 +491,7 @@ class _CreateCommunityBottomSheetState
               onPressed: () async {
                 if (widget.communityName.trim().length < 3 ||
                     widget.communityName.trim().length > 50) {
+                  print(widget.communityName);
                   return Fluttertoast.showToast(
                       msg:
                           'Community name should be between 3 and 50 characters long');

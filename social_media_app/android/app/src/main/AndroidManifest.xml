@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.social_media_app">
+    package="com.rennovex.cambuzz">
     <uses-permission android:name="android.permission.INTERNET" />
    <application
-        android:label="social_media_app"
+        android:label="CamBuzz"
         android:icon="@mipmap/ic_launcher">
         <!-- <android:name="androidx.multidex.MultiDexApplication"> -->
         <activity
@@ -29,6 +29,10 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+              <intent-filter>
+                <action android:name="FLUTTER_NOTIFICATION_CLICK" />
+                <category android:name="android.intent.category.DEFAULT" />
+              </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

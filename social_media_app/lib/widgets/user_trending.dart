@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -58,7 +59,15 @@ class UserTrending extends StatelessWidget {
                           width: double.infinity,
                           borderColor: Color.fromRGBO(255, 245, 0, 1),
                           post: snapshot.data[0],
-                          ranking: Icon(MdiIcons.crown),
+                          // ranking: Image.asset(
+                          //   'images/crown_icon.png',
+                          //   scale: 0.5,
+                          // ),
+                          ranking: FaIcon(
+                            FontAwesomeIcons.crown,
+                            color: Color.fromRGBO(255, 159, 0, 1),
+                            size: 28,
+                          ),
                         ),
                       ),
                       Row(

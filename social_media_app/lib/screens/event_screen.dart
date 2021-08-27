@@ -160,7 +160,7 @@ class _EventScreenState extends State<EventScreen>
                   builder: (context, snapshot) {
                     print(selectedEventType?.name);
 
-                    if (snapshot.hasData) {
+                    if (snapshot.hasData && snapshot.data.length > 0) {
                       return ListView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
@@ -173,9 +173,17 @@ class _EventScreenState extends State<EventScreen>
                           child: EventItem(snapshot.data[ind]),
                         ),
                       );
-                    } else {
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.waiting) {
                       return SpinKitWave(
                         color: kPrimaryColor,
+                      );
+                    } else {
+                      return SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.45,
+                        child: Center(
+                          child: Text('No Upcoming Events'),
+                        ),
                       );
                     }
                   },

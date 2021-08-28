@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:random_color/random_color.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/searchItem.dart';
@@ -36,14 +35,12 @@ class _SearchScreenState extends State<SearchScreen>
   Future _future;
   Skill _filterType;
   int _selectedIndex;
-  RandomColor _randomColor;
 
   @override
   void initState() {
     super.initState();
     // _filterType = FilterType.All;
     _future = Api.getSkills();
-    _randomColor = RandomColor();
   }
 
   void setFilter(filter, index) {

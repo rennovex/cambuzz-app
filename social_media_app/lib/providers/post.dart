@@ -41,7 +41,11 @@ class Post with ChangeNotifier {
     DateTime today = DateTime.now();
     Duration duration = today.difference(this.time);
 
-    if (duration.inDays > 0) {
+    if (duration.inDays > 365) {
+      return (duration.inDays ~/ 365).toString() + ' yrs';
+    } else if (duration.inDays > 30) {
+      return (duration.inDays ~/ 30).toString() + ' mos';
+    } else if (duration.inDays > 0) {
       return duration.inDays.toString() + ' days';
     } else if (duration.inHours > 0) {
       return duration.inHours.toString() + ' hrs';

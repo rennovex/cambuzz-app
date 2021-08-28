@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
@@ -318,7 +319,7 @@ class _EventScreenState extends State<EventScreen>
                                     style: kEventExpandedName,
                                   ),
                                   Text(
-                                    event.community.name,
+                                    '\$${event.community.name}',
                                     style: kEventExpandedCommunityName,
                                   ),
                                   SizedBox(
@@ -413,16 +414,41 @@ class _EventScreenState extends State<EventScreen>
                       ),
                     ),
                     Positioned(
-                        left: 10,
-                        top: 10,
-                        child: IconButton(
-                          icon: Icon(
-                            Icons.close,
-                            size: 30,
-                            color: Colors.white,
-                          ),
-                          onPressed: () => Navigator.of(context).pop(),
-                        ))
+                      left: 10,
+                      top: 10,
+                      // child: Container(
+                      //   decoration: BoxDecoration(
+                      //       color: Colors.black,
+                      //       backgroundBlendMode: BlendMode.),
+                      //   child: IconButton(
+                      //     // color: Colors.black,
+                      //     icon: Icon(
+                      //       Icons.close,
+                      //       size: 30,
+                      //       color: Colors.white,
+                      //     ),
+                      child: GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: Stack(
+                          children: <Widget>[
+                            Positioned(
+                              left: 1.0,
+                              top: 2.0,
+                              child: Icon(
+                                Icons.close,
+                                color: Colors.black,
+                                size: 30,
+                              ),
+                            ),
+                            Icon(
+                              Icons.close,
+                              color: Colors.white,
+                              size: 30,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ],

@@ -72,7 +72,7 @@ class _MyAppState extends State<MyApp> {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
+        title: 'CamBuzz',
         theme: ThemeData(
           primaryColor: Color.fromRGBO(141, 38, 221, 1),
           backgroundColor: Color.fromRGBO(229, 229, 229, 1),
@@ -179,8 +179,8 @@ class _MyAppState extends State<MyApp> {
                               userName: userName,
                               bio: bio,
                               skills: User.User.getSkillsFromIds(skills));
-
-                          var status =
+                          Fluttertoast.showToast(msg: 'Creating user');
+                          var status =  
                               await Api.postUser(user, firebaseUid, image);
 
                           if (!status['status']) {

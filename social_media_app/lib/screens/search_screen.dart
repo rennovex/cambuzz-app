@@ -323,7 +323,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   ),
                 ),
               ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data?.length ?? 0,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (_, ind) =>
@@ -428,7 +428,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   ),
                 ),
               ListView.builder(
-                itemCount: snapshot.data.length,
+                itemCount: snapshot.data?.length ?? 0,
                 shrinkWrap: true,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (_, ind) =>

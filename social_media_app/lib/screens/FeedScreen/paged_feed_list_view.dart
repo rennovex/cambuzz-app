@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/providers/api.dart';
@@ -86,7 +87,7 @@ class _PagedFeedListViewState extends State<PagedFeedListView> {
             child: Text('FirstPageError'),
           ),
           noItemsFoundIndicatorBuilder: (context) => Center(
-            child: Text('NoItemsFoundIndicator'),
+            child: SvgPicture.asset('images/error-pages/FeedEmpty.svg'),
           ),
         ),
       ),

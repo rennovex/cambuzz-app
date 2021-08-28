@@ -22,49 +22,49 @@ class RegistrationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print('primary button Text = ' + primaryActionButtonText);
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          decoration: BoxDecoration(color: Colors.transparent),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        alignment: Alignment.center,
-                        children: [
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      alignment: Alignment.center,
+                      children: [
                           SvgPicture.asset(
                             'images/registration_background.svg',
+                            width: MediaQuery.of(context).size.width,
                           ),
-                          Positioned(
+                        Positioned(
+                          child: SafeArea(
                             child: Container(
                               child: screenMetaData,
                               width: MediaQuery.of(context).size.width * .9,
                             ),
-                            bottom: bottomElementStackBottomPositioning,
-                            top: topElementStackBottomPositioning,
-                          )
-                        ],
-                      ),
-                      // Spacer(),
-                      Container(
-                          width: MediaQuery.of(context).size.width * .9,
-                          child: screenForm),
-                    ],
-                  ),
+                          ),
+                          bottom: bottomElementStackBottomPositioning,
+                          top: topElementStackBottomPositioning,
+                        )
+                      ],
+                    ),
+                    // Spacer(),
+                    Container(
+                        width: MediaQuery.of(context).size.width * .9,
+                        child: screenForm),
+                  ],
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-                child: PrimaryGradientButton(
-                    onPressed: primaryButtonOnPressed,
-                    text: primaryActionButtonText),
-              )
-            ],
-          ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+              child: PrimaryGradientButton(
+                  onPressed: primaryButtonOnPressed,
+                  text: primaryActionButtonText),
+            )
+          ],
         ),
       ),
     );

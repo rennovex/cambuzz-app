@@ -64,7 +64,7 @@ flutter:
   uses-material-design: true
   assets:
     - images/
-    - images/error-pages
+    - images/error-pages/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

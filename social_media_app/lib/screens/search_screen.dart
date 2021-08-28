@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/searchItem.dart';
@@ -240,8 +241,9 @@ class CustomSearchDelegate extends SearchDelegate {
           return Center(
             child: CircularProgressIndicator(),
           );
-        if (!snapshot.hasData) {
+        if (snapshot.data?.length == 0) {
           // return SearchScreen();
+          print(snapshot.data);
           if (filterType != null)
             return SingleChildScrollView(
               child: Column(
@@ -275,12 +277,16 @@ class CustomSearchDelegate extends SearchDelegate {
                       ),
                     ),
                   ),
+                  Center(
+                    child:
+                        SvgPicture.asset('images/error-pages/SearchEmpty.svg'),
+                  ),
                 ],
               ),
             );
           if (filterType == null)
             return Center(
-              child: Text('No Data'),
+              child: SvgPicture.asset('images/error-pages/SearchEmpty.svg'),
             );
         }
         searchResult = snapshot.data;
@@ -341,7 +347,7 @@ class CustomSearchDelegate extends SearchDelegate {
           return Center(
             child: CircularProgressIndicator(),
           );
-        if (!snapshot.hasData) {
+        if (snapshot.data?.length == 0) {
           // return SearchScreen();
           if (filterType != null)
             return SingleChildScrollView(
@@ -376,12 +382,16 @@ class CustomSearchDelegate extends SearchDelegate {
                       ),
                     ),
                   ),
+                  Center(
+                    child:
+                        SvgPicture.asset('images/error-pages/SearchEmpty.svg'),
+                  ),
                 ],
               ),
             );
           if (filterType == null)
             return Center(
-              child: Text('No Data'),
+              child: SvgPicture.asset('images/error-pages/SearchEmpty.svg'),
             );
         }
         searchResult = snapshot.data;

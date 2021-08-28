@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/eventType.dart';
@@ -249,146 +250,164 @@ class _EventScreenState extends State<EventScreen>
                       left: 0,
                       top: MediaQuery.of(context).size.height * 0.35,
                       child: Container(
-                        padding: EdgeInsets.only(top: 20, left: 20),
+                        padding: EdgeInsets.only(top: 20, left: 20, right: 20),
                         width: MediaQuery.of(context).size.width * 0.95,
                         // alignment: Alignment.bottomCenter,
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(18)),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  // width: double.infinity,
-                                  // alignment: Alignment.topLeft,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            event.time.day.toString(),
-                                            style: kEventExpandedDay,
-                                          ),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            months[event.time.month - 1],
-                                            style: kEventExpandedMonth,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            '${event.time.hour}:${event.time.minute}',
-                                            style: kEventExpandedTime,
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        margin: EdgeInsets.only(right: 25),
-                                        padding: EdgeInsets.symmetric(
-                                          vertical: 2,
-                                          horizontal: 5,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Container(
+                                    // width: double.infinity,
+                                    // alignment: Alignment.topLeft,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              event.time.day.toString(),
+                                              style: kEventExpandedDay,
+                                            ),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              months[event.time.month - 1],
+                                              style: kEventExpandedMonth,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              // '${event.time.hour}:${event.time.minute}',
+                                              '${DateFormat.jm().format(event.time)}',
+                                              style: kEventExpandedTime,
+                                            ),
+                                          ],
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(2),
-                                          color: Color.fromRGBO(98, 65, 234, 1),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 2,
+                                            horizontal: 5,
+                                          ),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(2),
+                                            color:
+                                                Color.fromRGBO(98, 65, 234, 1),
+                                          ),
+                                          child: Text(
+                                            event.tag,
+                                            style: kEventBadge,
+                                          ),
                                         ),
-                                        child: Text(
-                                          event.tag,
-                                          style: kEventBadge,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  event.name,
-                                  style: kEventExpandedName,
-                                ),
-                                Text(
-                                  event.community.name,
-                                  style: kEventExpandedCommunityName,
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Container(
-                                  width: 300,
-                                  // constraints: BoxConstraints(
-                                  //     maxHeight:
-                                  //         MediaQuery.of(context).size.height *
-                                  //             0.2),
-                                  child: Text(
-                                    event.description,
-                                    style: kEventExpandedDescription,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 6,
+                                  Text(
+                                    event.name,
+                                    style: kEventExpandedName,
                                   ),
-                                ),
-                              ],
-                            ),
+                                  Text(
+                                    event.community.name,
+                                    style: kEventExpandedCommunityName,
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  Container(
+                                    width: 300,
+                                    // constraints: BoxConstraints(
+                                    //     maxHeight:
+                                    //         MediaQuery.of(context).size.height *
+                                    //             0.2),
+                                    child: Text(
+                                      'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.Where can I get some?There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don\'t look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn\'t anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.',
 
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: TextButton(
-                                    onPressed: () {
-                                      launch("tel://${event.contact}");
-                                    },
-                                    child: Text('Contact'),
-                                    style: OutlinedButton.styleFrom(
-                                      primary: Color.fromRGBO(225, 37, 255, 1),
-                                      backgroundColor: Colors.transparent,
-                                      side: BorderSide(
-                                        width: 1.3,
-                                        color: Color.fromRGBO(225, 37, 255, 1),
-                                      ),
+                                      // event.description,
+                                      style: kEventExpandedDescription,
+                                      // overflow: TextOverflow.ellipsis,
+                                      // maxLines: 6,
                                     ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Container(
-                                    height: 38,
-                                    decoration: BoxDecoration(
-                                        gradient: kButtonLinearGradient,
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.purple),
-                                    child: TextButton(
-                                      onPressed: () {
-                                        launch(event.link);
-                                        print('pressed');
-                                      },
-                                      child: Text(
-                                        'Register',
-                                        textAlign: TextAlign.center,
-                                      ),
-                                      style: TextButton.styleFrom(
-                                        primary: Colors.white,
-                                        // backgroundColor: Colors.purple,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                              ],
+                                ],
+                              ),
+
+                              // SizedBox(
+                              //   height: 15,
+                              // ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      width: MediaQuery.of(context).size.width * 0.95,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(18)),
+                        child: Row(
+                          children: [
+                            SizedBox(
+                              width: 10,
                             ),
-                            // SizedBox(
-                            //   height: 15,
-                            // ),
+                            Expanded(
+                              child: TextButton(
+                                onPressed: () {
+                                  launch("tel://${event.contact}");
+                                },
+                                child: Text('Contact'),
+                                style: OutlinedButton.styleFrom(
+                                  primary: Color.fromRGBO(225, 37, 255, 1),
+                                  backgroundColor: Colors.transparent,
+                                  side: BorderSide(
+                                    width: 1.3,
+                                    color: Color.fromRGBO(225, 37, 255, 1),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Container(
+                                height: 38,
+                                decoration: BoxDecoration(
+                                    gradient: kButtonLinearGradient,
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: Colors.purple),
+                                child: TextButton(
+                                  onPressed: () {
+                                    launch(event.link);
+                                    print('pressed');
+                                  },
+                                  child: Text(
+                                    'Register',
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  style: TextButton.styleFrom(
+                                    primary: Colors.white,
+                                    // backgroundColor: Colors.purple,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 10,
+                            ),
                           ],
                         ),
                       ),
@@ -489,7 +508,9 @@ class EventItem extends StatelessWidget {
                             style: kEventDate,
                           ),
                           Text(
-                            '${event.time.hour}:${event.time.minute}',
+                            // '${event.time.hour}:${event.time.minute}',
+                            '${DateFormat.jm().format(event.time)}',
+
                             style: kEventTime,
                           ),
                         ],

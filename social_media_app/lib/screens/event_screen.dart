@@ -184,7 +184,8 @@ class _EventScreenState extends State<EventScreen>
                       return SizedBox(
                         height: MediaQuery.of(context).size.height * 0.45,
                         child: Center(
-                          child: Text('No Upcoming Events'),
+                          child: SvgPicture.asset(
+                              'images/error-pages/EventsEmpty.svg'),
                         ),
                       );
                     }

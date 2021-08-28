@@ -80,10 +80,11 @@ class Api {
     }
   }
 
-   static Future putCommunityWithoutImage(String communityName) async {
-     print('put request to community without image');
+  static Future putCommunityWithoutImage(String communityName) async {
+    print('put request to community without image');
     final response = await HttpHelper.put(
-        uri: '/communities/without-image', body: {'name': communityName, 'fileType': '.jpg'});
+        uri: '/communities/without-image',
+        body: {'name': communityName, 'fileType': '.jpg'});
     print('got response');
     if (response.statusCode == 200) {
       return true;
@@ -92,8 +93,6 @@ class Api {
       return false;
     }
   }
-
-  
 
   static Future isUserRegistered(String email) async {
     final response = await HttpHelper.get('/auth/is-user-registered/' + email);
@@ -138,7 +137,7 @@ class Api {
       };
     } else {
       print('user is not created due to' + response.body);
-      return {'status':false};
+      return {'status': false};
     }
   }
 
@@ -307,10 +306,13 @@ class Api {
         }
         print('User is created' + awsResponse.body);
       }
-      return {'status':true, 'user':User.fromJsonAbstract(jsonDecode(response.body))};
+      return {
+        'status': true,
+        'user': User.fromJsonAbstract(jsonDecode(response.body))
+      };
     } else {
       print('user is not created due to' + response.body);
-      return {'status':false};
+      return {'status': false};
     }
   }
 
@@ -324,10 +326,13 @@ class Api {
       'fileType': '.jpg'
     });
     if (response.statusCode == 200) {
-      return {'status':true,'user':User.fromJsonAbstract(jsonDecode(response.body))};
+      return {
+        'status': true,
+        'user': User.fromJsonAbstract(jsonDecode(response.body))
+      };
     } else {
       print('user is not created due to' + response.body);
-      return {'status':false};
+      return {'status': false};
     }
   }
 

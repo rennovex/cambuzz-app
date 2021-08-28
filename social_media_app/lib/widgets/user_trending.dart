@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/providers/post.dart';
@@ -23,9 +24,8 @@ class UserTrending extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            gradient: kTrendingLinearGradient
-          ),
+              borderRadius: BorderRadius.circular(25),
+              gradient: kTrendingLinearGradient),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -132,7 +132,8 @@ class UserTrending extends StatelessWidget {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.3,
                       child: Center(
-                        child: Text('Oops! seems like nothing is trending rn'),
+                        child: SvgPicture.asset(
+                            'images/error-pages/Trending Empty.svg'),
                       ),
                     );
                 },

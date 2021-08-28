@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/community_trending_item.dart';
@@ -65,8 +66,8 @@ class CommunityTrending extends StatelessWidget {
                         return SizedBox(
                           height: MediaQuery.of(context).size.height * 0.3,
                           child: Center(
-                            child:
-                                Text('Oops! seems like nothing is trending rn'),
+                            child: SvgPicture.asset(
+                                'images/error-pages/Trending Empty.svg'),
                           ),
                         );
                       }

@@ -84,7 +84,8 @@ class _PagedFeedListViewState extends State<PagedFeedListView> {
             ),
           ),
           firstPageErrorIndicatorBuilder: (context) => Center(
-            child: Text('FirstPageError'),
+            child:
+                SvgPicture.asset('images/error-pages/CannotReachServers.svg'),
           ),
           noItemsFoundIndicatorBuilder: (context) => Center(
             child: SvgPicture.asset('images/error-pages/FeedEmpty.svg'),

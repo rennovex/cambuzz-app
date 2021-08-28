@@ -232,7 +232,7 @@ class PostItem extends StatelessWidget {
               ),
 
             Padding(
-              padding: const EdgeInsets.only(right: 10,left: 10,bottom: 12),
+              padding: const EdgeInsets.only(right: 10,left: 10, bottom: 12),
               child: Consumer<Post>(
                 builder: (_, post, __) => Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,

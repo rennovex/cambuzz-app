@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:random_color/random_color.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/searchItem.dart';
@@ -35,12 +36,14 @@ class _SearchScreenState extends State<SearchScreen>
   Future _future;
   Skill _filterType;
   int _selectedIndex;
+  RandomColor _randomColor;
 
   @override
   void initState() {
     super.initState();
     // _filterType = FilterType.All;
     _future = Api.getSkills();
+    _randomColor = RandomColor();
   }
 
   void setFilter(filter, index) {
@@ -89,7 +92,7 @@ class _SearchScreenState extends State<SearchScreen>
                             vertical: 5,
                             horizontal: 15,
                           ),
-                          color: filters[ind]['color'],
+                          color: filters[ind],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(13),
                           ),
@@ -249,7 +252,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   Container(
                     height: 75,
                     decoration: BoxDecoration(
-                      color: filters[selectedIndex]['color'],
+                      color: filters[selectedIndex],
                       borderRadius: BorderRadius.circular(13),
                     ),
                     margin: EdgeInsets.symmetric(
@@ -293,7 +296,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     vertical: 5,
                     horizontal: 15,
                   ),
-                  color: filters[selectedIndex]['color'],
+                  color: filters[selectedIndex],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(13),
                   ),
@@ -350,7 +353,7 @@ class CustomSearchDelegate extends SearchDelegate {
                   Container(
                     height: 75,
                     decoration: BoxDecoration(
-                      color: filters[selectedIndex]['color'],
+                      color: filters[selectedIndex],
                       borderRadius: BorderRadius.circular(13),
                     ),
                     margin: EdgeInsets.symmetric(
@@ -394,7 +397,7 @@ class CustomSearchDelegate extends SearchDelegate {
                     vertical: 5,
                     horizontal: 15,
                   ),
-                  color: filters[selectedIndex]['color'],
+                  color: filters[selectedIndex],
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(13),
                   ),

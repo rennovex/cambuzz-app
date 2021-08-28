@@ -171,25 +171,39 @@ final List<Event> events = [
   ),*/
 ];
 
-final List<Map<String, Object>> filters = [
-  {
-    // 'name': 'Web Developers',
-    'color': Color.fromRGBO(4, 110, 187, 0.69),
-  },
-  {
-    'name': 'App Developers',
-    'color': Color.fromRGBO(200, 121, 2, 0.78),
-  },
-  {
-    'name': 'Ui Designers',
-    'color': Color.fromRGBO(0, 111, 71, 0.86),
-  },
-  {
-    'name': 'Singers',
-    'color': Color.fromRGBO(74, 2, 165, 0.79),
-  },
-  {
-    'name': 'Dancers',
-    'color': Color.fromRGBO(191, 0, 149, 0.80),
-  },
+final List<Color> filters = [
+    
+    Color.fromRGBO(4, 110, 187, 0.69),
+    Color.fromRGBO(200, 121, 2, 0.78),
+    Color.fromRGBO(0, 111, 71, 0.86),
+    Color.fromRGBO(74, 2, 165, 0.79),
+    Color.fromRGBO(191, 0, 149, 0.80),
+    Color(0xff5B5B5B),
+    Color(0xffEA6200),
+    Color(0xffCB9200),
+    Color(0xff579903),
+    Color(0xff03A084),
+    Color(0xff0012B2),
+    Color(0xff510058),
+    Color(0xffB00055),
+    Color(0xff005483),
+    Color(0xff008325),
+    Color(0xff3300C2),
+    Color(0xffAE3F00),
+    Color(0xff84C003),
+    Color(0xff011743),
+    Color(0xff01433B),
+    Color(0xff9C00D3),
+    Color(0xff005D72),
+    Color(0xff765C00),
+    Color(0xff046720),
+    Color(0xff152600),
+    Color(0xff801701),
+    Color(0xff9F6000),
+    Color(0xff5A0079),
+    Color(0xff110079),
+    Color(0xff000000),
+    Color(0xffBD0000),
+    Color(0xff001447),
+
 ];

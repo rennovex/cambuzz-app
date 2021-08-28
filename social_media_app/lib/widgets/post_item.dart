@@ -58,114 +58,125 @@ class PostItem extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         margin: EdgeInsets.all(15),
         elevation: 0,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            // mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () => disableNavigation
-                        ? null
-                        : post.isUserPost()
-                            ? showUser(context, post.user.uid)
-                            : showCommunity(context, post.community.uid),
-                    child: CircleAvatar(
-                      radius: 21,
-                      backgroundImage: CachedNetworkImageProvider(
-                        post.isUserPost()
-                            ? post.user.image
-                            : post.community.image,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+              color: kPostItemHeaderColor,
+
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                child: Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () => disableNavigation
+                          ? null
+                          : post.isUserPost()
+                              ? showUser(context, post.user.uid)
+                              : showCommunity(context, post.community.uid),
+                      child: CircleAvatar(
+                        radius: 21,
+                        backgroundImage: CachedNetworkImageProvider(
+                          post.isUserPost()
+                              ? post.user.image
+                              : post.community.image,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            GestureDetector(
-                              onTap: () => disableNavigation
-                                  ? null
-                                  : post.isUserPost()
-                                      ? showUser(context, post.user.uid)
-                                      : showCommunity(
-                                          context, post.community.uid),
-                              child: Text(
-                                post.isUserPost()
-                                    ? post.user.name
-                                    : '\$' + post.community.name,
-                                style: kPostHeaderTextStyle,
-                                // textAlign: TextAlign.start,
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              GestureDetector(
+                                onTap: () => disableNavigation
+                                    ? null
+                                    : post.isUserPost()
+                                        ? showUser(context, post.user.uid)
+                                        : showCommunity(
+                                            context, post.community.uid),
+                                child: Text(
+                                  post.isUserPost()
+                                      ? post.user.name
+                                      : '\$' + post.community.name,
+                                  style: kPostHeaderTextStyle,
+                                  // textAlign: TextAlign.start,
+                                ),
                               ),
-                            ),
-                            Row(
-                              children: [
-                                GestureDetector(
-                                  onTap: () => disableNavigation
-                                      ? null
-                                      : showUser(context, post.user.uid),
-                                  child: ConstrainedBox(
-                                    constraints: BoxConstraints(
-                                      maxWidth:
-                                          MediaQuery.of(context).size.width *
-                                              0.35,
-                                    ),
-                                    child: Text(
-                                      post.user.userName,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: kPostSubHeaderTextStyle,
+                              Row(
+                                children: [
+                                  GestureDetector(
+                                    onTap: () => disableNavigation
+                                        ? null
+                                        : showUser(context, post.user.uid),
+                                    child: ConstrainedBox(
+                                      constraints: BoxConstraints(
+                                        maxWidth:
+                                            MediaQuery.of(context).size.width *
+                                                0.35,
+                                      ),
+                                      child: Text(
+                                        post.user.userName,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: kPostSubHeaderTextStyle,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                SizedBox(width: 10),
-                                Row(
-                                  children: [
-                                    Icon(
-                                      Icons.access_time_sharp,
-                                      size: 14,
-                                    ),
-                                    Text(post.howLongAgo,
-                                        softWrap: true,
-                                        style: kPostTimeTextStyle),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        IconButton(
-                          padding: EdgeInsets.only(right: 15),
-                          constraints: BoxConstraints(),
-                          icon: Icon(
-                            Icons.more_vert,
-                            color: Color.fromRGBO(97, 97, 97, 1),
-                            size: 30,
+                                  SizedBox(width: 10),
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        Icons.access_time_sharp,
+                                        size: 14,
+                                        color:Colors.white,
+                                      ),
+                                      Text(post.howLongAgo,
+                                          softWrap: true,
+                                          style: kPostTimeTextStyle),
+                                    ],
+                                  ),
+                                ],
+                              )
+                            ],
                           ),
-                          // splashRadius: 1,
-                          onPressed: () => showModalBottomSheet(
-                            context: context,
-                            builder: (context) => FeedPostAction(
-                              post: post,
-                              refresh: refresh,
+                          IconButton(
+                            padding: EdgeInsets.only(right: 15),
+                            constraints: BoxConstraints(),
+                            icon: Icon(
+                              Icons.more_vert,
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              size: 30,
+                            ),
+                            // splashRadius: 1,
+                            onPressed: () => showModalBottomSheet(
+                              context: context,
+                              builder: (context) => FeedPostAction(
+                                post: post,
+                                refresh: refresh,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
 
-                  //
-                  // SizedBox(width: 10),
-                ],
+                    //
+                    // SizedBox(width: 10),
+                  ],
+                ),
               ),
-              SizedBox(height: 20),
-              Container(
+            ),
+            SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10,),
+              child: Container(
                 // width: 300,
                 child: Text(
                   post.title,
@@ -176,9 +187,12 @@ class PostItem extends StatelessWidget {
                   textAlign: TextAlign.start,
                 ),
               ),
-              SizedBox(height: 20),
-              if (post.isImagePost())
-                GestureDetector(
+            ),
+            SizedBox(height: 10),
+            if (post.isImagePost())
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10,),
+                child: GestureDetector(
                   onDoubleTap: () => post.toggleLike(),
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -194,26 +208,32 @@ class PostItem extends StatelessWidget {
                     ),
                   ),
                 ),
-              if (!post.isImagePost())
-                GestureDetector(
+              ),
+            if (!post.isImagePost())
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10,),
+                child: GestureDetector(
                   onDoubleTap: () => post.toggleLike(),
                   child: Container(
                     child: Text(post.postText),
                   ),
                 ),
+              ),
+            SizedBox(
+              height: 10,
+            ),
+            if (!post.isImagePost())
+              Divider(
+                thickness: 1,
+              ),
+            if (!post.isImagePost())
               SizedBox(
                 height: 10,
               ),
-              if (!post.isImagePost())
-                Divider(
-                  thickness: 1,
-                ),
-              if (!post.isImagePost())
-                SizedBox(
-                  height: 10,
-                ),
 
-              Consumer<Post>(
+            Padding(
+              padding: const EdgeInsets.only(right: 10,left: 10,bottom: 12),
+              child: Consumer<Post>(
                 builder: (_, post, __) => Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -337,35 +357,35 @@ class PostItem extends StatelessWidget {
                   ],
                 ),
               ),
-              // SizedBox(
-              //   height: 10,
-              // ),
-              // Row(
-              //   children: [
-              //     Padding(
-              //       padding: const EdgeInsets.only(left: 8.0),
-              //       child: SizedBox(
-              //         width: 300,
-              //         child: Text(
-              //           post.title,
-              //           overflow: TextOverflow.ellipsis,
-              //           style: kPostTitleTextStyle,
-              //           // softWrap: true,
-              //           maxLines: 2,
-              //           textAlign: TextAlign.start,
-              //         ),
-              //       ),
-              //     ),
-              //     Container(
-              //       decoration: BoxDecoration(
-              //         color: Colors.grey,
-              //         shape: BoxShape.rectangle,
-              //         borderRadius: BorderRadius.circular(30),
-              //       ),
-              //       child: Text('More'),
-              //     ),
-            ],
-          ),
+            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: const EdgeInsets.only(left: 8.0),
+            //       child: SizedBox(
+            //         width: 300,
+            //         child: Text(
+            //           post.title,
+            //           overflow: TextOverflow.ellipsis,
+            //           style: kPostTitleTextStyle,
+            //           // softWrap: true,
+            //           maxLines: 2,
+            //           textAlign: TextAlign.start,
+            //         ),
+            //       ),
+            //     ),
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         color: Colors.grey,
+            //         shape: BoxShape.rectangle,
+            //         borderRadius: BorderRadius.circular(30),
+            //       ),
+            //       child: Text('More'),
+            //     ),
+          ],
         ),
       ),
     );

@@ -449,6 +449,7 @@ class EventItem extends StatelessWidget {
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
       elevation: 3,
+      color: Color(0xff303030),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

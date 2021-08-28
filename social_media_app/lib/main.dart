@@ -71,6 +71,7 @@ class _MyAppState extends State<MyApp> {
         // ChangeNotifierProvider.value(value: Api()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           primaryColor: Color.fromRGBO(141, 38, 221, 1),

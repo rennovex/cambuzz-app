@@ -37,6 +37,14 @@ const kAppBarTitleStyle = TextStyle(
   color: Colors.white,
 );
 
+const kTitleTextStyleWhite = TextStyle(
+  fontFamily: 'Poppins',
+  fontWeight: FontWeight.w700,
+  fontSize: kLargeTextSize,
+  color: Colors.white,
+);
+
+
 const kTitleTextStyle = TextStyle(
   fontFamily: 'Poppins',
   fontWeight: FontWeight.w700,
@@ -79,16 +87,19 @@ const kPostHeaderTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w700,
   fontSize: 17,
+  color: Colors.white
 );
 
 const kPostSubHeaderTextStyle = TextStyle(
   fontWeight: FontWeight.w400,
   fontSize: 14,
   fontFamily: kFontNamePrimary,
+  color: Colors.white
 );
 
 const kPostTimeTextStyle = TextStyle(
   fontFamily: kFontNamePrimary,
+  color: Colors.white
 );
 
 const kPostTitleTextStyle = TextStyle(
@@ -96,6 +107,8 @@ const kPostTitleTextStyle = TextStyle(
   fontSize: 16,
   fontWeight: FontWeight.w600,
 );
+
+const kPostItemHeaderColor = Color(0xff313131);
 
 // Profile
 
@@ -204,14 +217,14 @@ const kTrendingCommunityLikes = TextStyle(
 const kEventCommunityName = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w800,
-  color: Colors.black,
+  color: Colors.white,
   fontSize: 18,
 );
 
 const kEventHeader = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w600,
-  color: Colors.black,
+  color: Colors.white,
   fontSize: 15,
 );
 
@@ -219,7 +232,7 @@ const kEventBody = TextStyle(
   fontFamily: kFontNamePrimary,
   fontWeight: FontWeight.w500,
   // height: 1.5,
-  color: Colors.black,
+  color: Color(0xffC7C7C7),
   fontSize: 12,
 );
 
@@ -307,3 +320,12 @@ const kSearchFilterText = TextStyle(
   color: Colors.white,
   fontSize: 13,
 );
+
+const kTrendingLinearGradient = LinearGradient(
+              colors: <Color>[
+                Color(0xffFF6B65),
+                Color(0xff6557FF)
+              ], // red to yellow
+              tileMode:
+                  TileMode.repeated, // repeats the gradient over the canvas
+            );

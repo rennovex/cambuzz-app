@@ -80,6 +80,12 @@ class RegistrationStepTop extends StatelessWidget {
                 color: Colors.white,
                 fontFamily: 'poppins',
                 fontSize: 18,
+                shadows: <Shadow>[
+                    Shadow(
+                      blurRadius: 5.0,
+                      color: Color.fromARGB(255, 0, 0, 0),
+                    ),
+                  ],
               ),
             ),
           ],

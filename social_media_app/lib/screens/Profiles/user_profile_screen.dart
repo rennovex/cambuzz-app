@@ -83,14 +83,19 @@ class _userProfileState extends State<UserProfileScreen>
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
+        extendBody: true,
+        resizeToAvoidBottomInset: true,
         appBar: transparentAppBar(),
         body: RefreshIndicator(
           onRefresh: refresh,
           child: SingleChildScrollView(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 buildProfileUI(),
+                Text('Posts'),
                 buildProfilePosts(),
+                Text('data'),
               ],
             ),
           ),
@@ -441,32 +446,38 @@ class _userProfileState extends State<UserProfileScreen>
           }
         },
       );
+  // Widget buildProfilePosts() => PostItem();
 
-  Widget buildProfilePosts() => FutureBuilder(
-      future: posts,
-      builder: (_, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting)
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        else if (snapshot.hasData) {
-          return ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: snapshot.data?.length,
-            itemBuilder: (_, ind) => ChangeNotifierProvider.value(
-                value: snapshot.data[ind] as Post,
-                child: PostItem(
-                  disableNavigation: true,
-                  refresh: refresh,
-                )),
-          );
-        } else
-          return Center(
-            child: Text('No posts'),
-          );
-      });
+  Widget buildProfilePosts() => Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          FutureBuilder(
+              future: posts,
+              builder: (_, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                else if (snapshot.hasData) {
+                  return ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    // scrollDirection: Axis.vertical,
+                    itemCount: snapshot.data?.length,
+                    itemBuilder: (_, ind) => ChangeNotifierProvider.value(
+                        value: snapshot.data[ind] as Post,
+                        child: PostItem(
+                          disableNavigation: true,
+                          refresh: refresh,
+                        )),
+                  );
+                } else
+                  return Center(
+                    child: Text('No posts'),
+                  );
+              }),
+        ],
+      );
 
   @override
   bool get wantKeepAlive => false;

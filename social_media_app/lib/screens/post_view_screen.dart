@@ -117,7 +117,7 @@ class _NewCommentState extends State<NewComment> {
         horizontal: 10,
       ),
       child: TextField(
-        keyboardType: TextInputType.text,
+        keyboardType: TextInputType.multiline,
         focusNode: focusNode,
         style: TextStyle(color: Colors.white),
         controller: textEditingController,

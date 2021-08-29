@@ -64,12 +64,14 @@ class PostItem extends StatelessWidget {
           children: [
             Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(15), topRight: Radius.circular(15)),
-              color: kPostItemHeaderColor,
-
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(15),
+                    topRight: Radius.circular(15)),
+                color: kPostItemHeaderColor,
               ),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -135,7 +137,7 @@ class PostItem extends StatelessWidget {
                                       Icon(
                                         Icons.access_time_sharp,
                                         size: 14,
-                                        color:Colors.white,
+                                        color: Colors.white,
                                       ),
                                       Text(post.howLongAgo,
                                           softWrap: true,
@@ -175,7 +177,9 @@ class PostItem extends StatelessWidget {
             ),
             SizedBox(height: 10),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10,),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+              ),
               child: Container(
                 // width: 300,
                 child: Text(
@@ -191,7 +195,9 @@ class PostItem extends StatelessWidget {
             SizedBox(height: 10),
             if (post.isImagePost())
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
                 child: GestureDetector(
                   onDoubleTap: () => post.toggleLike(),
                   child: ClipRRect(
@@ -211,7 +217,9 @@ class PostItem extends StatelessWidget {
               ),
             if (!post.isImagePost())
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10,),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                ),
                 child: GestureDetector(
                   onDoubleTap: () => post.toggleLike(),
                   child: Container(
@@ -232,7 +240,7 @@ class PostItem extends StatelessWidget {
               ),
 
             Padding(
-              padding: const EdgeInsets.only(right: 10,left: 10, bottom: 12),
+              padding: const EdgeInsets.only(right: 10, left: 10, bottom: 12),
               child: Consumer<Post>(
                 builder: (_, post, __) => Row(
                   // mainAxisAlignment: MainAxisAlignment.spaceAround,

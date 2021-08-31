@@ -93,9 +93,7 @@ class _userProfileState extends State<UserProfileScreen>
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 buildProfileUI(),
-                Text('Posts'),
                 buildProfilePosts(),
-                Text('data'),
               ],
             ),
           ),

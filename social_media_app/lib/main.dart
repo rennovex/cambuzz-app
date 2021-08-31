@@ -148,6 +148,10 @@ class _MyAppState extends State<MyApp> {
                           List<String> skills;
                           email = firebaseSnapshot.data.email;
                           firebaseUid = firebaseSnapshot.data.uid;
+                          
+                          if(!email.endsWith('@tkmce.ac.in')){
+                            Provider.of<GoogleSignInProvider>(context, listen: false).logout();
+                          }
 
                           var userData = await Navigator.of(context)
                               .push(MaterialPageRoute(

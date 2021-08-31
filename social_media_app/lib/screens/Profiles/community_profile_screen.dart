@@ -311,8 +311,12 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                             builder: (_, snapshot) {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting)
-                                return Center(
-                                  child: CircularProgressIndicator(),
+                                return SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.5,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
                                 );
                               else if (snapshot.hasData) {
                                 return ListView.builder(
@@ -499,7 +503,7 @@ class _CreateCommunityBottomSheetState
               onPressed: () async {
                 if (communityName.trim().length < 3 ||
                     communityName.trim().length > 50) {
-                  print('Community name = '+communityName);
+                  print('Community name = ' + communityName);
                   return Fluttertoast.showToast(
                       msg:
                           'Community name should be between 3 and 50 characters long');
@@ -515,15 +519,15 @@ class _CreateCommunityBottomSheetState
                 if (widget.editCommunity) {
                   if (pickedImage == null) {
                     print('picked image null');
-                    completed = await Api.putCommunityWithoutImage(
-                        communityName);
+                    completed =
+                        await Api.putCommunityWithoutImage(communityName);
                   } else {
-                    completed = await Api.putCommunity(
-                        communityName, pickedImage);
+                    completed =
+                        await Api.putCommunity(communityName, pickedImage);
                   }
                 } else {
-                  completed = await Api.postCommunity(
-                      communityName, pickedImage);
+                  completed =
+                      await Api.postCommunity(communityName, pickedImage);
                 }
                 if (completed) {
                   Fluttertoast.showToast(

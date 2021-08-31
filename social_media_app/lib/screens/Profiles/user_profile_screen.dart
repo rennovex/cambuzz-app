@@ -108,8 +108,11 @@ class _userProfileState extends State<UserProfileScreen>
         future: future,
         builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.3,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           } else {
             if (Provider.of<Myself>(context, listen: false).myself == null)
@@ -455,8 +458,11 @@ class _userProfileState extends State<UserProfileScreen>
               future: posts,
               builder: (_, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting)
-                  return Center(
-                    child: CircularProgressIndicator(),
+                  return SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   );
                 else if (snapshot.hasData) {
                   return ListView.builder(

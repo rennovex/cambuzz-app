@@ -7,7 +7,8 @@ import 'package:social_media_app/Global/globals.dart';
 class HttpHelper {
   //static const serverUrl = 'http://192.168.18.51:3000/api';
   static const serverUrl =
-      'http://cambuzz-rennovex-env.eba-fges6uxq.ap-south-1.elasticbeanstalk.com/api';
+      'awseb-e-8-AWSEBLoa-1DMY94ISX8MPA-1414520938.ap-south-1.elb.amazonaws.com/api';
+  // 'http://cambuzz-rennovex-env.eba-fges6uxq.ap-south-1.elasticbeanstalk.com/api';
 
   // var _apiToken;
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
@@ -28,8 +29,10 @@ class CommunitySettings extends StatelessWidget {
           ),
 
           ListTile(
-            onTap: () =>
-                Navigator.of(context).pushNamed(ManagersScreen.routeName),
+            onTap: () {
+                //Navigator.of(context).pushNamed(ManagersScreen.routeName),
+                Fluttertoast.showToast(msg: "We're working on it");
+            },
             leading: Icon(Icons.group),
             title: Text('Managers'),
             trailing: Icon(Icons.arrow_forward_ios_rounded),

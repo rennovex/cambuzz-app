@@ -219,4 +219,23 @@ class Post with ChangeNotifier {
 
     return response;
   }
+
+  Future deleteComment(String commentId) async {
+    final response = await HttpHelper.delete(
+        uri: '/posts/comments/${this.id}/$commentId', body: {});
+
+    if (response.statusCode != 200) {
+      Fluttertoast.showToast(msg: 'Couldn\'t delete comment');
+      throw response.body + ' Couldnt delete comment';
+    }
+
+    final responseDecoded = jsonDecode(response.body) as List;
+    comments = responseDecoded;
+    commentCount--;
+    notifyListeners();
+
+    Fluttertoast.showToast(msg: 'Comment deleted');
+    // notifyListeners();
+    return response;
+  }
 }

@@ -54,7 +54,9 @@ class PostViewScreen extends StatelessWidget {
                                   physics: NeverScrollableScrollPhysics(),
                                   itemCount: post.comments?.length ?? 0,
                                   itemBuilder: (ctx, ind) => CommentItem(
-                                    Comment.fromJson(post.comments[ind]),
+                                    comment:
+                                        Comment.fromJson(post.comments[ind]),
+                                    post: post,
                                   ),
                                 );
                               } else
@@ -146,8 +148,9 @@ class _NewCommentState extends State<NewComment> {
 
 class CommentItem extends StatelessWidget {
   final Comment comment;
+  final Post post;
 
-  CommentItem(this.comment);
+  CommentItem({this.comment, this.post});
 
   @override
   Widget build(BuildContext context) {
@@ -195,6 +198,16 @@ class CommentItem extends StatelessWidget {
                         await Api.postReport(
                             id: comment.id, objectType: 'Comment');
                         Fluttertoast.showToast(msg: 'Reported');
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(Icons.delete),
+                      title: Text('Delete'),
+                      trailing: Icon(Icons.arrow_forward_ios_rounded),
+                      onTap: () async {
+                        await post.deleteComment(comment.id);
+                        Fluttertoast.showToast(msg: 'Comment Deleted');
                         Navigator.of(context).pop();
                       },
                     ),

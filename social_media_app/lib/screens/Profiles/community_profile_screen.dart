@@ -51,6 +51,8 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
     future = widget.uid == null
         ? Api.getCommunity()
         : Api.getCommunityWithId(widget.uid);
+    Global.setStatusBarColor();
+    
   }
 
   Future refresh() async {

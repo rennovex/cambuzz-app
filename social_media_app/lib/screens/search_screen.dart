@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/searchItem.dart';
@@ -40,8 +41,11 @@ class _SearchScreenState extends State<SearchScreen>
   @override
   void initState() {
     super.initState();
+    Global.setStatusBarColor();
+
     // _filterType = FilterType.All;
     _future = Api.getSkills();
+
   }
 
   void setFilter(filter, index) {

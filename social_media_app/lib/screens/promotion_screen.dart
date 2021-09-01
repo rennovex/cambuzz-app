@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/Global/globals.dart';
 
 class PromotionScreen extends StatelessWidget {
   const PromotionScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    Global.setStatusBarColor();
+
     return SafeArea(
       child: Scaffold(
         body: Column(

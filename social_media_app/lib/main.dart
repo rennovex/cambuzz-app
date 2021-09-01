@@ -52,9 +52,6 @@ void main() async {
   messaging.subscribeToTopic('newEventAdded');
   messaging.subscribeToTopic('trending');
   messaging.subscribeToTopic('announcement');
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-statusBarColor: Colors.transparent,
-statusBarIconBrightness: Brightness.light));
 
   runApp(MyApp());
 }
@@ -310,6 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
   var user;
 
   void initializePages() {
+
     _pages = [
       FeedScreen(),
       SearchScreen(),
@@ -321,6 +319,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    Global.setStatusBarColor();
 
     _selectedPageIndex = 0;
 

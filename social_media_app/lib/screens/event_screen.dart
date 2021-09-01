@@ -53,6 +53,7 @@ class _EventScreenState extends State<EventScreen>
     super.initState();
     events = Api.getEvents();
     eventTypes = Api.getEventTypes();
+    Global.setStatusBarColor();
   }
 
   @override

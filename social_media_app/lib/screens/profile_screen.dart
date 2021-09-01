@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
@@ -37,6 +38,8 @@ class _ProfileScreenState extends State<ProfileScreen>
     with AutomaticKeepAliveClientMixin<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    Global.setStatusBarColor();
+
     print(widget.user.bio);
     return Scaffold(
         body: SafeArea(

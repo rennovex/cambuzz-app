@@ -21,6 +21,8 @@ class _TrendingScreenState extends State<TrendingScreen>
   //var user;
   @override
   void initState() {
+    Global.setStatusBarColor();
+
     // TODO: implement initState
     //user = Global.myself;
   }

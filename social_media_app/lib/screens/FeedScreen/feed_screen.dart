@@ -25,6 +25,8 @@ class _FeedScreenState extends State<FeedScreen>
 
   @override
   void initState() {
+    Global.setStatusBarColor();
+
     super.initState();
   }
 

@@ -51,6 +51,8 @@ class _userProfileState extends State<UserProfileScreen>
     widget.userId == null
         ? future = Api.getUser()
         : future = Api.getUserWithId(widget.userId);
+    Global.setStatusBarColor();
+    
 
     // posts = ;
     // Api.getsnapshot().then((value) => snapshot = value);

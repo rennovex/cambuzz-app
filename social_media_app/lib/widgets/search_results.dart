@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:social_media_app/Global/globals.dart';
 
 class SearchResults extends StatelessWidget {
   const SearchResults({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Padding(
       padding: const EdgeInsets.only(top: 15.0),
       child: ListView.builder(

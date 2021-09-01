@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
@@ -23,6 +24,8 @@ class _PagedFeedListViewState extends State<PagedFeedListView> {
   @override
   void initState() {
     super.initState();
+    Global.setStatusBarColor();
+
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });

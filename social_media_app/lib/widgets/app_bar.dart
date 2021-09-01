@@ -3,6 +3,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
@@ -15,6 +16,8 @@ class CustomAppBar extends StatelessWidget {
   CustomAppBar(this.user);
   @override
   Widget build(BuildContext context) {
+    Global.setStatusBarColor();
+
     if (user == null)
       return SpinKitChasingDots(
         color: kPrimaryColor,

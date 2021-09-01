@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/providers/api.dart';
+import 'package:social_media_app/providers/myself.dart';
 
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/widgets/post_item.dart';
@@ -201,16 +202,24 @@ class CommentItem extends StatelessWidget {
                         Navigator.of(context).pop();
                       },
                     ),
-                    ListTile(
-                      leading: Icon(Icons.delete),
-                      title: Text('Delete'),
-                      trailing: Icon(Icons.arrow_forward_ios_rounded),
-                      onTap: () async {
-                        await post.deleteComment(comment.id);
-                        Fluttertoast.showToast(msg: 'Comment Deleted');
-                        Navigator.of(context).pop();
-                      },
-                    ),
+                    if (post.user.uid ==
+                            Provider.of<Myself>(context, listen: false)
+                                .myself
+                                .uid ||
+                        comment.user.uid ==
+                            Provider.of<Myself>(context, listen: false)
+                                .myself
+                                .uid)
+                      ListTile(
+                        leading: Icon(Icons.delete),
+                        title: Text('Delete'),
+                        trailing: Icon(Icons.arrow_forward_ios_rounded),
+                        onTap: () async {
+                          await post.deleteComment(comment.id);
+                          Fluttertoast.showToast(msg: 'Comment Deleted');
+                          Navigator.of(context).pop();
+                        },
+                      ),
                   ],
                 ),
               ),

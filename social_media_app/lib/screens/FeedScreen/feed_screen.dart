@@ -13,7 +13,7 @@ import 'package:social_media_app/widgets/post_item.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FeedScreen extends StatefulWidget {
-  const FeedScreen({ Key key }) : super(key: key);
+  const FeedScreen({Key key}) : super(key: key);
 
   @override
   _FeedScreenState createState() => _FeedScreenState();
@@ -25,9 +25,8 @@ class _FeedScreenState extends State<FeedScreen>
 
   @override
   void initState() {
-    Global.setStatusBarColor();
-
     super.initState();
+    Global.setStatusBarColor();
   }
 
   @override
@@ -35,7 +34,10 @@ class _FeedScreenState extends State<FeedScreen>
     super.build(context);
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(child: CustomAppBar(Provider.of<Myself>(context).myself), preferredSize: kAppBarPreferredSize ,),
+        appBar: PreferredSize(
+          child: CustomAppBar(Provider.of<Myself>(context).myself),
+          preferredSize: kAppBarPreferredSize,
+        ),
         // appBar: AppBar(
         //   leading: IconButton(
         //     icon: Icon(Icons.search),

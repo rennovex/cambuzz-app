@@ -149,9 +149,11 @@ class _MyAppState extends State<MyApp> {
                           List<String> skills;
                           email = firebaseSnapshot.data.email;
                           firebaseUid = firebaseSnapshot.data.uid;
-                          
-                          if(!email.endsWith('@tkmce.ac.in')){
-                            Provider.of<GoogleSignInProvider>(context, listen: false).logout();
+
+                          if (!email.endsWith('@tkmce.ac.in')) {
+                            Provider.of<GoogleSignInProvider>(context,
+                                    listen: false)
+                                .logout();
                           }
 
                           var userData = await Navigator.of(context)
@@ -185,7 +187,7 @@ class _MyAppState extends State<MyApp> {
                               bio: bio,
                               skills: User.User.getSkillsFromIds(skills));
                           Fluttertoast.showToast(msg: 'Creating user');
-                          var status =  
+                          var status =
                               await Api.postUser(user, firebaseUid, image);
 
                           if (!status['status']) {
@@ -307,7 +309,6 @@ class _MyHomePageState extends State<MyHomePage> {
   var user;
 
   void initializePages() {
-
     _pages = [
       FeedScreen(),
       SearchScreen(),
@@ -342,6 +343,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Global.setStatusBarColor();
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,

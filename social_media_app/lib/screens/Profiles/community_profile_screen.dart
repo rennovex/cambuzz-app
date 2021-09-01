@@ -152,12 +152,13 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             GestureDetector(
-                              onTap: () => Navigator.pushNamed(
-                                context,
-                                ProfileInfoScreen.routeName,
-                                arguments: ProfileInfoArguments(
-                                    id: community.uid, title: 'Members'),
-                              ),
+                              onTap: () {},
+                              // onTap: () => Navigator.pushNamed(
+                              //   context,
+                              //   ProfileInfoScreen.routeName,
+                              //   arguments: ProfileInfoArguments(
+                              //       id: community.uid, title: 'Members'),
+
                               child: Row(
                                 children: [
                                   FaIcon(

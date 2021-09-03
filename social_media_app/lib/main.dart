@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
+import 'package:social_media_app/Services/local_notification_service.dart';
+import 'package:social_media_app/Services/push_notification_service.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/secureStorage.dart';
 import 'package:social_media_app/models/skill.dart';
@@ -40,18 +43,28 @@ import 'package:social_media_app/screens/trending_screen.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 import 'package:social_media_app/models/user.dart' as User;
 
+//Receive message when app is in background
+
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification?.title.toString());
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  LocalNotificationService.initialize();
   await Firebase.initializeApp();
   FirebaseMessaging messaging;
   messaging = FirebaseMessaging.instance;
+  messaging.subscribeToTopic('newEventAdded');
+  messaging.subscribeToTopic('trending');
+  messaging.subscribeToTopic('announcement');
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  messaging.getToken().then((value) => print('fcmToken = ' + value));
   Global.apiToken = await SecureStorage.readApiToken() ?? '';
   Global.uid = await SecureStorage.readUid() ?? '';
   print('uid = ' + Global.uid);
   print('token = ' + Global.apiToken);
-  messaging.subscribeToTopic('newEventAdded');
-  messaging.subscribeToTopic('trending');
-  messaging.subscribeToTopic('announcement');
 
   runApp(MyApp());
 }
@@ -322,11 +335,45 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     Global.setStatusBarColor();
 
+    // gives the message the user taps on
+    //and opens app from the terminated state
+
+    FirebaseMessaging.instance.getInitialMessage().then((message) {
+      if (message != null) {
+        if (message.from.contains('/topics/newEventAdded')) {
+          setState(() {
+            _selectedPageIndex = 3;
+            _pageController.jumpToPage(3);
+          });
+        }
+      }
+    });
+
+    //Foreground
     _selectedPageIndex = 0;
 
     initializePages();
 
     _pageController = PageController(initialPage: _selectedPageIndex);
+
+    FirebaseMessaging.onMessage.listen((message) {
+      if (message.notification != null) {
+        print(message.notification?.body);
+        print(message.notification?.title);
+      }
+      LocalNotificationService.display(message: message);
+    });
+
+    // When the app is in background and opened and user taps on the notification
+    FirebaseMessaging.onMessageOpenedApp.listen((message) {
+      print(message.from);
+      if (message.from.contains('/topics/newEventAdded')) {
+        setState(() {
+          _selectedPageIndex = 3;
+          _pageController.jumpToPage(3);
+        });
+      }
+    });
   }
 
   // Future init() async {

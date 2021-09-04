@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -50,11 +51,14 @@ void main() async {
   messaging.subscribeToTopic('trending');
   messaging.subscribeToTopic('announcement');
   FirebaseMessaging.onBackgroundMessage(backgroundHandler);
-  messaging.getToken().then((value) => print('fcmToken = ' + value));
   Global.apiToken = await SecureStorage.readApiToken() ?? '';
   Global.uid = await SecureStorage.readUid() ?? '';
   print('uid = ' + Global.uid);
   print('token = ' + Global.apiToken);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
 
   runApp(MyApp());
 }

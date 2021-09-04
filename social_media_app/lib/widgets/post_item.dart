@@ -203,14 +203,17 @@ class PostItem extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     // TODO
-                    child: CachedNetworkImage(
-                      imageUrl: post.postImg,
-
-                      // placeholder: (context, url) =>
-                      //     Center(child: CircularProgressIndicator()),
-                      width: double.infinity,
-                      height: 350,
-                      fit: BoxFit.cover,
+                    child: AspectRatio(
+                      aspectRatio: 1 / 1,
+                      child: CachedNetworkImage(
+                        imageUrl: post.postImg,
+                        // placeholder: (context, url) =>
+                        //     Center(child: CircularProgressIndicator()),
+                        width: double.infinity,
+                        // height: MediaQuery.of(context).size.width,
+                        // height: 350,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
                 ),

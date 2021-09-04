@@ -52,7 +52,6 @@ Future<void> backgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  LocalNotificationService.initialize();
   await Firebase.initializeApp();
   FirebaseMessaging messaging;
   messaging = FirebaseMessaging.instance;
@@ -310,6 +309,7 @@ class MyHomePage extends StatefulWidget {
 
     //Global.myself = myself;
   }
+
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -320,6 +320,13 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Widget> _pages;
   //bool registrationJustCompleted = false;
   var user;
+
+  void setPage(int index) {
+    setState(() {
+      _selectedPageIndex = index;
+      _pageController.jumpToPage(index);
+    });
+  }
 
   void initializePages() {
     _pages = [
@@ -333,6 +340,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    LocalNotificationService.initialize(setPage);
+
     Global.setStatusBarColor();
 
     // gives the message the user taps on
@@ -349,13 +358,13 @@ class _MyHomePageState extends State<MyHomePage> {
       }
     });
 
-    //Foreground
     _selectedPageIndex = 0;
 
     initializePages();
 
     _pageController = PageController(initialPage: _selectedPageIndex);
 
+    //Foreground
     FirebaseMessaging.onMessage.listen((message) {
       if (message.notification != null) {
         print(message.notification?.body);

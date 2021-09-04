@@ -1,16 +1,20 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:social_media_app/main.dart';
 
 class LocalNotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
-  static void initialize() {
+  static void initialize(Function setPage) {
     final InitializationSettings _initializationSettings =
         InitializationSettings(
             android: AndroidInitializationSettings('@mipmap/ic_launcher'));
 
-    _notificationsPlugin.initialize(_initializationSettings);
+    _notificationsPlugin.initialize(_initializationSettings,
+        onSelectNotification: (topic) async {
+      if (topic.contains('/topics/newEventAdded')) setPage(3);
+    });
   }
 
   static void display({RemoteMessage message}) async {
@@ -27,7 +31,8 @@ class LocalNotificationService {
       ));
 
       await _notificationsPlugin.show(id, message.notification?.title,
-          message.notification?.body, notificationDetails);
+          message.notification?.body, notificationDetails,
+          payload: message.from);
     } on Exception catch (e) {
       print(e);
     }

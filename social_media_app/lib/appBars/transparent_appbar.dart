@@ -13,6 +13,5 @@ class TransparentAppbar extends StatelessWidget with PreferredSizeWidget {
   }
 
   @override
-  // TODO: implement preferredSize
   Size get preferredSize => throw UnimplementedError();
 }

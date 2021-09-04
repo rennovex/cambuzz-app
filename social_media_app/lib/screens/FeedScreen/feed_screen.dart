@@ -2,15 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
-import 'package:social_media_app/providers/post.dart';
-import 'package:social_media_app/screens/AddEventsScreen/add_events_screen.dart';
 import 'package:social_media_app/screens/FeedScreen/paged_feed_list_view.dart';
-import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
-import 'package:social_media_app/widgets/post_item.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class FeedScreen extends StatefulWidget {
   const FeedScreen({Key key}) : super(key: key);

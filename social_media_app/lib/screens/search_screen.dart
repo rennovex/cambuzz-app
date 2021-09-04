@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/searchItem.dart';
 import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/providers/api.dart';
-import 'package:social_media_app/widgets/app_bar.dart';
-// import 'package:social_media_app/widgets/searchfilters.dart';
-import 'package:social_media_app/widgets/search_results.dart';
-
 import '../dummy_data.dart';
 import 'Profiles/community_profile_screen.dart';
 import 'Profiles/user_profile_screen.dart';
@@ -45,7 +40,6 @@ class _SearchScreenState extends State<SearchScreen>
 
     // _filterType = FilterType.All;
     _future = Api.getSkills();
-
   }
 
   void setFilter(filter, index) {
@@ -57,6 +51,7 @@ class _SearchScreenState extends State<SearchScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SafeArea(
       child: Scaffold(
         appBar: buildAppBar(context, _filterType, _selectedIndex),

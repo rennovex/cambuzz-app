@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/widgets/trending_user_item.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:social_media_app/constants.dart';
-// import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class UserTrending extends StatelessWidget {
   // const UserTrending({ Key? key }) : super(key: key);

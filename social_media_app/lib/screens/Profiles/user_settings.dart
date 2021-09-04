@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/providers/google_sign_in.dart';
 import 'package:social_media_app/screens/Profiles/community_profile_screen.dart';
@@ -15,7 +14,6 @@ class UserSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isPrivate;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Column(

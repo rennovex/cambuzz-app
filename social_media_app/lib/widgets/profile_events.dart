@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:social_media_app/models/skill.dart';
 
 class ProfileEvents extends StatelessWidget {
   // const ProfileEvents({ Key? key }) : super(key: key);

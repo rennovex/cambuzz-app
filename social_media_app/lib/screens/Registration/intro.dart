@@ -6,7 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Intro extends StatelessWidget {
   final Function primaryButtonOnPressed;
-  Intro({Key key, @required this.primaryButtonOnPressed}) : super(key: key) {}
+  Intro({Key key, @required this.primaryButtonOnPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -70,16 +70,16 @@ class Intro extends StatelessWidget {
                   width: 5,
                 ),
                 GestureDetector(
-                  onTap: (){
-                    launch('https://cambuzz.rennovex.com/privacy.html');
-                  },
+                    onTap: () {
+                      launch('https://cambuzz.rennovex.com/privacy.html');
+                    },
                     child: Text(
-                  'terms of use',
-                  style: TextStyle(
-                    color: Colors.blue,
-                    decoration: TextDecoration.underline,
-                  ),
-                ))
+                      'terms of use',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ))
               ],
             )
           ],

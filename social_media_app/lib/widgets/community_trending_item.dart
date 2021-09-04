@@ -157,7 +157,7 @@ class PostBody extends StatelessWidget {
     return Expanded(
       child: Container(
         child: Text(
-          '${text}',
+          '$text',
           style: kTrendingCommunityContent,
         ),
       ),

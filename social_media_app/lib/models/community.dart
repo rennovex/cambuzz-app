@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-import 'package:social_media_app/models/event.dart';
 import 'package:social_media_app/models/user.dart';
 
 import 'http_helper.dart';

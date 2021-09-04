@@ -6,8 +6,6 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_media_app/constants.dart';
 
-import 'package:image_picker/image_picker.dart';
-import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/providers/api.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';

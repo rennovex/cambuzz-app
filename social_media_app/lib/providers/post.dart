@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:social_media_app/Global/globals.dart';
-import 'package:social_media_app/models/comment.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/models/http_helper.dart';
 import 'package:social_media_app/models/user.dart';
-import 'package:social_media_app/widgets/post_item.dart';
 
 class Post with ChangeNotifier {
   User user;
@@ -35,7 +31,7 @@ class Post with ChangeNotifier {
     this.commentCount,
     this.likeCount,
     this.isLiked,
-  }) {}
+  });
 
   String get howLongAgo {
     DateTime today = DateTime.now();

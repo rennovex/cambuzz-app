@@ -3,18 +3,14 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
-import 'package:social_media_app/models/skill.dart';
 import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
 import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
-import 'package:social_media_app/screens/Registration/end.dart';
-import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/screens/Registration/step1.dart';
 import 'package:social_media_app/screens/Registration/step2.dart';
 import 'package:social_media_app/screens/Registration/step3.dart';
@@ -23,7 +19,6 @@ import 'package:social_media_app/widgets/post_item.dart';
 import 'package:social_media_app/widgets/profile_events.dart';
 import 'package:social_media_app/widgets/profile_header.dart';
 
-import '../post_view_screen.dart';
 import 'user_settings.dart';
 
 import '../../constants.dart';
@@ -52,7 +47,6 @@ class _userProfileState extends State<UserProfileScreen>
         ? future = Api.getUser()
         : future = Api.getUserWithId(widget.userId);
     Global.setStatusBarColor();
-    
 
     // posts = ;
     // Api.getsnapshot().then((value) => snapshot = value);
@@ -273,7 +267,7 @@ class _userProfileState extends State<UserProfileScreen>
                                   if (imageData == null) {
                                     return Navigator.pop(context);
                                   }
-                                  ;
+
                                   image = imageData['image'];
 
                                   var bioData = await Navigator.of(context)

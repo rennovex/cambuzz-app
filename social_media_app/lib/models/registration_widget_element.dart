@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:social_media_app/constants.dart';
-import 'package:social_media_app/widgets/Registration/labelled_text_field.dart';
-import 'package:social_media_app/widgets/Registration/registration_step_top.dart';
 import 'package:social_media_app/widgets/primary_gradient_button.dart';
 
 class RegistrationElement {

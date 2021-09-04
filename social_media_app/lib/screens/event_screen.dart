@@ -2,15 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
 import 'package:social_media_app/models/eventType.dart';
-import 'package:social_media_app/models/user.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
-import 'package:social_media_app/screens/Registration/registration_screen.dart';
 import 'package:social_media_app/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +55,7 @@ class _EventScreenState extends State<EventScreen>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     print(selectedEventType?.name);
     return SafeArea(
       child: RefreshIndicator(

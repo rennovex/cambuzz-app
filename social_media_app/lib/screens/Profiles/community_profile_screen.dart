@@ -1,21 +1,16 @@
 import 'dart:io';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:social_media_app/Global/globals.dart';
-import 'package:social_media_app/appBars/transparent_appbar.dart';
 import 'package:social_media_app/models/community.dart';
 import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
 import 'package:social_media_app/providers/post.dart';
-import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_arguments.dart';
-import 'package:social_media_app/screens/ProfileInfoScreen/profile_info_screen.dart';
 import 'package:social_media_app/screens/Profiles/community_settings.dart';
 import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/widgets/Registration/image_selection_buttons.dart';
@@ -52,7 +47,6 @@ class _CommunityProfileScreenState extends State<CommunityProfileScreen> {
         ? Api.getCommunity()
         : Api.getCommunityWithId(widget.uid);
     Global.setStatusBarColor();
-    
   }
 
   Future refresh() async {
@@ -378,9 +372,8 @@ class _CreateCommunityBottomSheetState
   String communityName;
   @override
   void initState() {
-    communityName = widget.communityName;
-    // TODO: implement initState
     super.initState();
+    communityName = widget.communityName;
   }
 
   @override

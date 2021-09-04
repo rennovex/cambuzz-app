@@ -6,7 +6,6 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:social_media_app/constants.dart';
 import 'package:social_media_app/models/eventType.dart';
 import 'package:social_media_app/providers/api.dart';
-import 'package:social_media_app/widgets/Registration/pill_toggle_button.dart';
 import 'package:social_media_app/widgets/add_post_modal_sheet.dart';
 
 class AddEventsScreen extends StatefulWidget {

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:social_media_app/models/user.dart';
 
@@ -62,21 +61,19 @@ class SecureStorage {
 
   static Future<String> readUid() async {
     return await _storage.read(key: 'uid');
-
   }
 
   static Future<String> readApiToken() async =>
       await _storage.read(key: 'apiToken');
 
-  static Future deleteAll() async { 
-    await _storage.deleteAll(); 
+  static Future deleteAll() async {
+    await _storage.deleteAll();
     print(await _storage.read(key: 'uid'));
     print(await _storage.read(key: 'uid'));
-    }
+  }
 
   static String getApiToken() {
     readApiToken().then((value) {
-      
       _apiToken = value;
     });
     return _apiToken;

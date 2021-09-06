@@ -14,8 +14,7 @@ class TrendingScreen extends StatefulWidget {
   _TrendingScreenState createState() => _TrendingScreenState();
 }
 
-class _TrendingScreenState extends State<TrendingScreen>
-    with AutomaticKeepAliveClientMixin<TrendingScreen> {
+class _TrendingScreenState extends State<TrendingScreen> {
   //var user;
   @override
   void initState() {
@@ -25,25 +24,28 @@ class _TrendingScreenState extends State<TrendingScreen>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       appBar: PreferredSize(
         child: CustomAppBar(Provider.of<Myself>(context).myself),
         preferredSize: kAppBarPreferredSize,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              UserTrending(),
-              CommunityTrending(),
-            ],
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(Duration(seconds: 1)).then(
+              (value) => setState(() {}),
+            );
+          },
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                UserTrending(),
+                CommunityTrending(),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

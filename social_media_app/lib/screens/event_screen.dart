@@ -58,19 +58,19 @@ class _EventScreenState extends State<EventScreen>
     super.build(context);
     print(selectedEventType?.name);
     return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: () {
-          return Future.delayed(
-            Duration.zero,
-          ).then((value) => setState(() {}));
-        },
-        child: Scaffold(
-          appBar: PreferredSize(
-            child: CustomAppBar(
-                Provider.of<Myself>(context, listen: false).myself),
-            preferredSize: kAppBarPreferredSize,
-          ),
-          body: SingleChildScrollView(
+      child: Scaffold(
+        appBar: PreferredSize(
+          child:
+              CustomAppBar(Provider.of<Myself>(context, listen: false).myself),
+          preferredSize: kAppBarPreferredSize,
+        ),
+        body: RefreshIndicator(
+          onRefresh: () async {
+            await Future.delayed(
+              Duration(seconds: 1),
+            ).then((value) => setState(() {}));
+          },
+          child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -132,8 +132,8 @@ class _EventScreenState extends State<EventScreen>
                                   padding: const EdgeInsets.only(left: 0),
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(13),
-                                    child: Image.network(
-                                      snapshot.data[ind]?.image,
+                                    child: CachedNetworkImage(
+                                      imageUrl: snapshot.data[ind]?.image ?? '',
                                       // height: 136,
                                       // width: 112,
                                       fit: BoxFit.cover,

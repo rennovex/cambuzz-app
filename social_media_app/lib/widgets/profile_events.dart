@@ -1,10 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class ProfileEvents extends StatelessWidget {
-  // const ProfileEvents({ Key? key }) : super(key: key);
+  const ProfileEvents({this.skills, Key key}) : super(key: key);
   final List skills;
-
-  ProfileEvents({this.skills});
 
   @override
   Widget build(BuildContext context) {
@@ -17,17 +16,16 @@ class ProfileEvents extends StatelessWidget {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: skills?.length ?? 3,
-        itemBuilder: (ctx, index) => ProfileEventItem(skills[index]?.image),
+        itemBuilder: (ctx, index) =>
+            ProfileEventItem(image: skills[index]?.image),
       ),
     );
   }
 }
 
 class ProfileEventItem extends StatelessWidget {
-  // const ProfileEventItem({ Key? key }) : super(key: key);
+  const ProfileEventItem({this.image, Key key}) : super(key: key);
   final String image;
-
-  ProfileEventItem(this.image);
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +33,8 @@ class ProfileEventItem extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(19)),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(19),
-        child: Image.network(
-          image,
+        child: CachedNetworkImage(
+          imageUrl: image,
           height: 150,
           width: 120,
           fit: BoxFit.cover,

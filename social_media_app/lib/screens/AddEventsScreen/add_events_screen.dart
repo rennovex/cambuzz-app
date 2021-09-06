@@ -178,7 +178,7 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
                   Text(
                     date == null
                         ? 'No date selected'
-                        : 'selectd date : ${DateFormat.yMMMd().add_jm().format(date)}',
+                        : 'selected date : ${DateFormat.yMMMd().add_jm().format(date)}',
                   ),
                 ],
               ),
@@ -239,7 +239,7 @@ class _AddEventsScreenState extends State<AddEventsScreen> {
             value.trim().isEmpty ? 'Please enter description ' : null,
         decoration: InputDecoration(
           hintText: 'Describe your event ...',
-          labelText: 'Descritpion',
+          labelText: 'Description',
           alignLabelWithHint: true,
           border: OutlineInputBorder(),
         ),

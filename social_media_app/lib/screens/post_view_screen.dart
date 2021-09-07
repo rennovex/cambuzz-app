@@ -8,6 +8,7 @@ import 'package:social_media_app/providers/api.dart';
 import 'package:social_media_app/providers/myself.dart';
 
 import 'package:social_media_app/providers/post.dart';
+import 'package:social_media_app/screens/search_screen.dart';
 import 'package:social_media_app/widgets/post_item.dart';
 
 class PostViewScreen extends StatelessWidget {
@@ -170,14 +171,20 @@ class CommentItem extends StatelessWidget {
         elevation: 0,
         child: ListTile(
           // isThreeLine: true,
-          leading: CircleAvatar(
-            backgroundImage: CachedNetworkImageProvider(comment.user.image),
-            radius: 22,
+          leading: GestureDetector(
+            onTap: () => showUser(context, comment.user.uid),
+            child: CircleAvatar(
+              backgroundImage: CachedNetworkImageProvider(comment.user.image),
+              radius: 22,
+            ),
           ),
-          title: Text(
-            comment.user.userName,
-            style: kTitleTextStyle.copyWith(
-              fontSize: 15,
+          title: GestureDetector(
+            onTap: () => showUser(context, comment.user.uid),
+            child: Text(
+              comment.user.userName,
+              style: kTitleTextStyle.copyWith(
+                fontSize: 15,
+              ),
             ),
           ),
           subtitle: Text(

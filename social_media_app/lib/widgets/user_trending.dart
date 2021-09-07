@@ -34,7 +34,7 @@ class UserTrending extends StatelessWidget {
                   bottom: 12,
                 ),
                 child: Text(
-                  'Whats trending',
+                  'What\'s trending',
                   style: kTitleTextStyleWhite,
                 ),
               ),
